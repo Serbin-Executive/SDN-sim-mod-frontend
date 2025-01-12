@@ -6,6 +6,7 @@ import {
     TModelsCurrentStates,
     TModelWorkingCommands,
     TModelsLastStates,
+    TModelsActionsStatesList,
 } from "./meta";
 import useWebSocket from "../../hooks/useWebSocket";
 import { WebsocketMessageParser } from "../../services/ModelWebSocketService";
@@ -18,9 +19,10 @@ const WebSocketModelInteract = (): ReactElement => {
         useState<TModelWorkingCommands>([]);
     const [modelsStatesList, setModelsStatesList] =
         useState<TModelsCurrentStates>([]);
+    const [modelsActionsStatesList, setModelsActionsStatesList] = useState<TModelsActionsStatesList>([]);
 
     const defaultMessageHandler = (messageData: any) => {
-        console.log("message", messageData);
+        console.info(messageData);
     };
 
     const updateModelWorkingCommands = (
@@ -50,10 +52,20 @@ const WebSocketModelInteract = (): ReactElement => {
 
     };
 
+    const clearModelsStatesList = (clearMessage: string): void => {
+        setModelsStatesList([]);
+    }
+
+    const updateModelsActionsStates = (statesList: TModelsActionsStatesList): void => {
+        setModelsActionsStatesList(statesList);
+    }
+
     const ActionsInfoList: Record<TServerMessageType, TClientAction> = {
-        [ServerMessageTypes.DEFAULT]: defaultMessageHandler,
-        [ServerMessageTypes.MODEL_COMMANDS]: updateModelWorkingCommands,
-        [ServerMessageTypes.MODEL_STATE]: updateModelsStatesList,
+        [ServerMessageTypes.MESSAGE]: defaultMessageHandler,
+        [ServerMessageTypes.MODELS_WORKING_COMMANDS]: updateModelWorkingCommands,
+        [ServerMessageTypes.MODELS_CURRENT_STATE]: updateModelsStatesList,
+        [ServerMessageTypes.CLEAR_CHARTS]: clearModelsStatesList,
+        [ServerMessageTypes.MODELS_ACTIONS_STATES]: updateModelsActionsStates,
     };
 
     const handleMessageFromServer = (data: string): void => {
@@ -72,6 +84,7 @@ const WebSocketModelInteract = (): ReactElement => {
     return (
         <div className="web-socket-model-interact main-container">
             <ModelWorkingCommandsMenu
+                actionsStatesList = {modelsActionsStatesList}
                 data={modelWorkingCommands}
                 completeCommandFunction={sendMessage}
             />

@@ -26,9 +26,11 @@ export interface IServerMessage {
 }
 
 export enum ServerMessageTypes {
-    DEFAULT = "message",
-    MODEL_COMMANDS = "model working commands",
-    MODEL_STATE = "model current state",
+    MESSAGE = "message",
+    MODELS_WORKING_COMMANDS = "models working commands",
+    MODELS_CURRENT_STATE = "models current state",
+    MODELS_ACTIONS_STATES = "models actions states",
+    CLEAR_CHARTS = "clear charts",
 }
 
 export type TServerMessageType = string;
@@ -38,5 +40,7 @@ export interface IStatisticField {
     fieldName: string;
     fieldValue: string;
 }
+
+export type TModelsActionsStatesList = boolean[];
 
 export type TStatisticFields = IStatisticField[]

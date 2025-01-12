@@ -1,19 +1,21 @@
 import { ReactElement } from "react";
 import ModelWorkingCommandButton from "../ModelWorkingCommandButton";
-import { TModelWorkingCommands } from "../WebSocketModelInteract/meta";
+import { TModelsActionsStatesList, TModelWorkingCommands } from "../WebSocketModelInteract/meta";
 import { TSendMessage } from "../../hooks/useWebSocket/meta";
 import "./style.css";
 
 export interface IModelWorkingCommandsMenuProps {
+    actionsStatesList: TModelsActionsStatesList;
     data: TModelWorkingCommands;
     completeCommandFunction: TSendMessage;
 }
 
-const ModelWorkingCommandsMenu = ({data, completeCommandFunction}: IModelWorkingCommandsMenuProps): ReactElement => (
+const ModelWorkingCommandsMenu = ({actionsStatesList, data, completeCommandFunction}: IModelWorkingCommandsMenuProps): ReactElement => (
     <div className="model-working-commands menu-container">
-        {data.map((modelWorkingCommand) => (
+        {data.map((modelWorkingCommand, index) => (
                     <ModelWorkingCommandButton
                         key={modelWorkingCommand}
+                        actionState={actionsStatesList[index]}
                         modelWorkingCommand={modelWorkingCommand}
                         onClickAction={completeCommandFunction}
                     />

@@ -1,18 +1,29 @@
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import "./style.css";
 
 export interface IModelWorkingCommandButtonProps {
+    actionState: boolean;
     modelWorkingCommand: string;
     onClickAction: (command: string) => void;
 }
 
 const ModelWorkingCommandButton = ({
+    actionState,
     modelWorkingCommand,
     onClickAction,
 }: IModelWorkingCommandButtonProps): ReactElement => {
+    const buttonClass = actionState ? "model-working-command-button-inactive" : "model-working-command-button-active";
+    
+    const handleClick = (): void => {
+        if (actionState) {
+            return;
+        }
+
+        onClickAction(modelWorkingCommand);
+    }
 
     return (
-        <div className="model-working-command-button" onClick={() => {onClickAction(modelWorkingCommand)}}>
+        <div className={buttonClass} onClick={handleClick}>
             {modelWorkingCommand}
         </div>
     );

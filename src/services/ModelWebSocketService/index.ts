@@ -23,7 +23,7 @@ export class WebsocketMessageParser {
 
         return (
             currentServerMessageType ??
-            ServerMessageTypes.DEFAULT
+            ServerMessageTypes.MESSAGE
         );
     }
 }
