@@ -1,0 +1,19 @@
+.model-working-command-button {
+    padding: 25px 50px;
+    font-weight: 400;
+    font-size: 20px;
+    letter-spacing: 10px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+    transition: 0.3s;
+    background-color: rgb(104, 168, 223);
+    border: 4px solid black;
+    border-radius: 30px;
+    user-select: none;
+}
+
+.model-working-command-button:hover {
+    cursor: pointer;
+    background-color: rgb(255, 255, 255);
+    color: black;
+}

@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import DefaultLayout from "@/layouts/Default";
+import WebSocketModelInteract from "../WebSocketModelInteract";
 import "./style.css";
 
 const DummyAsideContent = (): ReactElement => {
@@ -9,7 +10,7 @@ const DummyAsideContent = (): ReactElement => {
 const Application = (): ReactElement => {
     return (
         <DefaultLayout asideComponent={<DummyAsideContent />}>
-            <h1>Application</h1>
+            <WebSocketModelInteract />
         </DefaultLayout>
     );
 };
