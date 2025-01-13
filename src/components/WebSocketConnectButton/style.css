@@ -1,7 +1,7 @@
 .web-socket-connect-button-active {
-    padding: 25px 50px;
+    padding: 10px 20px;
     font-weight: 400;
-    font-size: 30px;
+    font-size: 10px;
     letter-spacing: 10px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: rgb(0, 0, 0);
@@ -13,9 +13,9 @@
 }
 
 .web-socket-connect-button-inactive {
-    padding: 35px 60px;
+    padding: 10px 20px;
     font-weight: 400;
-    font-size: 30px;
+    font-size: 10px;
     letter-spacing: 10px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: white;

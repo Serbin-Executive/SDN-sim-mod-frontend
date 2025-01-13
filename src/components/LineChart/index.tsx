@@ -3,7 +3,7 @@ import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import {  IChartData } from "./meta";
 import { TModelCurrentStates } from "../Application/meta";
-import { ChartDataService } from "../../services/ChartDataService";
+import { ModelDataService } from "@/services/ModelDataService";
 import "./style.css";
 
 ChartJS.register();
@@ -26,11 +26,11 @@ const LineChart = ( {modelID, data} : IChartsListProps): ReactElement => {
 
     useEffect(() => {
         setChartData({
-            labels: ChartDataService.getChartLabels(data),
+            labels: ModelDataService.getChartLabels(data),
             datasets: [
                 {
                     label: "Model efficiency from time",
-                    data: ChartDataService.getChartDatasetModelEfficiency(data),
+                    data: ModelDataService.getLoadFactorsList(data),
                 },
             ],
         })
