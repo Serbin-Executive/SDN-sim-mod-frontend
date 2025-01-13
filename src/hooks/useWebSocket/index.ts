@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { WS_API_URL } from "./meta";
 
-const useWebSocket = (handler: (data: any) => void) => {
+const useWebSocket = (webSocketUrl: string, handler: (data: any) => void) => {
     const [webSocket, setWebSocket] = useState<WebSocket>();
 
     const sendMessage = (messageData: any) => {
         if (!webSocket) {
-            throw new Error();
+            console.log("Cannot send message to server, web socket in not connected");
+
+            return;
         }
 
         webSocket.send(messageData);
@@ -29,7 +31,7 @@ const useWebSocket = (handler: (data: any) => void) => {
     };
 
     const configure = () => {
-        const socket = new WebSocket(WS_API_URL);
+        const socket = new WebSocket(webSocketUrl);
 
         socket.onopen = onOpen;
         socket.onmessage = onMessage;
@@ -38,12 +40,8 @@ const useWebSocket = (handler: (data: any) => void) => {
 
         setWebSocket(socket);
     };
-    
-    if (!webSocket) {
-        configure();
-    };
 
-    return { webSocket, sendMessage };
+    return { configure, sendMessage };
 };
 
 export default useWebSocket;

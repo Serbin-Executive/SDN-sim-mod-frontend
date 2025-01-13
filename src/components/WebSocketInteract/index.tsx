@@ -1,4 +1,4 @@
-import { useState, ReactElement } from "react";
+import { useState, ReactElement, useContext, useEffect } from "react";
 import {
     ServerMessageTypes,
     TClientAction,
@@ -10,17 +10,17 @@ import {
 } from "./meta";
 import useWebSocket from "../../hooks/useWebSocket";
 import { WebsocketMessageParser } from "../../services/ModelWebSocketService";
-import ModelWorkingCommandsMenu from "../ModelWorkingCommandsMenu";
-import ChartsList from "../ChartsList";
+import ModelsContext from "../ModelsContext";
 import "./style.css";
+import WebSocketConnectButton from "../WebSocketConnectButton";
+import WebSocketUrlForm from "../WebSocketUrlForm";
 
 const WebSocketModelInteract = (): ReactElement => {
-    const [modelWorkingCommands, setModelWorkingCommands] =
-        useState<TModelWorkingCommands>([]);
-    const [modelsStatesList, setModelsStatesList] =
-        useState<TModelsCurrentStates>([]);
-    const [modelsActionsStatesList, setModelsActionsStatesList] = useState<TModelsActionsStatesList>([]);
+    const {setModelsWorkingCommands, setModelsActionsStatesList, setModelsStatesList } = useContext(ModelsContext);
 
+    const [webSocketUrl, setWebSocketUrl] = useState<string>("");
+    const [isConnected, setIsConnected] = useState<boolean>(false);
+    
     const defaultMessageHandler = (messageData: any) => {
         console.info(messageData);
     };
@@ -28,14 +28,14 @@ const WebSocketModelInteract = (): ReactElement => {
     const updateModelWorkingCommands = (
         messageData: TModelWorkingCommands
     ): void => {
-        setModelWorkingCommands(messageData);
+        setModelsWorkingCommands(messageData);
     };
 
     const updateModelsStatesList = (
         modelsLastStates: TModelsLastStates
     ): void => {
         setModelsStatesList((prevList) => {
-            let newModelsStatesList = prevList.map((modelStatesList) => [...modelStatesList]);
+            let newModelsStatesList: TModelsCurrentStates = prevList.map((modelStatesList) => [...modelStatesList]);
 
             if (!newModelsStatesList.length) {
                 newModelsStatesList = modelsLastStates.map((modelLastState) => [modelLastState]);
@@ -78,18 +78,25 @@ const WebSocketModelInteract = (): ReactElement => {
             console.log("Failed to parse message from server", error);
         }
     };
+        
+    const { configure, sendMessage } = useWebSocket(webSocketUrl, handleMessageFromServer);
+        
+    const createConfigure = (): void => {
+        if (isConnected) {
+            return;
+        }
 
-    const { sendMessage } = useWebSocket(handleMessageFromServer);
+        configure();
+
+        setIsConnected(true);
+    };
+
+    
 
     return (
         <div className="web-socket-model-interact main-container">
-            <ModelWorkingCommandsMenu
-                actionsStatesList = {modelsActionsStatesList}
-                data={modelWorkingCommands}
-                completeCommandFunction={sendMessage}
-            />
-
-            <ChartsList data={modelsStatesList} />
+            <WebSocketUrlForm url={webSocketUrl} setUrl={setWebSocketUrl} />
+            <WebSocketConnectButton isConnected={isConnected} connectFunction={createConfigure} />
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { INetworElementState } from "../WebSocketModelInteract/meta";
+import { INetworElementState } from "../Application/meta";
 import "./style.css";
 
 export interface INetworkElementStatisticProps {

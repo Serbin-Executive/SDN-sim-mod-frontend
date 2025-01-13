@@ -1,7 +1,4 @@
-import {
-    IServerMessage,
-    ServerMessageTypes,
-} from "../../components/WebSocketModelInteract/meta";
+import { IServerMessage, ServerMessageTypes } from "@/components/Application/meta";
 
 export class WebsocketMessageParser {
     public static parseMessage(data: any) {

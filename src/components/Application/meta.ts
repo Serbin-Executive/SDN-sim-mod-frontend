@@ -13,10 +13,10 @@ export interface IModelCurrentState {
 
 export type TModelCurrentStates = IModelCurrentState[];
 export type TModelsLastStates = IModelCurrentState[];
+export type TModelsCurrentStates = TModelCurrentStates[];
 
 export type TMessageType = string;
 export type TModelWorkingCommands = string[];
-export type TModelsCurrentStates = IModelCurrentState[][];
 export type TMessage = string;
 
 

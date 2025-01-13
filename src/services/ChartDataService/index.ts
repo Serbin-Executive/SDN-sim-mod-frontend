@@ -1,4 +1,4 @@
-import { TModelCurrentStates } from "../../components/WebSocketModelInteract/meta";
+import { TModelCurrentStates } from "@/components/Application/meta";
 
 export class ChartDataService {
     public static getChartLabels(data: TModelCurrentStates): number[] {

@@ -17,3 +17,15 @@ body,
     width: 100%;
     height: 100%;
 }
+
+.web-socket-model-interact {
+    margin-top: 20px;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 30px;
+}

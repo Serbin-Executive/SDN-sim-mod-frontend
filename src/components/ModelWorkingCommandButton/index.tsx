@@ -1,10 +1,11 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useContext, useState } from "react";
+import { TSendCommand } from "../ModelsContext/meta";
 import "./style.css";
 
 export interface IModelWorkingCommandButtonProps {
     actionState: boolean;
     modelWorkingCommand: string;
-    onClickAction: (command: string) => void;
+    onClickAction: TSendCommand;
 }
 
 const ModelWorkingCommandButton = ({
@@ -15,7 +16,7 @@ const ModelWorkingCommandButton = ({
     const buttonClass = actionState ? "model-working-command-button-inactive" : "model-working-command-button-active";
     
     const handleClick = (): void => {
-        if (actionState) {
+        if (actionState || !onClickAction) {
             return;
         }
 

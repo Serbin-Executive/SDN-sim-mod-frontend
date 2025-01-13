@@ -4,10 +4,10 @@ import "./style.css";
 
 export interface IDefaultLayoutProps {
     asideComponent: ReactElement;
-    children: ReactElement;
+    children: ReactElement[];
 }
 
-const DefaultLayout = ({
+const HostLayout = ({
     asideComponent,
     children,
 }: IDefaultLayoutProps): ReactElement => {
@@ -37,4 +37,4 @@ const DefaultLayout = ({
     );
 };
 
-export default DefaultLayout;
+export default HostLayout;
