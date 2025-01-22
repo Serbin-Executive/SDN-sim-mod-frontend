@@ -1,0 +1,52 @@
+import { ReactElement, ReactNode } from "react";
+import DefaultLayout from "@/layouts/Default";
+import HostLayout from "@/layouts/Host";
+
+export interface IStatisticField {
+    fieldName: string;
+    fieldValue: string;
+}
+
+export type TStatisticFields = IStatisticField[];
+
+export interface INetworElementState {
+    id: string;
+    type: string;
+    statisticFields: TStatisticFields;
+}
+
+export interface IModelCurrentState {
+    time: string;
+    networkElementsStatesList: INetworElementState[];
+}
+
+export type TModelCurrentStates = IModelCurrentState[];
+export type TModelsLastStates = IModelCurrentState[];
+export type TModelsCurrentStates = TModelCurrentStates[];
+
+export type TMessageType = string;
+export type TModelWorkingCommands = string[];
+export type TMessage = string;
+
+
+export interface IServerMessage {
+    messageType: TMessageType;
+    message: TMessage | TModelWorkingCommands | IModelCurrentState;
+}
+
+export enum ServerMessageTypes {
+    MESSAGE = "message",
+    MODELS_WORKING_COMMANDS = "models working commands",
+    MODELS_CURRENT_STATE = "models current state",
+    MODELS_ACTIONS_STATES = "models actions states",
+    CLEAR_CHARTS = "clear charts",
+}
+
+export type TServerMessageType = string;
+export type TClientAction = any;
+
+export type TModelsActionsStatesList = boolean[];
+
+export type TUserStatus = string;
+export type TLayout = ReactElement;
+

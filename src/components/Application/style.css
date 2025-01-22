@@ -16,5 +16,16 @@ body,
 #root {
     width: 100%;
     height: 100%;
-    overflow: hidden;
+}
+
+.web-socket-model-interact {
+    margin-top: 20px;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 30px;
 }
