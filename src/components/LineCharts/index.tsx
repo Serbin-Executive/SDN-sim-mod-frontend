@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import {  IChartData } from "./meta";
-import { TModelCurrentStates } from "../Application/meta";
+import { TModelCurrentStates } from "@/hooks/useServerMessageHandler/meta";
 import { ModelDataService } from "@/services/ModelDataService";
 import "./style.css";
 

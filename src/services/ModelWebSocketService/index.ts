@@ -1,13 +1,9 @@
-import { IServerMessage, ServerMessageTypes } from "@/components/Application/meta";
+import { IServerMessage, ServerMessageTypes } from "@/hooks/useServerMessageHandler/meta";
 
 export class WebsocketMessageParser {
     public static parseMessage(data: any) {
         const messageData: IServerMessage = JSON.parse(data);
         const messageType: string = this.getMessageType(messageData);
-
-        // if(messageType === ServerMessageTypes.DEFAULT) {
-        //     return {messageData, messageType}
-        // }
 
         return { messageData: messageData.message, messageType}  
     }

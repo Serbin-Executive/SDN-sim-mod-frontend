@@ -1,15 +1,37 @@
-import { IModelCurrentState, TModelCurrentStates } from "@/components/Application/meta";
-import { DELAY_CAPACITY, DELAY_VALUE } from "./meta";
+import { IModelCurrentState, INetworElementState, TModelCurrentStates, TStatisticFields } from "@/hooks/useServerMessageHandler/meta";
+import { INTERVAL_VALUE, NetworkElementsTypes, StatisticFieldsNames } from "./meta";
 
 export class ModelDataService {
     public static getChartLabels(data: TModelCurrentStates): number[] {
         return data.map((dataItem) => Number(dataItem.time));
     }
 
+    public static getStatisticFieldValueByFieldName(statisticFields: TStatisticFields ,fieldName: string): number {
+        const statisticField = statisticFields.find((field) => field.fieldName === fieldName);
+
+        if (!statisticField) {
+            return 0;
+        }
+
+        return Number(statisticField.fieldValue);
+    };
+
+    public static getNetworkElementsListByName(networkElements: INetworElementState[], elementName: string): INetworElementState[] {
+        const currentElementsList: INetworElementState[] = networkElements.filter((element) => element.type === elementName);
+
+        return currentElementsList;
+    }
+
     public static getAgentsCameInModelCount(modelCurrentState: IModelCurrentState): number {
         const networkElementList = modelCurrentState.networkElementsStatesList;
 
-        const agentsCameInModelCount = Number(networkElementList[0].statisticFields.find((field) => field.fieldName === "agentsLeftCount")?.fieldValue) ?? 0;
+        const sourceElements: INetworElementState[] = this.getNetworkElementsListByName(networkElementList, NetworkElementsTypes.SOURCE);
+
+        const agentsCameInModelCount = sourceElements.reduce((agentsCameInModelCount, element) => {
+            const agentsCameCount = this.getStatisticFieldValueByFieldName(element.statisticFields, StatisticFieldsNames.AGENTS_LEFT_COUNT);
+
+            return agentsCameInModelCount + agentsCameCount;
+        }, 0);
 
         return agentsCameInModelCount;
     }
@@ -17,37 +39,37 @@ export class ModelDataService {
     public static getAgentsLeftThroughModelCount(modelCurrentState: IModelCurrentState): number {
         const networkElementList = modelCurrentState.networkElementsStatesList;
 
-        const agentsLeftThroughModelCount = Number(networkElementList[networkElementList.length - 1].statisticFields.find((field) => field.fieldName === "agentsCameCount")?.fieldValue) ?? 0;
+        const sinkElements: INetworElementState[] = this.getNetworkElementsListByName(networkElementList, NetworkElementsTypes.SINK);
+
+        const agentsLeftThroughModelCount = sinkElements.reduce((agentsLeftThroughModelCount, element) => {
+            const agentsLeftCount = this.getStatisticFieldValueByFieldName(element.statisticFields, StatisticFieldsNames.AGENTS_CAME_COUNT);
+
+            return agentsLeftThroughModelCount + agentsLeftCount;
+        }, 0);
 
         return agentsLeftThroughModelCount;
     }
 
-    public static getAgentsLostCount(modelCurrentState: IModelCurrentState): number {
+    public static getAgentsLostInModelCount(modelCurrentState: IModelCurrentState): number {
         const networkElementList = modelCurrentState.networkElementsStatesList;
 
-        let agentsLostCount = 0;
+        const queueElements: INetworElementState[] = this.getNetworkElementsListByName(networkElementList, NetworkElementsTypes.QUEUE);
 
-        networkElementList.forEach((elementInfo) => {
-            if (elementInfo.type !== "QueueElement") {
-                return;
-            }
+        const agentsLostInModelCount = queueElements.reduce((agentsLostInModelCount, element) => {
+            const agentsLostCount = this.getStatisticFieldValueByFieldName(element.statisticFields, StatisticFieldsNames.AGENTS_LOST_COUNT);
 
-            elementInfo.statisticFields.forEach((field) => {
-                if (field.fieldName === "agentsLostCount") {
-                    agentsLostCount += Number(field.fieldValue);
-                }
-            })
-        });
+            return agentsLostInModelCount + agentsLostCount;
+        }, 0);
 
-        return agentsLostCount;
+        return agentsLostInModelCount;
     }
 
     public static getAgentsInModelCount(modelCurrentState: IModelCurrentState): number {
-        const agentsCame = this.getAgentsCameInModelCount(modelCurrentState);
-        const agentsLeft = this.getAgentsLeftThroughModelCount(modelCurrentState);
-        const agentsLost = this.getAgentsLostCount(modelCurrentState);
+        const agentsCameInModelCount = this.getAgentsCameInModelCount(modelCurrentState);
+        const agentsLeftThroughModelCount = this.getAgentsLeftThroughModelCount(modelCurrentState);
+        const agentsLostInModelCount = this.getAgentsLostInModelCount(modelCurrentState);
 
-        return agentsCame - agentsLeft - agentsLost;
+        return agentsCameInModelCount - agentsLeftThroughModelCount - agentsLostInModelCount;
     }
 
     public static getReceiptIntensity(modelPreviousState: IModelCurrentState, modelLastState: IModelCurrentState): number {
@@ -64,10 +86,32 @@ export class ModelDataService {
         return agentsLeftThroughModelLastTiming - agentsLeftThroughModelPreviousTiming;
     }
 
+    public static getDelayCapacity(modelLastState: IModelCurrentState) {
+        const networkElementsList = modelLastState.networkElementsStatesList;
+
+        const delayElements = this.getNetworkElementsListByName(networkElementsList, NetworkElementsTypes.DELAY);
+
+        const delayCapacity: number = this.getStatisticFieldValueByFieldName(delayElements[0].statisticFields, StatisticFieldsNames.DELAY_CAPACITY);
+
+        return delayCapacity;
+    }
+
+    public static getDelayValue(modelLastState: IModelCurrentState) {
+        const networkElementsList = modelLastState.networkElementsStatesList;
+
+        const delayElements = this.getNetworkElementsListByName(networkElementsList, NetworkElementsTypes.DELAY);
+
+        const delayValue: number = this.getStatisticFieldValueByFieldName(delayElements[0].statisticFields, StatisticFieldsNames.DELAY_VALUE);
+
+        return delayValue;
+    }
+
     public static getLoadFactor(modelPreviousState: IModelCurrentState, modelLastState: IModelCurrentState): number {
         const receiptIntensity: number = this.getReceiptIntensity(modelPreviousState, modelLastState);
+        const delayValue: number = this.getDelayValue(modelLastState);
+        const delayCapacity: number = this.getDelayCapacity(modelLastState);
 
-        return receiptIntensity * DELAY_VALUE / (DELAY_CAPACITY);
+        return receiptIntensity * (delayValue / INTERVAL_VALUE) / delayCapacity;
     }
 
     public static getLoadFactorsList(modelStatesList: TModelCurrentStates): number[] {
@@ -130,14 +174,12 @@ export class ModelDataService {
         modelStatesList.forEach((modelCurrentState) => {
             const networkElements = modelCurrentState.networkElementsStatesList;
 
-            networkElements.forEach((element) => {
-                if (!(element.type === "QueueElement")) {
-                    return;
-                }
+            const queueElements = networkElements.filter((element) => element.type === NetworkElementsTypes.QUEUE);
 
-                const agentsCount = Number(element.statisticFields.find((field) => field.fieldName === "agentsCount")?.fieldValue);
+            queueElements.forEach((element) => {
+                const agentsCount = this.getStatisticFieldValueByFieldName(element.statisticFields, StatisticFieldsNames.AGENTS_COUNT);
 
-                queueLoadList.push(agentsCount!)
+                queueLoadList.push(agentsCount)
             });
         });
 

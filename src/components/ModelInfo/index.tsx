@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { ModelInfoFieldsNames } from "./meta";
-import { IModelCurrentState } from "../Application/meta";
+import { IModelCurrentState } from "@/hooks/useServerMessageHandler/meta";
 import { ModelDataService } from "@/services/ModelDataService";
 import "./style.css";
 
@@ -14,7 +14,7 @@ const ModelInfo = ({
     const agentsCameInModelCount = ModelDataService.getAgentsCameInModelCount(modelLastState);
     const agentsLeftThroughModelCount = ModelDataService.getAgentsLeftThroughModelCount(modelLastState);
     const agentsInModelCount = ModelDataService.getAgentsInModelCount(modelLastState);
-    const agentsLostCount = ModelDataService.getAgentsLostCount(modelLastState);
+    const agentsLostCount = ModelDataService.getAgentsLostInModelCount(modelLastState);
 
     return(
         <div className="model-info-container">

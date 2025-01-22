@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { TModelWorkingCommands, TModelsActionsStatesList, TModelsCurrentStates, TModelsLastStates, TServerMessageType, TClientAction, ServerMessageTypes } from "@/components/Application/meta";
+import { UserStatuses } from "@/components/Application/meta";
+import { TModelWorkingCommands, TModelsActionsStatesList, TModelsCurrentStates, TModelsLastStates, TServerMessageType, TClientAction, ServerMessageTypes, TUserStatus } from "./meta";
 import { WebsocketMessageParser } from "@/services/ModelWebSocketService";
 
 export interface IUseServerMessageHandlerInfo {
@@ -9,7 +10,7 @@ export interface IUseServerMessageHandlerInfo {
     setModelsActionsStatesList: Dispatch<SetStateAction<TModelsActionsStatesList>>;
     modelsStatesList: TModelsCurrentStates;
     setModelsStatesList: Dispatch<SetStateAction<TModelsCurrentStates>>;
-    isHost: boolean;
+    userStatus: TUserStatus;
     handleMessageFromServer: (data: string) => void;
 }
 
@@ -21,7 +22,7 @@ const useServerMessageHandler = () => {
     const [modelsStatesList, setModelsStatesList] =
         useState<TModelsCurrentStates>([]);
 
-    const [isHost, setIsHost] = useState<boolean>(false);
+    const [userStatus, setUserStatus] = useState<TUserStatus>(UserStatuses.USER);
 
     const defaultMessageHandler = (messageData: any) => {
         console.info(messageData);
@@ -32,7 +33,7 @@ const useServerMessageHandler = () => {
     ): void => {
         setModelsWorkingCommands(messageData);
 
-        setIsHost(true);
+        setUserStatus(UserStatuses.HOST);
     };
 
     const updateModelsStatesList = (
@@ -96,7 +97,7 @@ const useServerMessageHandler = () => {
         setModelsActionsStatesList: setModelsActionsStatesList,
         modelsStatesList: modelsStatesList,
         setModelsStatesList: setModelsStatesList,
-        isHost: isHost,
+        userStatus: userStatus,
         handleMessageFromServer: handleMessageFromServer
     }
 }

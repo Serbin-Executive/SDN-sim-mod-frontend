@@ -1,4 +1,13 @@
-export const WS_API_URL: string = "ws://localhost:3001";
+import { ReactElement, ReactNode } from "react";
+import DefaultLayout from "@/layouts/Default";
+import HostLayout from "@/layouts/Host";
+
+export interface IStatisticField {
+    fieldName: string;
+    fieldValue: string;
+}
+
+export type TStatisticFields = IStatisticField[];
 
 export interface INetworElementState {
     id: string;
@@ -36,11 +45,8 @@ export enum ServerMessageTypes {
 export type TServerMessageType = string;
 export type TClientAction = any;
 
-export interface IStatisticField {
-    fieldName: string;
-    fieldValue: string;
-}
-
 export type TModelsActionsStatesList = boolean[];
 
-export type TStatisticFields = IStatisticField[]
+export type TUserStatus = string;
+export type TLayout = ReactElement;
+
