@@ -2,7 +2,7 @@ import { ReactElement, useState } from "react";
 import AsideHeader from "@/components/AsideHeader";
 import "./style.css";
 
-export interface IDefaultLayoutProps {
+export interface IHostLayoutProps {
     asideComponent: ReactElement;
     children: ReactElement[];
 }
@@ -10,7 +10,7 @@ export interface IDefaultLayoutProps {
 const HostLayout = ({
     asideComponent,
     children,
-}: IDefaultLayoutProps): ReactElement => {
+}: IHostLayoutProps): ReactElement => {
     const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
 
     const asideClassNames: string = !isAsideOpen ? "default" : "in-focus";
@@ -25,7 +25,7 @@ const HostLayout = ({
     };
 
     return (
-        <div className="default-layout">
+        <div className="host-layout">
             <aside className={asideClassNames}>
                 <AsideHeader onToggle={toggleAside} />
                 <div className="aside-content-container">{asideComponent}</div>

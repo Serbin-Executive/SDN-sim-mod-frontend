@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { WS_API_URL } from "./meta";
 
 const useWebSocket = (webSocketUrl: string, handler: (data: any) => void) => {
     const [webSocket, setWebSocket] = useState<WebSocket>();
@@ -23,7 +22,7 @@ const useWebSocket = (webSocketUrl: string, handler: (data: any) => void) => {
     };
 
     const onError = (event: Event) => {
-        console.error("ERROR ON WEBSOCKET", event);
+        console.info("ERROR ON WEBSOCKET", event);
     };
 
     const onClose = (event: CloseEvent) => {

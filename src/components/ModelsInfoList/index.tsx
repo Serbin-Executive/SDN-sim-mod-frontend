@@ -1,5 +1,5 @@
 import { ReactElement, useContext } from "react";
-import LineChart from "../LineChart";
+import LineCharts from "../LineCharts";
 import ModelsContext from "../ModelsContext";
 import ModelInfo from "../ModelInfo";
 import "./style.css";
@@ -15,7 +15,7 @@ const ChartsList = (): ReactElement => {
 
                 return (
                     <div key={index} className="model-info info-container">
-                        <LineChart
+                        <LineCharts
                             modelID={index}
                             data={modelStatesList}
                         />

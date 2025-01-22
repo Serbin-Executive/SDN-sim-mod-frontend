@@ -2,6 +2,9 @@ export type TChartLabels = number[];
 export interface IDataset {
     label: string;
     data: number[];
+    borderColor?: string;
+    pointBackgroundColor?: string;
+    pointBorderColor?: string;
 }
 export type TDatasets = IDataset[];
 export interface IChartData {

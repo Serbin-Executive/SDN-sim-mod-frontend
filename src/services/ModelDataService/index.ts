@@ -122,5 +122,25 @@ export class ModelDataService {
         });
 
         return serviceIntensityList;
+    };
+
+    public static getQueueLoadList(modelStatesList: TModelCurrentStates): number[] {
+        const queueLoadList: number[] = [];
+
+        modelStatesList.forEach((modelCurrentState) => {
+            const networkElements = modelCurrentState.networkElementsStatesList;
+
+            networkElements.forEach((element) => {
+                if (!(element.type === "QueueElement")) {
+                    return;
+                }
+
+                const agentsCount = Number(element.statisticFields.find((field) => field.fieldName === "agentsCount")?.fieldValue);
+
+                queueLoadList.push(agentsCount!)
+            });
+        });
+
+        return queueLoadList;
     }
 }
