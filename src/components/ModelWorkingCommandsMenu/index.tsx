@@ -4,11 +4,11 @@ import ModelsContext from "../ModelsContext";
 import "./style.css";
 
 const ModelWorkingCommandsMenu = (): ReactElement => {
-    const {modelsActionsStatesList, modelsWorkingCommands, sendCommandFunction} = useContext(ModelsContext);
+    const {modelsActionsStatesList, modelWorkingCommandsList, sendCommandFunction} = useContext(ModelsContext);
     
     return (
         <div className="model-working-commands menu-container">
-            {modelsWorkingCommands.map((modelWorkingCommand, index) => (
+            {modelWorkingCommandsList.map((modelWorkingCommand, index) => (
                 <ModelWorkingCommandButton
                     key={modelWorkingCommand}
                     actionState={modelsActionsStatesList[index]}
