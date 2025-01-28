@@ -1,6 +1,4 @@
 import { ReactElement, ReactNode } from "react";
-import DefaultLayout from "@/layouts/Default";
-import HostLayout from "@/layouts/Host";
 
 export interface IStatisticField {
     fieldName: string;
@@ -47,6 +45,5 @@ export type TClientAction = any;
 
 export type TModelsActionsStatesList = boolean[];
 
-export type TUserStatus = string;
 export type TLayout = ReactElement;
 

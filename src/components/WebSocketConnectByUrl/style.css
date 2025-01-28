@@ -1,0 +1,12 @@
+.url-input-name.inactive {
+    display: none;
+}
+
+.url-input-name.active {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    color: #443DF6;
+    font-size: 12px;
+    line-height: 16px;
+};
