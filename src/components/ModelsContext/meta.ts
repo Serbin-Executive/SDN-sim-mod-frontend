@@ -1,5 +1,5 @@
 // import { Dispatch, SetStateAction } from "react";
-import { TModelsCurrentStates } from "@/hooks/useServerMessageHandler/meta";
+import { TModelsCurrentStates, TObjectsStatesInfo } from "@/hooks/useServerMessageHandler/meta";
 
 export type TModelWorkingCommands = string[];
 export type TModelsActionsStatesList = boolean[];

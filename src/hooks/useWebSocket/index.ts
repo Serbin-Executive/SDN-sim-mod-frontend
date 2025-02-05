@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { WS_PROTOCOL } from "./meta";
 
-
 const useWebSocket = (webSocketUrl: string, handler: (data: any) => void) => {
     const [webSocket, setWebSocket] = useState<WebSocket>();
 

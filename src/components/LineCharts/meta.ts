@@ -1,4 +1,7 @@
+import { TModelCurrentStates, TObjectsStatesInfo } from "@/hooks/useServerMessageHandler/meta";
+
 export type TChartLabels = number[];
+
 export interface IDataset {
     label: string;
     data: number[];
@@ -6,17 +9,20 @@ export interface IDataset {
     pointBackgroundColor?: string;
     pointBorderColor?: string;
 }
+
 export type TDatasets = IDataset[];
+
 export interface IChartData {
     labels: TChartLabels,
     datasets: TDatasets,
 }
 
-export interface IChartCurrentState {
-    id: number;
-    agentsCameSount: number | null;
-    agentsCount: number;
-    agentsLeftCount: number | null; 
+export const enum ChartLabelsNames {
+    LOAD_FACTOR_FROM_TIME = "Load factor from time",
+    QUEUE_LOAD_FROM_TIME = "Queue load from time",
 }
 
-export type TBarChartData = IChartCurrentState[];
+export const enum ChartColors {
+    BLUE = "blue",
+    GREEN = "green",
+}

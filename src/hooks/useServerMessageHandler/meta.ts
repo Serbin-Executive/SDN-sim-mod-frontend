@@ -1,16 +1,18 @@
 import { ReactElement, ReactNode } from "react";
 
-export interface IStatisticField {
+export interface IStateInfoField {
     fieldName: string;
     fieldValue: string;
 }
 
-export type TStatisticFields = IStatisticField[];
+export type TStateInfo = IStateInfoField[];
+export type TStatesInfo = TStateInfo[];
+export type TObjectsStatesInfo = TStatesInfo[];
 
 export interface INetworElementState {
     id: string;
     type: string;
-    statisticFields: TStatisticFields;
+    statisticFields: TStateInfo;
 }
 
 export interface IModelCurrentState {
@@ -32,10 +34,10 @@ export interface IServerMessage {
     message: TMessage | TModelWorkingCommands | IModelCurrentState;
 }
 
-export enum ServerMessageTypes {
+export const enum ServerMessageTypes {
     MESSAGE = "message",
     MODELS_WORKING_COMMANDS = "models working commands",
-    MODELS_CURRENT_STATE = "models current state",
+    MODELS_STATES = "models states",
     MODELS_ACTIONS_STATES = "models actions states",
     CLEAR_CHARTS = "clear charts",
 }
