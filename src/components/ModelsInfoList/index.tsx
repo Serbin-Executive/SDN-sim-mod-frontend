@@ -17,7 +17,7 @@ const ModelsInfoList = (): ReactElement => {
                     <div key={index} className="model-info info-container">
                         <LineCharts
                             modelID={index}
-                            data={modelStatesList}
+                            modelStatesList={modelStatesList}
                         />
                         <ModelInfo
                             modelLastState={modelLastState}

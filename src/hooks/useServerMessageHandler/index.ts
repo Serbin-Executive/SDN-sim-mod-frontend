@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { UserStatuses } from "@/components/Application/meta";
-import { TModelWorkingCommands, TModelsActionsStatesList, TModelsCurrentStates, TModelsLastStates, TServerMessageType, TClientAction, ServerMessageTypes } from "./meta";
+import { TModelWorkingCommands, TModelsActionsStatesList, TModelsCurrentStates, TModelsLastStates, TServerMessageType, TClientAction, ServerMessageTypes, TObjectsStatesInfo } from "./meta";
 import { WebsocketMessageParser } from "@/services/ModelWebSocketService";
 import { TUserStatus } from "@/components/Application/meta";
 
@@ -62,7 +62,7 @@ const useServerMessageHandler = (setUserStatus: Dispatch<SetStateAction<TUserSta
         [ServerMessageTypes.MESSAGE]: defaultMessageHandler,
         [ServerMessageTypes.MODELS_WORKING_COMMANDS]:
             updateModelWorkingCommands,
-        [ServerMessageTypes.MODELS_CURRENT_STATE]: updateModelsStatesList,
+        [ServerMessageTypes.MODELS_STATES]: updateModelsStatesList,
         [ServerMessageTypes.CLEAR_CHARTS]: clearModelsStatesList,
         [ServerMessageTypes.MODELS_ACTIONS_STATES]: updateModelsActionsStates,
     };

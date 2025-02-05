@@ -52,7 +52,7 @@ input:focus {
     border-radius: 4px;
 };
 
-button {
+/* button {
     border-radius: 8px;
     background-color: #443DF6;
     color: #FFFFFF;
@@ -67,7 +67,7 @@ button {
 button:hover {
     background-color: #6c67f8;
     cursor: pointer;
-};
+}; */
 
 /* 
 button.inactive {

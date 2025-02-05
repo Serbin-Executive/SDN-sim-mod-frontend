@@ -29,7 +29,7 @@ const ModelWorkingCommandButton = ({
     }
 
     return (
-        <button className={`model-working-command-button ${buttonClass} common`} onClick={handleClick}>
+        <button className={`common ${buttonClass}`} onClick={handleClick}>
             {modelWorkingCommand}
         </button>
     );
