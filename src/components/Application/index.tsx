@@ -11,7 +11,9 @@ import { TUserStatus } from "./meta";
 import "./style.css";
 
 const Application = (): ReactElement => {
-    const [userStatus, setUserStatus] = useState<TUserStatus>(UserStatuses.USER);
+    const [userStatus, setUserStatus] = useState<TUserStatus>(
+        UserStatuses.USER
+    );
     const [webSocketUrl, setWebSocketUrl] = useState<string>("");
     const [isConnected, setIsConnected] = useState<boolean>(false);
 
@@ -27,7 +29,7 @@ const Application = (): ReactElement => {
 
     const { configure, sendMessage } = useWebSocket(
         webSocketUrl,
-        handleMessageFromServer,
+        handleMessageFromServer
     );
 
     const createConfigure = async () => {

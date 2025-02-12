@@ -76,7 +76,7 @@ export class StatisticService {
         const sourceElments = this.getNetworkElementsListByName(networkElements, NetworkElementsTypes.SOURCE);
 
         sourceElments.forEach((sourceElement) => {
-            receiptIntensity+=this.getStatisticFieldValueByFieldName(sourceElement.statisticFields, StatisticFieldsNames.AGENTS_COUNT_IN_LAST_INTERVAL);
+            receiptIntensity+=this.getStatisticFieldValueByFieldName(sourceElement.statisticFields, StatisticFieldsNames.RECEIPT_INTENSITY);
         });
 
         return receiptIntensity;

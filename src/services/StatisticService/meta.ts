@@ -15,5 +15,5 @@ export const enum StatisticFieldsNames {
     AGENTS_LOST_COUNT = "agentsLostCount",
     DELAY_VALUE = "delayValue",
     DELAY_CAPACITY = "delayCapacity",
-    AGENTS_COUNT_IN_LAST_INTERVAL = "agentsCountInLastInterval",
+    RECEIPT_INTENSITY = "receiptIntensity",
 }
