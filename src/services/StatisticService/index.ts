@@ -1,12 +1,8 @@
-import { IModelCurrentState, INetworElementState, TModelCurrentStates, TStatisticFields } from "@/hooks/useServerMessageHandler/meta";
-import { INTERVAL_VALUE, NetworkElementsTypes, StatisticFieldsNames } from "./meta";
+import { IModelCurrentState, INetworElementState, TModelCurrentStates, TStateInfo } from "@/hooks/useServerMessageHandler/meta";
+import { DELAY_VALUE_TO_INTERVAL_VALUE_MULTIPLIER, MILLISECONDS_MULTIPLIER, NetworkElementsTypes, StatisticFieldsNames } from "./meta";
 
-export class ModelDataService {
-    public static getChartLabels(data: TModelCurrentStates): number[] {
-        return data.map((dataItem) => Number(dataItem.time));
-    }
-
-    public static getStatisticFieldValueByFieldName(statisticFields: TStatisticFields ,fieldName: string): number {
+export class StatisticService {
+    public static getStatisticFieldValueByFieldName(statisticFields: TStateInfo ,fieldName: string): number {
         const statisticField = statisticFields.find((field) => field.fieldName === fieldName);
 
         if (!statisticField) {
@@ -72,11 +68,18 @@ export class ModelDataService {
         return agentsCameInModelCount - agentsLeftThroughModelCount - agentsLostInModelCount;
     }
 
-    public static getReceiptIntensity(modelPreviousState: IModelCurrentState, modelLastState: IModelCurrentState): number {
-        const agentsCameInModelPreviousTiming: number = this.getAgentsCameInModelCount(modelPreviousState);
-        const agentsCameInModelLastTiming: number = this.getAgentsCameInModelCount(modelLastState);
+    public static getReceiptIntensity(modelLastState: IModelCurrentState): number {
+        let receiptIntensity: number = 0;
 
-        return agentsCameInModelLastTiming - agentsCameInModelPreviousTiming;
+        const networkElements = modelLastState.networkElementsStatesList;
+
+        const sourceElments = this.getNetworkElementsListByName(networkElements, NetworkElementsTypes.SOURCE);
+
+        sourceElments.forEach((sourceElement) => {
+            receiptIntensity+=this.getStatisticFieldValueByFieldName(sourceElement.statisticFields, StatisticFieldsNames.RECEIPT_INTENSITY);
+        });
+
+        return receiptIntensity;
     }
 
     public static getServiceIntensity(modelPreviousState: IModelCurrentState, modelLastState: IModelCurrentState): number {
@@ -107,23 +110,17 @@ export class ModelDataService {
     }
 
     public static getLoadFactor(modelPreviousState: IModelCurrentState, modelLastState: IModelCurrentState): number {
-        const receiptIntensity: number = this.getReceiptIntensity(modelPreviousState, modelLastState);
+        const receiptIntensity: number = this.getReceiptIntensity(modelLastState);
         const delayValue: number = this.getDelayValue(modelLastState);
         const delayCapacity: number = this.getDelayCapacity(modelLastState);
 
-        return receiptIntensity * (delayValue / INTERVAL_VALUE) / delayCapacity;
+        return (receiptIntensity / DELAY_VALUE_TO_INTERVAL_VALUE_MULTIPLIER) * (delayValue / MILLISECONDS_MULTIPLIER) / delayCapacity;
     }
 
     public static getLoadFactorsList(modelStatesList: TModelCurrentStates): number[] {
         const loadFactorList: number[] = [];
 
         modelStatesList.forEach((modelCurrentState: IModelCurrentState, index) => {
-            if (!index) {
-                loadFactorList.push(0);
-
-                return;
-            }
-
             const loadFactor: number = this.getLoadFactor(modelStatesList[index - 1], modelCurrentState);
 
             loadFactorList.push(loadFactor);
@@ -136,13 +133,7 @@ export class ModelDataService {
         const receiptIntensityList: number[] = [];
 
         modelStatesList.forEach((modelCurrentState: IModelCurrentState, index) => {
-            if (!index) {
-                receiptIntensityList.push(0);
-
-                return;
-            }
-
-            const receiptIntensity: number = this.getReceiptIntensity(modelStatesList[index - 1], modelCurrentState);
+            const receiptIntensity: number = this.getReceiptIntensity(modelCurrentState);
 
             receiptIntensityList.push(receiptIntensity);
         });

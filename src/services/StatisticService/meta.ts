@@ -1,4 +1,5 @@
-export const INTERVAL_VALUE: number = 2000;
+export const DELAY_VALUE_TO_INTERVAL_VALUE_MULTIPLIER: number = 2;
+export const MILLISECONDS_MULTIPLIER: number = 1000;
 
 export const enum NetworkElementsTypes {
     SOURCE = "SourceElement",
@@ -14,4 +15,5 @@ export const enum StatisticFieldsNames {
     AGENTS_LOST_COUNT = "agentsLostCount",
     DELAY_VALUE = "delayValue",
     DELAY_CAPACITY = "delayCapacity",
+    RECEIPT_INTENSITY = "receiptIntensity",
 }

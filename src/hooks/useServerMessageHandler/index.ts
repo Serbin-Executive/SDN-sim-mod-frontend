@@ -1,28 +1,16 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { UserStatuses } from "@/components/Application/meta";
-import { TModelWorkingCommands, TModelsActionsStatesList, TModelsCurrentStates, TModelsLastStates, TServerMessageType, TClientAction, ServerMessageTypes, TUserStatus } from "./meta";
+import { TModelWorkingCommands, TModelsActionsStatesList, TModelsCurrentStates, TModelsLastStates, TServerMessageType, TClientAction, ServerMessageTypes, TObjectsStatesInfo } from "./meta";
 import { WebsocketMessageParser } from "@/services/ModelWebSocketService";
+import { TUserStatus } from "@/components/Application/meta";
 
-export interface IUseServerMessageHandlerInfo {
-    modelsWorkingCommands: TModelWorkingCommands;
-    setModelsWorkingCommands: Dispatch<SetStateAction<TModelWorkingCommands>>;
-    modelsActionsStatesList: TModelsActionsStatesList;
-    setModelsActionsStatesList: Dispatch<SetStateAction<TModelsActionsStatesList>>;
-    modelsStatesList: TModelsCurrentStates;
-    setModelsStatesList: Dispatch<SetStateAction<TModelsCurrentStates>>;
-    userStatus: TUserStatus;
-    handleMessageFromServer: (data: string) => void;
-}
-
-const useServerMessageHandler = () => {
-    const [modelsWorkingCommands, setModelsWorkingCommands] =
+const useServerMessageHandler = (setUserStatus: Dispatch<SetStateAction<TUserStatus>>) => {
+    const [modelWorkingCommands, setModelWorkingCommands] =
         useState<TModelWorkingCommands>([]);
     const [modelsActionsStatesList, setModelsActionsStatesList] =
         useState<TModelsActionsStatesList>([false, false]);
     const [modelsStatesList, setModelsStatesList] =
         useState<TModelsCurrentStates>([]);
-
-    const [userStatus, setUserStatus] = useState<TUserStatus>(UserStatuses.USER);
 
     const defaultMessageHandler = (messageData: any) => {
         console.info(messageData);
@@ -31,7 +19,7 @@ const useServerMessageHandler = () => {
     const updateModelWorkingCommands = (
         messageData: TModelWorkingCommands
     ): void => {
-        setModelsWorkingCommands(messageData);
+        setModelWorkingCommands(messageData);
 
         setUserStatus(UserStatuses.HOST);
     };
@@ -74,7 +62,7 @@ const useServerMessageHandler = () => {
         [ServerMessageTypes.MESSAGE]: defaultMessageHandler,
         [ServerMessageTypes.MODELS_WORKING_COMMANDS]:
             updateModelWorkingCommands,
-        [ServerMessageTypes.MODELS_CURRENT_STATE]: updateModelsStatesList,
+        [ServerMessageTypes.MODELS_STATES]: updateModelsStatesList,
         [ServerMessageTypes.CLEAR_CHARTS]: clearModelsStatesList,
         [ServerMessageTypes.MODELS_ACTIONS_STATES]: updateModelsActionsStates,
     };
@@ -91,13 +79,9 @@ const useServerMessageHandler = () => {
     };
 
     return {
-        modelsWorkingCommands: modelsWorkingCommands,
-        setModelsWorkingCommands: setModelsWorkingCommands,
+        modelWorkingCommands: modelWorkingCommands,
         modelsActionsStatesList: modelsActionsStatesList,
-        setModelsActionsStatesList: setModelsActionsStatesList,
         modelsStatesList: modelsStatesList,
-        setModelsStatesList: setModelsStatesList,
-        userStatus: userStatus,
         handleMessageFromServer: handleMessageFromServer
     }
 }

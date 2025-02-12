@@ -12,7 +12,11 @@ const AsideHeader = ({ onToggle }: AsideHeaderProps): ReactElement => {
                 <h3>Aside</h3>
             </div>
             <div className="aside-header-toggle">
-                <button onClick={onToggle}>S</button>
+                <img
+                    onClick={onToggle}
+                    src="assets/images/icons/asideButton.png"
+                    alt="aside header icon image"
+                />
             </div>
         </div>
     );
