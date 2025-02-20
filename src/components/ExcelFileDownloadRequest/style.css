@@ -8,7 +8,7 @@ button.common {
     padding: 10px 20px;
     border: none;
     user-select: none;
-};
+}
 
 button.common:hover {
     background-color: #6c67f8;
@@ -17,4 +17,9 @@ button.common:hover {
 
 button.common.active {
     padding: 20px;
+}
+
+button.common.download.inactive {
+    background-color: #8c8ade;
+    pointer-events: none;
 }

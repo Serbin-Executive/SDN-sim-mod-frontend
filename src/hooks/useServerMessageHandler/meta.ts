@@ -1,4 +1,5 @@
-import { ReactElement, ReactNode } from "react";
+import { TModelWorkingCommands } from "@/components/ModelsContext/meta";
+import { ReactElement } from "react";
 
 export interface IStateInfoField {
     fieldName: string;
@@ -25,7 +26,6 @@ export type TModelsLastStates = IModelCurrentState[];
 export type TModelsCurrentStates = TModelCurrentStates[];
 
 export type TMessageType = string;
-export type TModelWorkingCommands = string[];
 export type TMessage = string;
 
 

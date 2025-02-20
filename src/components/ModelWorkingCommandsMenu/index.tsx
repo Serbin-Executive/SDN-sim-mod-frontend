@@ -21,8 +21,6 @@ const ModelWorkingCommandsMenu = (): ReactElement => {
                     onClickAction={sendCommandFunction}
                 />
             ))}
-
-            <ExcelFileDownloadRequest/>
         </div>
     );
 };

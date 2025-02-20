@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { UserStatuses } from "@/components/Application/meta";
-import { TModelWorkingCommands, TModelsActionsStatesList, TModelsCurrentStates, TModelsLastStates, TServerMessageType, TClientAction, ServerMessageTypes, TObjectsStatesInfo } from "./meta";
+import { TModelsActionsStatesList, TModelsCurrentStates, TModelsLastStates, TServerMessageType, TClientAction, ServerMessageTypes } from "./meta";
+import { TModelWorkingCommands } from "@/components/ModelsContext/meta";
 import { WebsocketMessageParser } from "@/services/ModelWebSocketService";
 import { TUserStatus } from "@/components/Application/meta";
 
