@@ -9,6 +9,8 @@ import { API } from "@/api";
 import useServerMessageHandler from "@/hooks/useServerMessageHandler";
 import { TUserStatus } from "./meta";
 import "./style.css";
+import { ISettingsConfig } from "../ModelsContext/meta";
+import { DEFAULT_DELAY_CAPACITY, DEFAULT_DELAY_VALUE, DEFAULT_IS_PARTIAL_INITIAL_BOOT, DEFAULT_IS_QUALITY_OF_SERVICE_ACTIVE, DEFAULT_MAX_SPAWN_AGENTS_VALUE, DEFAULT_MIN_SPAWN_AGENTS_VALUE, DEFAULT_MODEL_SOURCE_ELEMENTS_COUNT_VALUE, DEFAULT_MODELS_COUNT_VALUE, DEFAULT_QUEUE_CAPACITY, DEFAULT_STATISTIC_INTERVAL_VALUE, DEFAULT_WORK_INTERVAL_VALUE } from "@/utils/constants";
 
 const Application = (): ReactElement => {
     const [userStatus, setUserStatus] = useState<TUserStatus>(
@@ -19,6 +21,8 @@ const Application = (): ReactElement => {
 
     const [areUrlChecking, setAreUrlChecking] = useState<boolean>(false);
     const [checkingError, setCheckingError] = useState<any>(null);
+
+    // const [settingsConfig, setSettingsConfig] = useState<ISettingsConfig>();
 
     const {
         modelWorkingCommands,
@@ -80,6 +84,19 @@ const Application = (): ReactElement => {
                 modelsStatesList: modelsStatesList,
                 modelWorkingCommandsList: modelWorkingCommands,
                 modelsActionsStatesList: modelsActionsStatesList,
+                settingsConfig: {
+                    modelsCountValue: DEFAULT_MODELS_COUNT_VALUE,
+                    minSpawnAgentsValue: DEFAULT_MIN_SPAWN_AGENTS_VALUE,
+                    maxSpawnAgentsValue: DEFAULT_MAX_SPAWN_AGENTS_VALUE,
+                    workIntervalValue: DEFAULT_WORK_INTERVAL_VALUE,
+                    statisticIntervalValue: DEFAULT_STATISTIC_INTERVAL_VALUE,
+                    modelSourceElementsCountValue: DEFAULT_MODEL_SOURCE_ELEMENTS_COUNT_VALUE,
+                    queueCapacity: DEFAULT_QUEUE_CAPACITY,
+                    delayCapacity: DEFAULT_DELAY_CAPACITY,
+                    delayValue: DEFAULT_DELAY_VALUE,
+                    isPartialInitialBoot: DEFAULT_IS_PARTIAL_INITIAL_BOOT,
+                    isQualityOfServiceActive: DEFAULT_IS_QUALITY_OF_SERVICE_ACTIVE,
+                },
                 sendCommandFunction: sendMessage,
             }}
         >

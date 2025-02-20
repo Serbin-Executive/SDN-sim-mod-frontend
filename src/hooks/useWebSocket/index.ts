@@ -1,17 +1,18 @@
 import { useState } from "react";
-import { WS_PROTOCOL } from "./meta";
+import { IClientMessage, WS_PROTOCOL } from "./meta";
 
 const useWebSocket = (webSocketUrl: string, handler: (data: any) => void) => {
     const [webSocket, setWebSocket] = useState<WebSocket>();
 
-    const sendMessage = (messageData: any) => {
+    const sendMessage = (messageData: IClientMessage) => {
         if (!webSocket) {
             console.log("Cannot send message to server, web socket in not connected");
 
             return;
         }
 
-        webSocket.send(messageData);
+        // webSocket.send(messageData);
+        webSocket.send(JSON.stringify(messageData));
     };
 
     const onOpen = (event: Event) => {

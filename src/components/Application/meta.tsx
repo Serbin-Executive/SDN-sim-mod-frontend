@@ -18,3 +18,5 @@ export interface IConnectionAccess {
 
 export type TUserStatus = string;
 
+
+
