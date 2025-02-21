@@ -1,4 +1,5 @@
 import * as XLSX from "xlsx";
+import { TModelsActionsStatesList, TModelWorkingCommands } from "../ModelsContext/meta";
 
 export type TControllerParameter = number;
 
@@ -17,22 +18,7 @@ export type TParametersStatesList = IParametersState[];
 
 export type TControllersStatesList = TParametersStatesList[];
 
-// export type TRows = any[];
 export type TRowsList = any[];
-
-export const getWorkbook = (rowsList: TRowsList[]) => {
-    const workbook = XLSX.utils.book_new();
-
-    rowsList.forEach((rows, index) => {
-        const worksheet = XLSX.utils.json_to_sheet(rows);
-
-        XLSX.utils.sheet_add_aoa(worksheet, [ExcelFileTitles]);
-
-        XLSX.utils.book_append_sheet(workbook, worksheet, `Model ${index + 1}`);
-    });
-
-    return workbook;
-};
 
 export const EXCEL_FILE_NAME = "ModelsParametersStatistic.xlsx";
 
@@ -48,3 +34,17 @@ export const ExcelFileTitles = [
 ];
 
 export const DOWNLOAD_BUTTON_TEXT: string = "Download Excel File";
+
+export const getWorkbook = (rowsList: TRowsList[]) => {
+    const workbook = XLSX.utils.book_new();
+
+    rowsList.forEach((rows, index) => {
+        const worksheet = XLSX.utils.json_to_sheet(rows);
+
+        XLSX.utils.sheet_add_aoa(worksheet, [ExcelFileTitles]);
+
+        XLSX.utils.book_append_sheet(workbook, worksheet, `Model ${index + 1}`);
+    });
+
+    return workbook;
+};

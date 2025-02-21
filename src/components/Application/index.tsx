@@ -3,10 +3,11 @@ import ModelWorkingCommandsMenu from "../ModelWorkingCommandsMenu";
 import ModelsInfoList from "../ModelsInfoList";
 import useWebSocket from "@/hooks/useWebSocket";
 import WebSocketConnectByUrl from "../WebSocketConnectByUrl";
+import ExcelFileDownloadRequest from "../ExcelFileDownloadRequest";
+import useServerMessageHandler from "@/hooks/useServerMessageHandler";
 import { LayoutsByUserType, UserStatuses } from "./meta";
 import { Fragment, ReactElement, useState } from "react";
 import { API } from "@/api";
-import useServerMessageHandler from "@/hooks/useServerMessageHandler";
 import { TUserStatus } from "./meta";
 import "./style.css";
 import { ISettingsConfig } from "../ModelsContext/meta";
@@ -109,6 +110,7 @@ const Application = (): ReactElement => {
                         connectFunction={createConfigure}
                     />
                     <ModelsInfoList />
+                    <ExcelFileDownloadRequest />
                 </Fragment>
             </Render>
         </ModelsContext.Provider>

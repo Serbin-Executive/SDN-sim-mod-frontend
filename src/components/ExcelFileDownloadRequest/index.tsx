@@ -1,11 +1,23 @@
 import * as XLSX from "xlsx";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import { API } from "@/api";
 import { DOWNLOAD_BUTTON_TEXT, TControllersStatesList } from "./meta";
 import { getWorkbook, EXCEL_FILE_NAME,  } from "./meta";
 import "./style.css";
+import ModelsContext from "../ModelsContext";
+
+export const enum downloadButtonStatusList {
+    ACTIVE = "active",
+    INACTIVE = "inactive",
+}
 
 const ExcelFileDownloadRequest = (): ReactElement => {
+    const {modelsActionsStatesList} = useContext(ModelsContext);
+
+    const isDownloadActive: boolean = modelsActionsStatesList[modelsActionsStatesList.length - 1];
+
+    const downloadButtonClass: string = isDownloadActive ? downloadButtonStatusList.ACTIVE : downloadButtonStatusList.INACTIVE;
+
     const [controllersStatesList, setControllersStatesList] =
         useState<TControllersStatesList>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -48,7 +60,7 @@ const ExcelFileDownloadRequest = (): ReactElement => {
 
     return (
         <div className="parameters-excel-request main-container">
-            <button className="common downoland" onClick={download}>
+            <button className={`common download ${downloadButtonClass}`} onClick={download}>
                 {DOWNLOAD_BUTTON_TEXT}
             </button>
         </div>
