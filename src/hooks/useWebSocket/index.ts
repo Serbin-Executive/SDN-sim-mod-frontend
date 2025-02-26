@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { IClientMessage, WS_PROTOCOL } from "./meta";
 
 const useWebSocket = (webSocketUrl: string, handler: (data: any) => void) => {
     const [webSocket, setWebSocket] = useState<WebSocket>();
@@ -11,6 +12,7 @@ const useWebSocket = (webSocketUrl: string, handler: (data: any) => void) => {
         }
 
         webSocket.send(messageData);
+        // webSocket.send(JSON.stringify(messageData));
     };
 
     const onOpen = (event: Event) => {
@@ -30,7 +32,7 @@ const useWebSocket = (webSocketUrl: string, handler: (data: any) => void) => {
     };
 
     const configure = () => {
-        const socket = new WebSocket(webSocketUrl);
+        const socket = new WebSocket(`${WS_PROTOCOL}${webSocketUrl}`);
 
         socket.onopen = onOpen;
         socket.onmessage = onMessage;

@@ -4,7 +4,7 @@ import ModelsContext from "../ModelsContext";
 import ModelInfo from "../ModelInfo";
 import "./style.css";
 
-const ChartsList = (): ReactElement => {
+const ModelsInfoList = (): ReactElement => {
     const { modelsStatesList } = useContext(ModelsContext);
 
     return (
@@ -17,7 +17,7 @@ const ChartsList = (): ReactElement => {
                     <div key={index} className="model-info info-container">
                         <LineCharts
                             modelID={index}
-                            data={modelStatesList}
+                            modelStatesList={modelStatesList}
                         />
                         <ModelInfo
                             modelLastState={modelLastState}
@@ -29,4 +29,4 @@ const ChartsList = (): ReactElement => {
     );
 };
 
-export default ChartsList;
+export default ModelsInfoList;
