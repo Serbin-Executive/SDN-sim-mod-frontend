@@ -1,23 +1,23 @@
-import ModelsContext from "../ModelsContext";
-import { ReactElement, useContext } from "react";
-import "./style.css";
-import { settingsRangeListRecord } from "@/utils/constants";
+// import ModelsContext from "../ModelsContext";
+// import { ReactElement, useContext } from "react";
+// import { settingsRangeListRecord } from "@/utils/constants";
+// import "./style.css";
 
-const BoardSettings = (): ReactElement => {
-    const {settingsConfig} = useContext(ModelsContext);
+// const BoardSettings = (): ReactElement => {
+//     const {settingsConfig} = useContext(ModelsContext);
 
-    const settingsValuesList = Object.values(settingsConfig);
-    const settingsRangeList = Object.values(settingsRangeListRecord);
+//     const settingsValuesList = Object.values(settingsConfig);
+//     const settingsRangeList = Object.values(settingsRangeListRecord);
     
-    return(
-        <div>
-            {
-              settingsValuesList.map((settingValue, index) => (
+//     return(
+//         <div>
+//             {
+//               settingsValuesList.map((settingValue, index) => (
+                
+//               ))  
+//             }
+//         </div>
+//     )
+// }
 
-              ))  
-            }
-        </div>
-    )
-}
-
-export default BoardSettings;
+// export default BoardSettings;
