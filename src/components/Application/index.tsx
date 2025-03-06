@@ -9,9 +9,8 @@ import { LayoutsByUserType, UserStatuses } from "./meta";
 import { Fragment, ReactElement, useState } from "react";
 import { API } from "@/api";
 import { TUserStatus } from "./meta";
-import "./style.css";
-import { ISettingsConfig } from "../ModelsContext/meta";
 import { DEFAULT_DELAY_CAPACITY, DEFAULT_DELAY_VALUE, DEFAULT_IS_PARTIAL_INITIAL_BOOT, DEFAULT_IS_QUALITY_OF_SERVICE_ACTIVE, DEFAULT_MAX_SPAWN_AGENTS_VALUE, DEFAULT_MIN_SPAWN_AGENTS_VALUE, DEFAULT_MODEL_SOURCE_ELEMENTS_COUNT_VALUE, DEFAULT_MODELS_COUNT_VALUE, DEFAULT_QUEUE_CAPACITY, DEFAULT_STATISTIC_INTERVAL_VALUE, DEFAULT_WORK_INTERVAL_VALUE } from "@/utils/constants";
+import "./style.css";
 
 const Application = (): ReactElement => {
     const [userStatus, setUserStatus] = useState<TUserStatus>(
@@ -28,7 +27,7 @@ const Application = (): ReactElement => {
     const {
         modelWorkingCommands,
         modelsActionsStatesList,
-        modelsStatesList,
+        sendedModelsStatesList,
         handleMessageFromServer,
     } = useServerMessageHandler(setUserStatus);
 
@@ -82,7 +81,7 @@ const Application = (): ReactElement => {
     return (
         <ModelsContext.Provider
             value={{
-                modelsStatesList: modelsStatesList,
+                sendedModelsStatesList: sendedModelsStatesList,
                 modelWorkingCommandsList: modelWorkingCommands,
                 modelsActionsStatesList: modelsActionsStatesList,
                 settingsConfig: {

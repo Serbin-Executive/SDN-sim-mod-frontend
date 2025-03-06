@@ -1,22 +1,14 @@
 import { ReactElement } from "react";
 import { ModelInfoFieldsNames } from "./meta";
-import { IModelCurrentState } from "@/hooks/useServerMessageHandler/meta";
-import { StatisticService } from "@/services/StatisticService";
+import { ISendedModelAdditionalInfo } from "@/hooks/useServerMessageHandler/meta";
 import "./style.css";
 
 export interface IModelInfoProps {
-    modelLastState: IModelCurrentState;
+    info: ISendedModelAdditionalInfo;
 }
 
-const ModelInfo = ({ modelLastState }: IModelInfoProps): ReactElement => {
-    const agentsCameInModelCount =
-        StatisticService.getAgentsCameInModelCount(modelLastState);
-    const agentsLeftThroughModelCount =
-        StatisticService.getAgentsLeftThroughModelCount(modelLastState);
-    const agentsInModelCount =
-        StatisticService.getAgentsInModelCount(modelLastState);
-    const agentsLostCount =
-        StatisticService.getAgentsLostInModelCount(modelLastState);
+const ModelInfo = ({ info }: IModelInfoProps): ReactElement => {
+    const {agentsCameInModelCount, agentsLeftThroughModelCount, agentsInModelCount, agentsLostCount} = info;
 
     return (
         <div className="model-info-container">

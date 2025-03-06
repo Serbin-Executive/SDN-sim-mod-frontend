@@ -1,5 +1,5 @@
 // import { Dispatch, SetStateAction } from "react";
-import { TModelsCurrentStates } from "@/hooks/useServerMessageHandler/meta";
+import { TSendedModelsStatesList } from "@/hooks/useServerMessageHandler/meta";
 
 export type TModelWorkingCommands = string[];
 export type TModelsActionsStatesList = boolean[];
@@ -20,7 +20,7 @@ export interface ISettingsConfig {
 }
 
 export interface IModelsContext {
-    modelsStatesList: TModelsCurrentStates;
+    sendedModelsStatesList: TSendedModelsStatesList;
     modelWorkingCommandsList: TModelWorkingCommands;
     modelsActionsStatesList: TModelsActionsStatesList;
     settingsConfig: ISettingsConfig;

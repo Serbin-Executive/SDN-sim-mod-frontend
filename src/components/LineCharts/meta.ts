@@ -1,5 +1,3 @@
-import { TModelCurrentStates, TObjectsStatesInfo } from "@/hooks/useServerMessageHandler/meta";
-
 export type TChartLabels = number[];
 
 export interface IDataset {

@@ -1,4 +1,4 @@
-export const DEFAULT_MODELS_COUNT_VALUE: number = 4;
+export const DEFAULT_MODELS_COUNT_VALUE: number = 1;
 
 export const DEFAULT_MIN_SPAWN_AGENTS_VALUE: number = 8;
 export const DEFAULT_MAX_SPAWN_AGENTS_VALUE: number = 14;
