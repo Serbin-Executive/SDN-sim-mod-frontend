@@ -11,7 +11,7 @@
 }
 
 .host-layout aside {
-    height: 100%;
+    /* height: 100%; */
     width: var(--aside-width);
     transition: var(--default-transition-time) all;
     position: absolute;

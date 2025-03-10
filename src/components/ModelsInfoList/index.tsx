@@ -1,13 +1,11 @@
 import { ReactElement, useContext } from "react";
 import LineCharts from "../LineCharts";
-import ModelsContext from "../ModelsContext";
+import ModelsContext from "../BoardWorkContext";
 import ModelInfo from "../ModelInfo";
 import "./style.css";
 
 const ModelsInfoList = (): ReactElement => {
     const { sendedModelsStatesList } = useContext(ModelsContext);
-
-    console.log(sendedModelsStatesList);
 
     return (
         <div className="models-info-list main-info-container">

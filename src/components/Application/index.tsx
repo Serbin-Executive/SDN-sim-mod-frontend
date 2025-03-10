@@ -1,5 +1,4 @@
-import ModelsContext from "../ModelsContext";
-import ModelWorkingCommandsMenu from "../ModelWorkingCommandsMenu";
+import BoardWorkContext from "../BoardWorkContext";
 import ModelsInfoList from "../ModelsInfoList";
 import useWebSocket from "@/hooks/useWebSocket";
 import WebSocketConnectByUrl from "../WebSocketConnectByUrl";
@@ -9,8 +8,10 @@ import { LayoutsByUserType, UserStatuses } from "./meta";
 import { Fragment, ReactElement, useState } from "react";
 import { API } from "@/api";
 import { TUserStatus } from "./meta";
-import { DEFAULT_DELAY_CAPACITY, DEFAULT_DELAY_VALUE, DEFAULT_IS_PARTIAL_INITIAL_BOOT, DEFAULT_IS_QUALITY_OF_SERVICE_ACTIVE, DEFAULT_MAX_SPAWN_AGENTS_VALUE, DEFAULT_MIN_SPAWN_AGENTS_VALUE, DEFAULT_MODEL_SOURCE_ELEMENTS_COUNT_VALUE, DEFAULT_MODELS_COUNT_VALUE, DEFAULT_QUEUE_CAPACITY, DEFAULT_STATISTIC_INTERVAL_VALUE, DEFAULT_WORK_INTERVAL_VALUE } from "@/utils/constants";
 import "./style.css";
+import BoardSettingsContext from "../BoardSettingsContext";
+import useBoardSettings from "@/hooks/useBoardSettings";
+import BoardControlPanel from "../BoardControlPanel";
 
 const Application = (): ReactElement => {
     const [userStatus, setUserStatus] = useState<TUserStatus>(
@@ -25,7 +26,7 @@ const Application = (): ReactElement => {
     // const [settingsConfig, setSettingsConfig] = useState<ISettingsConfig>();
 
     const {
-        modelWorkingCommands,
+        boardWorkCommandsConfig,
         modelsActionsStatesList,
         sendedModelsStatesList,
         handleMessageFromServer,
@@ -35,6 +36,8 @@ const Application = (): ReactElement => {
         webSocketUrl,
         handleMessageFromServer
     );
+
+    const { settingsConfig, setSettingsConfig } = useBoardSettings();
 
     const createConfigure = async () => {
         if (webSocketUrl === "") {
@@ -79,40 +82,34 @@ const Application = (): ReactElement => {
     const Render = LayoutsByUserType[userStatus];
 
     return (
-        <ModelsContext.Provider
+        <BoardWorkContext.Provider
             value={{
                 sendedModelsStatesList: sendedModelsStatesList,
-                modelWorkingCommandsList: modelWorkingCommands,
+                boardWorkCommandsConfig: boardWorkCommandsConfig,
                 modelsActionsStatesList: modelsActionsStatesList,
-                settingsConfig: {
-                    modelsCountValue: DEFAULT_MODELS_COUNT_VALUE,
-                    minSpawnAgentsValue: DEFAULT_MIN_SPAWN_AGENTS_VALUE,
-                    maxSpawnAgentsValue: DEFAULT_MAX_SPAWN_AGENTS_VALUE,
-                    workIntervalValue: DEFAULT_WORK_INTERVAL_VALUE,
-                    statisticIntervalValue: DEFAULT_STATISTIC_INTERVAL_VALUE,
-                    modelSourceElementsCountValue: DEFAULT_MODEL_SOURCE_ELEMENTS_COUNT_VALUE,
-                    queueCapacity: DEFAULT_QUEUE_CAPACITY,
-                    delayCapacity: DEFAULT_DELAY_CAPACITY,
-                    delayValue: DEFAULT_DELAY_VALUE,
-                    isPartialInitialBoot: DEFAULT_IS_PARTIAL_INITIAL_BOOT,
-                    isQualityOfServiceActive: DEFAULT_IS_QUALITY_OF_SERVICE_ACTIVE,
-                },
                 sendCommandFunction: sendMessage,
             }}
         >
-            <Render asideComponent={<ModelWorkingCommandsMenu />}>
-                <Fragment>
-                    <WebSocketConnectByUrl
-                        webSocketUrl={webSocketUrl}
-                        setWebSocketUrl={setWebSocketUrl}
-                        isConnected={isConnected}
-                        connectFunction={createConfigure}
-                    />
-                    <ModelsInfoList />
-                    <ExcelFileDownloadRequest />
-                </Fragment>
-            </Render>
-        </ModelsContext.Provider>
+            <BoardSettingsContext.Provider
+                value={{
+                    settingsConfig: settingsConfig,
+                    setSettingsConfig: setSettingsConfig,
+                }}
+            >
+                <Render asideComponent={<BoardControlPanel />}>
+                    <Fragment>
+                        <WebSocketConnectByUrl
+                            webSocketUrl={webSocketUrl}
+                            setWebSocketUrl={setWebSocketUrl}
+                            isConnected={isConnected}
+                            connectFunction={createConfigure}
+                        />
+                        <ModelsInfoList />
+                        <ExcelFileDownloadRequest />
+                    </Fragment>
+                </Render>
+            </BoardSettingsContext.Provider>
+        </BoardWorkContext.Provider>
     );
 };
 

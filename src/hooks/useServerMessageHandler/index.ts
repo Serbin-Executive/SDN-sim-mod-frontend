@@ -1,13 +1,13 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { UserStatuses } from "@/components/Application/meta";
 import { TModelsActionsStatesList, TServerMessageType, TClientAction, ServerMessageTypes, TSendedModelsStatesList, ISendedModelsStateList } from "./meta";
-import { TModelWorkingCommands } from "@/components/ModelsContext/meta";
+import { TBoardWorkCommandsConfig } from "@/components/BoardWorkContext/meta";
 import { WebsocketMessageParser } from "@/services/ModelWebSocketService";
 import { TUserStatus } from "@/components/Application/meta";
 
 const useServerMessageHandler = (setUserStatus: Dispatch<SetStateAction<TUserStatus>>) => {
-    const [modelWorkingCommands, setModelWorkingCommands] =
-        useState<TModelWorkingCommands>([]);
+    const [boardWorkCommandsConfig, setBoardWorkCommandsConfig] =
+        useState<TBoardWorkCommandsConfig>([]);
     const [modelsActionsStatesList, setModelsActionsStatesList] =
         useState<TModelsActionsStatesList>([false, false]);
     const [sendedModelsStatesList, setSendedModelsStatesList] =
@@ -17,10 +17,10 @@ const useServerMessageHandler = (setUserStatus: Dispatch<SetStateAction<TUserSta
         console.info(messageData);
     };
 
-    const updateModelWorkingCommands = (
-        messageData: TModelWorkingCommands
+    const updateBoardWorkCommandsConfig = (
+        messageData: TBoardWorkCommandsConfig
     ): void => {
-        setModelWorkingCommands(messageData);
+        setBoardWorkCommandsConfig(messageData);
 
         setUserStatus(UserStatuses.HOST);
     };
@@ -97,7 +97,7 @@ const useServerMessageHandler = (setUserStatus: Dispatch<SetStateAction<TUserSta
     const ActionsInfoList: Record<TServerMessageType, TClientAction> = {
         [ServerMessageTypes.MESSAGE]: defaultMessageHandler,
         [ServerMessageTypes.MODELS_WORKING_COMMANDS]:
-            updateModelWorkingCommands,
+            updateBoardWorkCommandsConfig,
         [ServerMessageTypes.MODELS_STATES]: updateSendedModelsStatesList,
         [ServerMessageTypes.CLEAR_CHARTS]: clearChartsDataLists,
         [ServerMessageTypes.MODELS_ACTIONS_STATES]: updateModelsActionsStates,
@@ -115,7 +115,7 @@ const useServerMessageHandler = (setUserStatus: Dispatch<SetStateAction<TUserSta
     };
 
     return {
-        modelWorkingCommands: modelWorkingCommands,
+        boardWorkCommandsConfig: boardWorkCommandsConfig,
         modelsActionsStatesList: modelsActionsStatesList,
         sendedModelsStatesList: sendedModelsStatesList,
         handleMessageFromServer: handleMessageFromServer

@@ -1,24 +1,38 @@
-import { ReactElement, useContext } from "react";
 import ModelWorkingCommandButton from "../ModelWorkingCommandButton";
-import ModelsContext from "../ModelsContext";
+import BoardWorkContext from "../BoardWorkContext";
+import BoardSettingsContext from "../BoardSettingsContext";
+import { IClientMessage } from "@/hooks/useWebSocket/meta";
+import { ReactElement, useContext } from "react";
+import { getServerSettingsConfigByClientConfig } from "./meta";
 import "./style.css";
-import ExcelFileDownloadRequest from "../ExcelFileDownloadRequest";
 
 const ModelWorkingCommandsMenu = (): ReactElement => {
     const {
+        boardWorkCommandsConfig,
         modelsActionsStatesList,
-        modelWorkingCommandsList,
         sendCommandFunction,
-    } = useContext(ModelsContext);
+    } = useContext(BoardWorkContext);
+
+    const { settingsConfig } = useContext(BoardSettingsContext);
+
+    const sendCommandToServer = (
+        commandKey: string,
+        isSendBoardSettingsConfig: boolean
+    ): void => {
+        sendCommandFunction({
+            commandID: commandKey,
+            commandInfo: isSendBoardSettingsConfig ? getServerSettingsConfigByClientConfig(settingsConfig) : "",
+        } as IClientMessage);
+    };
 
     return (
         <div className="model-working-commands menu-container">
-            {modelWorkingCommandsList.map((modelWorkingCommand, index) => (
+            {boardWorkCommandsConfig.map((boardWorkCommandData, index) => (
                 <ModelWorkingCommandButton
-                    key={modelWorkingCommand}
+                    key={boardWorkCommandData.commandKey}
                     actionState={modelsActionsStatesList[index]}
-                    modelWorkingCommand={modelWorkingCommand}
-                    onClickAction={sendCommandFunction}
+                    commandData={boardWorkCommandData}
+                    onClickAction={sendCommandToServer}
                 />
             ))}
         </div>

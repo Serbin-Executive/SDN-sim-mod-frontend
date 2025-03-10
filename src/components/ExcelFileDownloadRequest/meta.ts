@@ -1,5 +1,5 @@
 import * as XLSX from "xlsx";
-import { TModelsActionsStatesList, TModelWorkingCommands } from "../ModelsContext/meta";
+import { TModelsActionsStatesList, TModelWorkingCommands } from "../BoardWorkContext/meta";
 
 export type TControllerParameter = number;
 

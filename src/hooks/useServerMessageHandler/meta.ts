@@ -1,4 +1,4 @@
-import { TModelWorkingCommands } from "@/components/ModelsContext/meta";
+import { ICommandsConfig } from "@/components/BoardWorkContext/meta";
 import { ReactElement } from "react";
 
 export type TMessageType = string;
@@ -7,7 +7,7 @@ export type TMessage = string;
 
 export interface IServerMessage {
     messageType: TMessageType;
-    message: TMessage | TModelWorkingCommands | ISendedModelsStateList;
+    message: TMessage | ICommandsConfig | ISendedModelsStateList;
 }
 
 export const enum ServerMessageTypes {
