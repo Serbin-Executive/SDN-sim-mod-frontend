@@ -1,10 +1,11 @@
-import { ReactElement } from "react";
+import { ReactElement, useContext } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import {  ChartColors, ChartLabelsNames, IChartData } from "./meta";
 import { ChartService } from "@/services/ChartService";
 import {  TSendedChartsDataList } from "@/hooks/useServerMessageHandler/meta";
 import "./style.css";
+import ChartsContext from "../ChartsContext";
 
 ChartJS.register();
 
@@ -19,9 +20,10 @@ export interface IChartsListProps {
 }
 
 const LineCharts = ( {modelID, chartsDataList} : IChartsListProps): ReactElement => {
+    const {isChartsCurrentDotsViewType, chartsDotsCount} = useContext(ChartsContext);
 
-    const loadFactorChartData: IChartData =  ChartService.getChartData(ChartLabelsNames.LOAD_FACTOR_FROM_TIME, chartsDataList, ChartDataTypes.LOAD_FACTOR, ChartColors.BLUE);
-    const queueLoadChartData: IChartData = ChartService.getChartData(ChartLabelsNames.QUEUE_LOAD_FROM_TIME, chartsDataList, ChartDataTypes.QUEUE_LOAD, ChartColors.GREEN);
+    const loadFactorChartData: IChartData =  ChartService.getChartData(ChartLabelsNames.LOAD_FACTOR_FROM_TIME, chartsDataList, ChartDataTypes.LOAD_FACTOR, ChartColors.BLUE, isChartsCurrentDotsViewType, chartsDotsCount);
+    const queueLoadChartData: IChartData = ChartService.getChartData(ChartLabelsNames.QUEUE_LOAD_FROM_TIME, chartsDataList, ChartDataTypes.QUEUE_LOAD, ChartColors.GREEN, isChartsCurrentDotsViewType, chartsDotsCount);
 
     return (
         <div className="charts-container">

@@ -1,0 +1,15 @@
+.charts-settings {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.dots-count-slider-container.hidden {
+    display: none;
+}
+
+.dots-count-slider-container.show {
+    display: block;
+}

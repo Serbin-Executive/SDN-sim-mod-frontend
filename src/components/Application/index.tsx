@@ -4,14 +4,17 @@ import useWebSocket from "@/hooks/useWebSocket";
 import WebSocketConnectByUrl from "../WebSocketConnectByUrl";
 import ExcelFileDownloadRequest from "../ExcelFileDownloadRequest";
 import useServerMessageHandler from "@/hooks/useServerMessageHandler";
+import BoardSettingsContext from "../BoardSettingsContext";
+import useBoardSettings from "@/hooks/useBoardSettings";
+import BoardControlPanel from "../BoardControlPanel";
+import ChartContext from "../ChartsContext";
+import useChartsContext from "@/hooks/useChartsContext";
 import { LayoutsByUserType, UserStatuses } from "./meta";
 import { Fragment, ReactElement, useState } from "react";
 import { API } from "@/api";
 import { TUserStatus } from "./meta";
 import "./style.css";
-import BoardSettingsContext from "../BoardSettingsContext";
-import useBoardSettings from "@/hooks/useBoardSettings";
-import BoardControlPanel from "../BoardControlPanel";
+
 
 const Application = (): ReactElement => {
     const [userStatus, setUserStatus] = useState<TUserStatus>(
@@ -38,6 +41,7 @@ const Application = (): ReactElement => {
     );
 
     const { settingsConfig, setSettingsConfig } = useBoardSettings();
+    const {isChartsCurrentDotsViewType, chartsDotsCount, setIsChartsCurrentDotsViewType, setChartsDotsCount} = useChartsContext()
 
     const createConfigure = async () => {
         if (webSocketUrl === "") {
@@ -96,18 +100,27 @@ const Application = (): ReactElement => {
                     setSettingsConfig: setSettingsConfig,
                 }}
             >
-                <Render asideComponent={<BoardControlPanel />}>
-                    <Fragment>
-                        <WebSocketConnectByUrl
-                            webSocketUrl={webSocketUrl}
-                            setWebSocketUrl={setWebSocketUrl}
-                            isConnected={isConnected}
-                            connectFunction={createConfigure}
-                        />
-                        <ModelsInfoList />
-                        <ExcelFileDownloadRequest />
-                    </Fragment>
-                </Render>
+                <ChartContext.Provider value={
+                    {
+                        isChartsCurrentDotsViewType: isChartsCurrentDotsViewType,
+                        chartsDotsCount: chartsDotsCount,
+                        setIsChartsCurrentDotsViewType: setIsChartsCurrentDotsViewType,
+                        setChartsDotsCount: setChartsDotsCount,
+                    }
+                }>
+                    <Render asideComponent={<BoardControlPanel />}>
+                        <Fragment>
+                            <WebSocketConnectByUrl
+                                webSocketUrl={webSocketUrl}
+                                setWebSocketUrl={setWebSocketUrl}
+                                isConnected={isConnected}
+                                connectFunction={createConfigure}
+                            />
+                            <ModelsInfoList />
+                            <ExcelFileDownloadRequest />
+                        </Fragment>
+                    </Render>
+                </ChartContext.Provider>
             </BoardSettingsContext.Provider>
         </BoardWorkContext.Provider>
     );
