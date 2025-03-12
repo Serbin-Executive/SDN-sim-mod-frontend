@@ -10,11 +10,10 @@ import BoardControlPanel from "../BoardControlPanel";
 import ChartContext from "../ChartsContext";
 import useChartsContext from "@/hooks/useChartsContext";
 import { LayoutsByUserType, UserStatuses } from "./meta";
-import { Fragment, ReactElement, useState } from "react";
+import { Fragment, ReactElement, useEffect, useState } from "react";
 import { API } from "@/api";
 import { TUserStatus } from "./meta";
 import "./style.css";
-
 
 const Application = (): ReactElement => {
     const [userStatus, setUserStatus] = useState<TUserStatus>(
@@ -26,22 +25,48 @@ const Application = (): ReactElement => {
     const [areUrlChecking, setAreUrlChecking] = useState<boolean>(false);
     const [checkingError, setCheckingError] = useState<any>(null);
 
-    // const [settingsConfig, setSettingsConfig] = useState<ISettingsConfig>();
+    const [statLength, setStatLength] = useState<number>(0);
 
     const {
+        isChartsCurrentDotsViewType,
+        chartsDotsCount,
+        setIsChartsCurrentDotsViewType,
+        setChartsDotsCount,
+    } = useChartsContext();
+    const {
         boardWorkCommandsConfig,
+        setBoardWorkCommandsConfig,
         modelsActionsStatesList,
+        setModelsActionsStatesList,
         sendedModelsStatesList,
+        setSendedModelsStatesList,
         handleMessageFromServer,
-    } = useServerMessageHandler(setUserStatus);
-
+        deleteFirstModelsStates,
+    } = useServerMessageHandler(setUserStatus, setStatLength);
     const { configure, sendMessage } = useWebSocket(
         webSocketUrl,
         handleMessageFromServer
     );
 
+    useEffect(() => {
+        if (!statLength) {
+            return;
+        }
+
+        if (!isChartsCurrentDotsViewType) {
+            return;
+        }
+
+        if (statLength <= chartsDotsCount) {
+            return;
+        }
+
+        deleteFirstModelsStates();
+
+        setStatLength(statLength - 1);
+    }, [sendedModelsStatesList]);
+
     const { settingsConfig, setSettingsConfig } = useBoardSettings();
-    const {isChartsCurrentDotsViewType, chartsDotsCount, setIsChartsCurrentDotsViewType, setChartsDotsCount} = useChartsContext()
 
     const createConfigure = async () => {
         if (webSocketUrl === "") {
@@ -89,8 +114,11 @@ const Application = (): ReactElement => {
         <BoardWorkContext.Provider
             value={{
                 sendedModelsStatesList: sendedModelsStatesList,
+                setSendedModelsStatesList: setSendedModelsStatesList,
                 boardWorkCommandsConfig: boardWorkCommandsConfig,
+                setBoardWorkCommandsConfig: setBoardWorkCommandsConfig,
                 modelsActionsStatesList: modelsActionsStatesList,
+                setModelsActionsStatesList: setModelsActionsStatesList,
                 sendCommandFunction: sendMessage,
             }}
         >
@@ -100,14 +128,16 @@ const Application = (): ReactElement => {
                     setSettingsConfig: setSettingsConfig,
                 }}
             >
-                <ChartContext.Provider value={
-                    {
-                        isChartsCurrentDotsViewType: isChartsCurrentDotsViewType,
+                <ChartContext.Provider
+                    value={{
+                        isChartsCurrentDotsViewType:
+                            isChartsCurrentDotsViewType,
                         chartsDotsCount: chartsDotsCount,
-                        setIsChartsCurrentDotsViewType: setIsChartsCurrentDotsViewType,
+                        setIsChartsCurrentDotsViewType:
+                            setIsChartsCurrentDotsViewType,
                         setChartsDotsCount: setChartsDotsCount,
-                    }
-                }>
+                    }}
+                >
                     <Render asideComponent={<BoardControlPanel />}>
                         <Fragment>
                             <WebSocketConnectByUrl
