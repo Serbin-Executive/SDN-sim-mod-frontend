@@ -13,6 +13,7 @@ export interface IServerBoardSettingsConfig {
     maxDelayCapacity: number;
     delayValue: number;
     loadFactorDangerValue: number;
+    packetLostDangerValue: number;
     pingDangerValue: number;
     jitterDangerValue: number;
     isPartialInitialBoot: boolean;
@@ -33,6 +34,7 @@ export interface IBoardSettingsConfig {
         maxDelayCapacity: number;
         delayValue: number;
         loadFactorDangerValue: number;
+        packetLostDangerValue: number;
         pingDangerValue: number;
         jitterDangerValue: number;
     },
@@ -55,6 +57,7 @@ export interface INumberSettingsList {
     maxDelayCapacity: number;
     delayValue: number;
     loadFactorDangerValue: number;
+    packetLostDangerValue: number;
     pingDangerValue: number;
     jitterDangerValue: number;
 }

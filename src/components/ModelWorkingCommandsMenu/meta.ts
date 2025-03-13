@@ -21,6 +21,7 @@ export const getServerSettingsConfigByClientConfig = (
         delayValue: clientConfig.numberSettingsList.delayValue,
         loadFactorDangerValue:
             clientConfig.numberSettingsList.loadFactorDangerValue,
+        packetLostDangerValue: clientConfig.numberSettingsList.packetLostDangerValue,
         pingDangerValue: clientConfig.numberSettingsList.pingDangerValue,
         jitterDangerValue: clientConfig.numberSettingsList.jitterDangerValue,
         isPartialInitialBoot:
