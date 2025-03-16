@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { IBoardSettingsConfig } from "@/components/BoardSettingsContext/meta";
-import { defaultBoardSettingsConfig } from "@/utils/constants";
+import { IBoardSettingsConfig } from "@components/BoardSettingsContext/meta";
+import { defaultBoardSettingsConfig } from "@utils/constants";
 
 const useBoardSettings = () => {
     const [settingsConfig, setSettingsConfig] = useState<IBoardSettingsConfig>(defaultBoardSettingsConfig);

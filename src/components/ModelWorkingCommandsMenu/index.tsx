@@ -1,7 +1,7 @@
 import ModelWorkingCommandButton from "../ModelWorkingCommandButton";
 import BoardWorkContext from "../BoardWorkContext";
 import BoardSettingsContext from "../BoardSettingsContext";
-import { IClientMessage } from "@/hooks/useWebSocket/meta";
+import { IClientMessage } from "@hooks/useWebSocket/meta";
 import { ReactElement, useContext } from "react";
 import { getServerSettingsConfigByClientConfig } from "./meta";
 import "./style.css";

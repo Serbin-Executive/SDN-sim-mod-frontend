@@ -11,8 +11,8 @@ export interface IDataset {
 export type TDatasets = IDataset[];
 
 export interface IChartData {
-    labels: TChartLabels,
-    datasets: TDatasets,
+    labels: TChartLabels;
+    datasets: TDatasets;
 }
 
 export const enum ChartLabelsNames {

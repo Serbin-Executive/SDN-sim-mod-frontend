@@ -1,6 +1,6 @@
-import { ReactElement } from "react";
+import { ISendedModelAdditionalInfo } from "@hooks/useServerMessageHandler/meta";
 import { ModelInfoFieldsNames } from "./meta";
-import { ISendedModelAdditionalInfo } from "@/hooks/useServerMessageHandler/meta";
+import { ReactElement } from "react";
 import "./style.css";
 
 export interface IModelInfoProps {
@@ -8,7 +8,12 @@ export interface IModelInfoProps {
 }
 
 const ModelInfo = ({ info }: IModelInfoProps): ReactElement => {
-    const {agentsCameInModelCount, agentsLeftThroughModelCount, agentsInModelCount, agentsLostCount} = info;
+    const {
+        agentsCameInModelCount,
+        agentsLeftThroughModelCount,
+        agentsInModelCount,
+        agentsLostCount,
+    } = info;
 
     return (
         <div className="model-info-container">

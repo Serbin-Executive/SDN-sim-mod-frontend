@@ -37,12 +37,12 @@ export interface IBoardSettingsConfig {
         packetLostDangerValue: number;
         pingDangerValue: number;
         jitterDangerValue: number;
-    },
+    };
     booleanSettingsList: {
         isPartialInitialBoot: boolean;
         isQualityOfServiceActive: boolean;
-    },
-} 
+    };
+}
 
 export interface INumberSettingsList {
     modelsCountValue: number;
@@ -67,7 +67,9 @@ export interface IBooleanSettingsList {
     isQualityOfServiceActive: boolean;
 }
 
-export type TSetBoardSettingConfig = Dispatch<SetStateAction<IBoardSettingsConfig>>;
+export type TSetBoardSettingConfig = Dispatch<
+    SetStateAction<IBoardSettingsConfig>
+>;
 
 export interface IBoardSettingsContext {
     settingsConfig: IBoardSettingsConfig;

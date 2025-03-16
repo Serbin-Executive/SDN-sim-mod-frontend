@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { IBoardWorkContext } from "./meta";
+import { type IBoardWorkContext } from "./meta";
 
 const BoardWorkContext = createContext({} as IBoardWorkContext);
 

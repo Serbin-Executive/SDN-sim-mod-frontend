@@ -1,17 +1,15 @@
 import * as XLSX from "xlsx";
-import { TModelsActionsStatesList, TModelWorkingCommands } from "../BoardWorkContext/meta";
-
 export type TControllerParameter = number;
 
 export interface IParametersState {
-    time: TControllerParameter,
-    CPU: TControllerParameter
-    usedDiskSpace: TControllerParameter,
-    memoryUsage: TControllerParameter,
-    networkTraffic: TControllerParameter,
-    packetLost: TControllerParameter,
-    ping: TControllerParameter,
-    jitter: TControllerParameter,
+    time: TControllerParameter;
+    CPU: TControllerParameter;
+    usedDiskSpace: TControllerParameter;
+    memoryUsage: TControllerParameter;
+    networkTraffic: TControllerParameter;
+    packetLost: TControllerParameter;
+    ping: TControllerParameter;
+    jitter: TControllerParameter;
 }
 
 export type TParametersStatesList = IParametersState[];

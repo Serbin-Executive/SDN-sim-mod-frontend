@@ -1,5 +1,5 @@
-import { TSendedModelsStatesList } from "@/hooks/useServerMessageHandler/meta";
-import { Dispatch, SetStateAction } from "react";
+import { TSendedModelsStatesList } from "@hooks/useServerMessageHandler/meta";
+import { type Dispatch, type SetStateAction } from "react";
 
 export interface IBoardWorkCommandData {
     commandKey: string;

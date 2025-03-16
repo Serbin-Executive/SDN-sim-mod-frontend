@@ -1,9 +1,11 @@
+import { TSendedChartsDataList } from "@hooks/useServerMessageHandler/meta";
+import { ChartColors, ChartLabelsNames, IChartData } from "./meta";
+import { ChartService } from "@services/ChartService";
 import { ReactElement, useContext } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
-import {  ChartColors, ChartLabelsNames, IChartData } from "./meta";
-import { ChartService } from "@/services/ChartService";
-import {  TSendedChartsDataList } from "@/hooks/useServerMessageHandler/meta";
+import { type ReactElement } from "react";
+import { Line } from "react-chartjs-2";
 import "./style.css";
 
 ChartJS.register();
@@ -18,6 +20,22 @@ export interface IChartsListProps {
     chartsDataList: TSendedChartsDataList;
 }
 
+const LineCharts = ({
+    modelID,
+    chartsDataList,
+}: IChartsListProps): ReactElement => {
+    const loadFactorChartData: IChartData = ChartService.getChartData(
+        ChartLabelsNames.LOAD_FACTOR_FROM_TIME,
+        chartsDataList,
+        ChartDataTypes.LOAD_FACTOR,
+        ChartColors.BLUE
+    );
+    const queueLoadChartData: IChartData = ChartService.getChartData(
+        ChartLabelsNames.QUEUE_LOAD_FROM_TIME,
+        chartsDataList,
+        ChartDataTypes.QUEUE_LOAD,
+        ChartColors.GREEN
+    );
 const LineCharts = ( {modelID, chartsDataList} : IChartsListProps): ReactElement => {
     const loadFactorChartData: IChartData =  ChartService.getChartData(ChartLabelsNames.LOAD_FACTOR_FROM_TIME, chartsDataList, ChartDataTypes.LOAD_FACTOR, ChartColors.BLUE);
     const queueLoadChartData: IChartData = ChartService.getChartData(ChartLabelsNames.QUEUE_LOAD_FROM_TIME, chartsDataList, ChartDataTypes.QUEUE_LOAD, ChartColors.GREEN);

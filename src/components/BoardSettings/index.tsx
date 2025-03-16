@@ -1,17 +1,17 @@
-import BoardSettingsContext from "../BoardSettingsContext";
-import ControlRangeSlider from "../ControlRangeSlider";
-import ControlToggleSlider from "../ControlToggleSlider";
-import { ReactElement, useContext } from "react";
+import BoardSettingsContext from "@components/BoardSettingsContext";
+import ControlRangeSlider from "@components/ControlRangeSlider";
+import ControlToggleSlider from "@components/ControlToggleSlider";
+import { type ReactElement, useContext } from "react";
+import {
+    type IBooleanSettingsList,
+    type INumberSettingsList,
+} from "@components/BoardSettingsContext/meta";
 import {
     rangeSlidersLabels,
     rangeSettingsConfig,
     toggleSlidersLabels,
-} from "@/utils/constants";
+} from "@utils/constants";
 import "./style.css";
-import {
-    IBooleanSettingsList,
-    INumberSettingsList,
-} from "../BoardSettingsContext/meta";
 
 const BoardSettings = (): ReactElement => {
     const { settingsConfig, setSettingsConfig } =
@@ -50,16 +50,16 @@ const BoardSettings = (): ReactElement => {
 
     return (
         <div className="board-settings">
-            <h3>
-                Board Settings
-            </h3>
+            <h3>Board Settings</h3>
             <div className="range-sliders-list">
                 {numberSettingsKeysList.map((key, index) => (
                     <ControlRangeSlider
                         key={key}
                         initialValue={settingsRangeList[index].initialValue}
                         valueKey={key}
-                        label={rangeSlidersLabels[key as keyof INumberSettingsList]}
+                        label={
+                            rangeSlidersLabels[key as keyof INumberSettingsList]
+                        }
                         minValue={settingsRangeList[index].minValue}
                         maxValue={settingsRangeList[index].maxValue}
                         step={settingsRangeList[index].step}
@@ -73,7 +73,11 @@ const BoardSettings = (): ReactElement => {
                         key={key}
                         initialValue={false}
                         valueKey={key}
-                        label={toggleSlidersLabels[key as keyof IBooleanSettingsList]}
+                        label={
+                            toggleSlidersLabels[
+                                key as keyof IBooleanSettingsList
+                            ]
+                        }
                         onChange={updateSettingsConfig}
                     />
                 ))}

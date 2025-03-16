@@ -1,7 +1,7 @@
-import { ReactElement, useContext } from "react";
+import ModelInfo from "../ModelInfo";
 import LineCharts from "../LineCharts";
 import ModelsContext from "../BoardWorkContext";
-import ModelInfo from "../ModelInfo";
+import { type ReactElement, useContext } from "react";
 import "./style.css";
 
 const ModelsInfoList = (): ReactElement => {

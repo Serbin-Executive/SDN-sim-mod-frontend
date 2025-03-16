@@ -1,6 +1,6 @@
 const HTTP_API_URL: string = "http://localhost:5500";
 
-export class API {
+export default class API {
     public static async getAccessWsConnectionByUrl(url: string) {
         const response = await fetch(`${HTTP_API_URL}/check-url/${url}`, {
             method: "GET",

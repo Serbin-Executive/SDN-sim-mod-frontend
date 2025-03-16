@@ -10,6 +10,7 @@ import BoardControlPanel from "../BoardControlPanel";
 import ChartContext from "../ChartsContext";
 import useChartsContext from "@/hooks/useChartsContext";
 import { LayoutsByUserType, UserStatuses } from "./meta";
+import { type TUserStatus } from "./meta";
 import { Fragment, ReactElement, useEffect, useState } from "react";
 import { API } from "@/api";
 import { TUserStatus } from "./meta";

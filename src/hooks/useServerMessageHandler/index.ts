@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { UserStatuses } from "@/components/Application/meta";
+import { UserStatuses } from "@components/Application/meta";
 import { TModelsActionsStatesList, TServerMessageType, TClientAction, ServerMessageTypes, TSendedModelsStatesList, ISendedModelsStateList } from "./meta";
-import { TBoardWorkCommandsConfig } from "@/components/BoardWorkContext/meta";
-import { WebsocketMessageParser } from "@/services/ModelWebSocketService";
-import { TUserStatus } from "@/components/Application/meta";
+import { TBoardWorkCommandsConfig } from "@components/BoardWorkContext/meta";
+import { WebsocketMessageParser } from "@services/ModelWebSocketService";
+import { TUserStatus } from "@components/Application/meta";
 
 const useServerMessageHandler = (setUserStatus: Dispatch<SetStateAction<TUserStatus>>, setStatLength: Dispatch<SetStateAction<number>>) => {
     const [boardWorkCommandsConfig, setBoardWorkCommandsConfig] =

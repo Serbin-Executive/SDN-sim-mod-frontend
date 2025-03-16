@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+import { ICommandsConfig } from "@components/BoardWorkContext/meta";
+>>>>>>> Stashed changes
 import { ReactElement } from "react";
 
 export type TMessageType = string;

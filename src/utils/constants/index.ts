@@ -1,4 +1,4 @@
-import { IBoardSettingsConfig, IBooleanSettingsList, INumberSettingsList } from "@/components/BoardSettingsContext/meta";
+import { IBoardSettingsConfig, IBooleanSettingsList, INumberSettingsList } from "@components/BoardSettingsContext/meta";
 
 export const DEFAULT_MODELS_COUNT_VALUE: number = 10;
 
