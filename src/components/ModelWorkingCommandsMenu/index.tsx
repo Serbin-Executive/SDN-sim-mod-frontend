@@ -2,13 +2,18 @@ import { ReactElement, useContext } from "react";
 import ModelWorkingCommandButton from "../ModelWorkingCommandButton";
 import ModelsContext from "../ModelsContext";
 import "./style.css";
+import ExcelFileDownloadRequest from "../ExcelFileDownloadRequest";
 
 const ModelWorkingCommandsMenu = (): ReactElement => {
-    const {modelsActionsStatesList, modelsWorkingCommands, sendCommandFunction} = useContext(ModelsContext);
-    
+    const {
+        modelsActionsStatesList,
+        modelWorkingCommandsList,
+        sendCommandFunction,
+    } = useContext(ModelsContext);
+
     return (
         <div className="model-working-commands menu-container">
-            {modelsWorkingCommands.map((modelWorkingCommand, index) => (
+            {modelWorkingCommandsList.map((modelWorkingCommand, index) => (
                 <ModelWorkingCommandButton
                     key={modelWorkingCommand}
                     actionState={modelsActionsStatesList[index]}
@@ -16,6 +21,8 @@ const ModelWorkingCommandsMenu = (): ReactElement => {
                     onClickAction={sendCommandFunction}
                 />
             ))}
+
+            <ExcelFileDownloadRequest/>
         </div>
     );
 };
