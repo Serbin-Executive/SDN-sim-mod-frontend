@@ -17,6 +17,7 @@ export const DEFAULT_IS_PARTIAL_INITIAL_BOOT: boolean = false;
 export const DEFAULT_IS_QUALITY_OF_SERVICE_ACTIVE: boolean = false;
 
 export const DEFAULT_LOAD_FACTOR_DANGER_VALUE: number = 1;
+export const DEFAULT_PACKET_LOST_DANGER_VALUE: number = 0.9;
 export const DEFAULT_PING_DANGER_VALUE: number = 2000;
 export const DEFAULT_JITTER_DANGER_VALUE: number = 250;
 
@@ -34,6 +35,7 @@ export const defaultBoardSettingsConfig: IBoardSettingsConfig = {
         maxDelayCapacity: DEFAULT_MAX_DELAY_CAPACITY,
         delayValue: DEFAULT_DELAY_VALUE,
         loadFactorDangerValue: DEFAULT_LOAD_FACTOR_DANGER_VALUE,
+        packetLostDangerValue: DEFAULT_PACKET_LOST_DANGER_VALUE,
         pingDangerValue: DEFAULT_PING_DANGER_VALUE,
         jitterDangerValue: DEFAULT_JITTER_DANGER_VALUE,
     },
@@ -63,6 +65,7 @@ export const rangeSlidersLabels: Record<keyof INumberSettingsList, string> = {
     maxDelayCapacity: "Maximum DelayElement capacity",
     delayValue: "Delay value",
     loadFactorDangerValue: "Load factor danger value",
+    packetLostDangerValue: "Packet lost danger value",
     pingDangerValue: "Ping danger value",
     jitterDangerValue: "Jitter danger value",
 }
@@ -144,6 +147,12 @@ export const rangeSettingsConfig: Record<keyof INumberSettingsList, IRangeSettin
         maxValue: 1.5,
         step: 0.1,
         initialValue: DEFAULT_LOAD_FACTOR_DANGER_VALUE,
+    },
+    packetLostDangerValue: {
+        minValue: 0.1,
+        maxValue: 1,
+        step: 0.01,
+        initialValue: DEFAULT_PACKET_LOST_DANGER_VALUE,
     },
     pingDangerValue: {
         minValue: 100,
