@@ -5,7 +5,7 @@ import { ReactElement, useContext } from "react";
 import {
     DEFAULT_CHARTS_DOTS_COUNT,
     DEFAULT_IS_CHARTS_CURRENT_DOTS_VIEW_TYPE,
-} from "@/hooks/useChartsContext";
+} from "@hooks/useChartsContext";
 import "./style.css";
 
 const MIN_CHARTS_DOTS_COUNT: number = 5;

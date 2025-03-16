@@ -1,19 +1,18 @@
-import BoardWorkContext from "../BoardWorkContext";
-import ModelsInfoList from "../ModelsInfoList";
-import useWebSocket from "@/hooks/useWebSocket";
-import WebSocketConnectByUrl from "../WebSocketConnectByUrl";
-import ExcelFileDownloadRequest from "../ExcelFileDownloadRequest";
-import useServerMessageHandler from "@/hooks/useServerMessageHandler";
-import BoardSettingsContext from "../BoardSettingsContext";
-import useBoardSettings from "@/hooks/useBoardSettings";
-import BoardControlPanel from "../BoardControlPanel";
-import ChartContext from "../ChartsContext";
-import useChartsContext from "@/hooks/useChartsContext";
+import API from "@api/index";
+import useWebSocket from "@hooks/useWebSocket";
+import ChartContext from "@components/ChartsContext";
+import useBoardSettings from "@hooks/useBoardSettings";
+import useChartsContext from "@hooks/useChartsContext";
+import ModelsInfoList from "@components/ModelsInfoList";
+import BoardWorkContext from "@components/BoardWorkContext";
+import BoardControlPanel from "@components/BoardControlPanel";
+import BoardSettingsContext from "@components/BoardSettingsContext";
+import useServerMessageHandler from "@hooks/useServerMessageHandler";
+import WebSocketConnectByUrl from "@components/WebSocketConnectByUrl";
+import ExcelFileDownloadRequest from "@components/ExcelFileDownloadRequest";
 import { LayoutsByUserType, UserStatuses } from "./meta";
 import { type TUserStatus } from "./meta";
 import { Fragment, ReactElement, useEffect, useState } from "react";
-import { API } from "@/api";
-import { TUserStatus } from "./meta";
 import "./style.css";
 
 const Application = (): ReactElement => {

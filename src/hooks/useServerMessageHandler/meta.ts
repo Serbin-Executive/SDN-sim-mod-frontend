@@ -1,12 +1,7 @@
-<<<<<<< Updated upstream
-=======
-import { ICommandsConfig } from "@components/BoardWorkContext/meta";
->>>>>>> Stashed changes
-import { ReactElement } from "react";
+import { type ReactElement } from "react";
 
 export type TMessageType = string;
 export type TMessage = string;
-
 
 export interface IServerMessage {
     messageType: TMessageType;
@@ -51,4 +46,3 @@ export interface ISendedModelsStateList {
 }
 
 export type TSendedModelsStatesList = ISendedModelsStateList[];
-

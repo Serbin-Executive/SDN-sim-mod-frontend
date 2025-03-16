@@ -1,11 +1,21 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { UserStatuses } from "@components/Application/meta";
-import { TModelsActionsStatesList, TServerMessageType, TClientAction, ServerMessageTypes, TSendedModelsStatesList, ISendedModelsStateList } from "./meta";
+import {
+    TModelsActionsStatesList,
+    TServerMessageType,
+    TClientAction,
+    ServerMessageTypes,
+    TSendedModelsStatesList,
+    ISendedModelsStateList,
+} from "./meta";
 import { TBoardWorkCommandsConfig } from "@components/BoardWorkContext/meta";
 import { WebsocketMessageParser } from "@services/ModelWebSocketService";
 import { TUserStatus } from "@components/Application/meta";
 
-const useServerMessageHandler = (setUserStatus: Dispatch<SetStateAction<TUserStatus>>, setStatLength: Dispatch<SetStateAction<number>>) => {
+const useServerMessageHandler = (
+    setUserStatus: Dispatch<SetStateAction<TUserStatus>>,
+    setStatLength: Dispatch<SetStateAction<number>>
+) => {
     const [boardWorkCommandsConfig, setBoardWorkCommandsConfig] =
         useState<TBoardWorkCommandsConfig>([]);
     const [modelsActionsStatesList, setModelsActionsStatesList] =
@@ -15,12 +25,15 @@ const useServerMessageHandler = (setUserStatus: Dispatch<SetStateAction<TUserSta
 
     const deleteFirstModelsStates = (): void => {
         setSendedModelsStatesList((prevList) => {
-            let newSendedModelsStatesList: TSendedModelsStatesList = prevList.map(
-                (sendedModelStatesList) => ({
-                    sendedChartsDataList: [...sendedModelStatesList.sendedChartsDataList],
-                    sendedModelsAdditionalInfoList: [...sendedModelStatesList.sendedModelsAdditionalInfoList],
-                })
-            );
+            let newSendedModelsStatesList: TSendedModelsStatesList =
+                prevList.map((sendedModelStatesList) => ({
+                    sendedChartsDataList: [
+                        ...sendedModelStatesList.sendedChartsDataList,
+                    ],
+                    sendedModelsAdditionalInfoList: [
+                        ...sendedModelStatesList.sendedModelsAdditionalInfoList,
+                    ],
+                }));
 
             newSendedModelsStatesList.forEach((sendedModelStatesList) => {
                 sendedModelStatesList.sendedChartsDataList.shift();
@@ -29,8 +42,7 @@ const useServerMessageHandler = (setUserStatus: Dispatch<SetStateAction<TUserSta
 
             return newSendedModelsStatesList;
         });
-
-    }
+    };
 
     const defaultMessageHandler = (messageData: any) => {
         console.info(messageData);
@@ -48,31 +60,48 @@ const useServerMessageHandler = (setUserStatus: Dispatch<SetStateAction<TUserSta
         sendedLastModelsStateList: ISendedModelsStateList
     ): void => {
         setSendedModelsStatesList((prevList) => {
-            let newSendedModelsStatesList: TSendedModelsStatesList = prevList.map(
-                (sendedModelsStateList) => ({
-                    sendedChartsDataList: [...sendedModelsStateList.sendedChartsDataList],
-                    sendedModelsAdditionalInfoList: [...sendedModelsStateList.sendedModelsAdditionalInfoList],
-                })
-            );
+            let newSendedModelsStatesList: TSendedModelsStatesList =
+                prevList.map((sendedModelsStateList) => ({
+                    sendedChartsDataList: [
+                        ...sendedModelsStateList.sendedChartsDataList,
+                    ],
+                    sendedModelsAdditionalInfoList: [
+                        ...sendedModelsStateList.sendedModelsAdditionalInfoList,
+                    ],
+                }));
 
             if (!newSendedModelsStatesList.length) {
-                newSendedModelsStatesList = sendedLastModelsStateList.sendedChartsDataList.map((chartsData, index) => {
-                    return {
-                        sendedChartsDataList: [chartsData],
-                        sendedModelsAdditionalInfoList: [sendedLastModelsStateList.sendedModelsAdditionalInfoList[index]],
-                    };
-                })
+                newSendedModelsStatesList =
+                    sendedLastModelsStateList.sendedChartsDataList.map(
+                        (chartsData, index) => {
+                            return {
+                                sendedChartsDataList: [chartsData],
+                                sendedModelsAdditionalInfoList: [
+                                    sendedLastModelsStateList
+                                        .sendedModelsAdditionalInfoList[index],
+                                ],
+                            };
+                        }
+                    );
 
                 return newSendedModelsStatesList;
             }
 
-            sendedLastModelsStateList.sendedChartsDataList.forEach((chartsData, index) => {
-                newSendedModelsStatesList[index].sendedChartsDataList.push(chartsData);
-            });
+            sendedLastModelsStateList.sendedChartsDataList.forEach(
+                (chartsData, index) => {
+                    newSendedModelsStatesList[index].sendedChartsDataList.push(
+                        chartsData
+                    );
+                }
+            );
 
-            sendedLastModelsStateList.sendedModelsAdditionalInfoList.forEach((additionalInfo, index) => {
-                newSendedModelsStatesList[index].sendedModelsAdditionalInfoList.push(additionalInfo);
-            })
+            sendedLastModelsStateList.sendedModelsAdditionalInfoList.forEach(
+                (additionalInfo, index) => {
+                    newSendedModelsStatesList[
+                        index
+                    ].sendedModelsAdditionalInfoList.push(additionalInfo);
+                }
+            );
 
             return newSendedModelsStatesList;
         });
@@ -120,7 +149,7 @@ const useServerMessageHandler = (setUserStatus: Dispatch<SetStateAction<TUserSta
         setSendedModelsStatesList: setSendedModelsStatesList,
         handleMessageFromServer: handleMessageFromServer,
         deleteFirstModelsStates: deleteFirstModelsStates,
-    }
-}
+    };
+};
 
 export default useServerMessageHandler;
