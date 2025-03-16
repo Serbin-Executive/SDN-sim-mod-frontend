@@ -19,6 +19,7 @@ export interface IBoardWorkContext {
     modelsActionsStatesList: TModelsActionsStatesList;
     setModelsActionsStatesList: Dispatch<SetStateAction<TModelsActionsStatesList>>;
     sendCommandFunction: TSendCommand;
+    queueCapacitiesList: number[];
 };
 
 

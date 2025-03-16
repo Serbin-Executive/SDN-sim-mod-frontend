@@ -22,6 +22,7 @@ const useServerMessageHandler = (
         useState<TModelsActionsStatesList>([false, false]);
     const [sendedModelsStatesList, setSendedModelsStatesList] =
         useState<TSendedModelsStatesList>([]);
+    const [queueCapacitiesList, setQueueCapacitiesList] = useState<number[]>([]);
 
     const deleteFirstModelsStates = (): void => {
         setSendedModelsStatesList((prevList) => {
@@ -120,6 +121,10 @@ const useServerMessageHandler = (
         setModelsActionsStatesList(statesList);
     };
 
+    const updateQueueCapacities = (sendedCapacitiesList: number[]): void => {
+        setQueueCapacitiesList(sendedCapacitiesList);
+    }
+
     const ActionsInfoList: Record<TServerMessageType, TClientAction> = {
         [ServerMessageTypes.MESSAGE]: defaultMessageHandler,
         [ServerMessageTypes.MODELS_WORKING_COMMANDS]:
@@ -127,6 +132,7 @@ const useServerMessageHandler = (
         [ServerMessageTypes.MODELS_STATES]: updateSendedModelsStatesList,
         [ServerMessageTypes.CLEAR_CHARTS]: clearChartsDataLists,
         [ServerMessageTypes.MODELS_ACTIONS_STATES]: updateModelsActionsStates,
+        [ServerMessageTypes.QUEUE_CAPACITIES]: updateQueueCapacities,
     };
 
     const handleMessageFromServer = (data: string): void => {
@@ -149,6 +155,7 @@ const useServerMessageHandler = (
         setSendedModelsStatesList: setSendedModelsStatesList,
         handleMessageFromServer: handleMessageFromServer,
         deleteFirstModelsStates: deleteFirstModelsStates,
+        queueCapacitiesList: queueCapacitiesList,
     };
 };
 

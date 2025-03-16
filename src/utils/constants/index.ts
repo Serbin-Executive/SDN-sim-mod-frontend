@@ -13,7 +13,6 @@ export const DEFAULT_MIN_DELAY_CAPACITY: number = 2;
 export const DEFAULT_MAX_DELAY_CAPACITY: number = 40;
 
 export const DEFAULT_DELAY_VALUE: number = 1000;
-export const DEFAULT_IS_PARTIAL_INITIAL_BOOT: boolean = false;
 export const DEFAULT_IS_QUALITY_OF_SERVICE_ACTIVE: boolean = false;
 
 export const DEFAULT_LOAD_FACTOR_DANGER_VALUE: number = 1;
@@ -40,7 +39,6 @@ export const defaultBoardSettingsConfig: IBoardSettingsConfig = {
         jitterDangerValue: DEFAULT_JITTER_DANGER_VALUE,
     },
     booleanSettingsList: {
-        isPartialInitialBoot: DEFAULT_IS_PARTIAL_INITIAL_BOOT,
         isQualityOfServiceActive: DEFAULT_IS_QUALITY_OF_SERVICE_ACTIVE,
     }
 }
@@ -71,7 +69,6 @@ export const rangeSlidersLabels: Record<keyof INumberSettingsList, string> = {
 }
 
 export const toggleSlidersLabels: Record<keyof IBooleanSettingsList, string> = {
-    isPartialInitialBoot: "Partial initial boot status",
     isQualityOfServiceActive: "Quality of service status",
 }
 

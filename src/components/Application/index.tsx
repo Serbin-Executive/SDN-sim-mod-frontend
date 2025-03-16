@@ -42,6 +42,7 @@ const Application = (): ReactElement => {
         setSendedModelsStatesList,
         handleMessageFromServer,
         deleteFirstModelsStates,
+        queueCapacitiesList,
     } = useServerMessageHandler(setUserStatus, setStatLength);
     const { configure, sendMessage } = useWebSocket(
         webSocketUrl,
@@ -120,6 +121,7 @@ const Application = (): ReactElement => {
                 modelsActionsStatesList: modelsActionsStatesList,
                 setModelsActionsStatesList: setModelsActionsStatesList,
                 sendCommandFunction: sendMessage,
+                queueCapacitiesList: queueCapacitiesList,
             }}
         >
             <BoardSettingsContext.Provider

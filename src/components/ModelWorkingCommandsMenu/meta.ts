@@ -24,8 +24,6 @@ export const getServerSettingsConfigByClientConfig = (
         packetLostDangerValue: clientConfig.numberSettingsList.packetLostDangerValue,
         pingDangerValue: clientConfig.numberSettingsList.pingDangerValue,
         jitterDangerValue: clientConfig.numberSettingsList.jitterDangerValue,
-        isPartialInitialBoot:
-            clientConfig.booleanSettingsList.isPartialInitialBoot,
         isQualityOfServiceActive:
             clientConfig.booleanSettingsList.isQualityOfServiceActive,
     } as IServerBoardSettingsConfig;

@@ -1,11 +1,11 @@
 import ModelInfo from "../ModelInfo";
 import LineCharts from "../LineCharts";
-import ModelsContext from "../BoardWorkContext";
+import BoardWorkContext from "@components/BoardWorkContext";
 import { type ReactElement, useContext } from "react";
 import "./style.css";
 
 const ModelsInfoList = (): ReactElement => {
-    const { sendedModelsStatesList } = useContext(ModelsContext);
+    const { sendedModelsStatesList , queueCapacitiesList} = useContext(BoardWorkContext);
 
     return (
         <div className="models-info-list main-info-container">
@@ -17,6 +17,7 @@ const ModelsInfoList = (): ReactElement => {
                     <div key={index} className="model-info info-container">
                         <LineCharts
                             modelID={index}
+                            queueCapacity={queueCapacitiesList[index]}
                             chartsDataList={sendedModelsInfoList.sendedChartsDataList}
                         />
                         <ModelInfo

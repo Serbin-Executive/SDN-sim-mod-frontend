@@ -21,7 +21,7 @@ export type TRowsList = any[];
 export const EXCEL_FILE_NAME = "ModelsParametersStatistic.xlsx";
 
 export const ExcelFileTitles = [
-    "Time",
+    "Time, per seconds",
     "CPU",
     "Used Disk Space",
     "Memory Usage",

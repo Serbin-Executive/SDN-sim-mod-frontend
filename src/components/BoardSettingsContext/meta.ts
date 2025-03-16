@@ -16,7 +16,6 @@ export interface IServerBoardSettingsConfig {
     packetLostDangerValue: number;
     pingDangerValue: number;
     jitterDangerValue: number;
-    isPartialInitialBoot: boolean;
     isQualityOfServiceActive: boolean;
 }
 
@@ -39,7 +38,6 @@ export interface IBoardSettingsConfig {
         jitterDangerValue: number;
     };
     booleanSettingsList: {
-        isPartialInitialBoot: boolean;
         isQualityOfServiceActive: boolean;
     };
 }
@@ -63,7 +61,6 @@ export interface INumberSettingsList {
 }
 
 export interface IBooleanSettingsList {
-    isPartialInitialBoot: boolean;
     isQualityOfServiceActive: boolean;
 }
 
