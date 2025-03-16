@@ -12,3 +12,11 @@ export const LayoutsByUserType: Record<string, (props: any) => ReactElement> = {
     [UserStatuses.HOST]: (props) =>  <HostLayout {...props}/>,
 }
 
+export interface IConnectionAccess {
+    status: boolean;
+}
+
+export type TUserStatus = string;
+
+
+

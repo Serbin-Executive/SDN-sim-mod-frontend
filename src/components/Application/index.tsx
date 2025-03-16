@@ -1,75 +1,115 @@
-import HostLayout from "@/layouts/Host";
-import ModelsContext from "../ModelsContext";
-import ModelWorkingCommandsMenu from "../ModelWorkingCommandsMenu";
+import BoardWorkContext from "../BoardWorkContext";
 import ModelsInfoList from "../ModelsInfoList";
 import useWebSocket from "@/hooks/useWebSocket";
 import WebSocketConnectByUrl from "../WebSocketConnectByUrl";
-import DefaultLayout from "@/layouts/Default";
-import useServerMessageHandler, {
-    IUseServerMessageHandlerInfo,
-} from "@/hooks/useServerMessageHandler";
-import { LayoutsByUserType } from "./meta";
-import { Fragment, ReactElement, useCallback, useState } from "react";
+import ExcelFileDownloadRequest from "../ExcelFileDownloadRequest";
+import useServerMessageHandler from "@/hooks/useServerMessageHandler";
+import { LayoutsByUserType, UserStatuses } from "./meta";
+import { Fragment, ReactElement, useState } from "react";
+import { API } from "@/api";
+import { TUserStatus } from "./meta";
 import "./style.css";
+import BoardSettingsContext from "../BoardSettingsContext";
+import useBoardSettings from "@/hooks/useBoardSettings";
+import BoardControlPanel from "../BoardControlPanel";
 
 const Application = (): ReactElement => {
+    const [userStatus, setUserStatus] = useState<TUserStatus>(
+        UserStatuses.USER
+    );
     const [webSocketUrl, setWebSocketUrl] = useState<string>("");
     const [isConnected, setIsConnected] = useState<boolean>(false);
 
-    const serverMessageHandlerInfo: IUseServerMessageHandlerInfo =
-        useServerMessageHandler();
+    const [areUrlChecking, setAreUrlChecking] = useState<boolean>(false);
+    const [checkingError, setCheckingError] = useState<any>(null);
+
+    // const [settingsConfig, setSettingsConfig] = useState<ISettingsConfig>();
+
+    const {
+        boardWorkCommandsConfig,
+        modelsActionsStatesList,
+        sendedModelsStatesList,
+        handleMessageFromServer,
+    } = useServerMessageHandler(setUserStatus);
 
     const { configure, sendMessage } = useWebSocket(
         webSocketUrl,
-        serverMessageHandlerInfo.handleMessageFromServer
+        handleMessageFromServer
     );
 
-    const createConfigure = (): void => {
-        if (isConnected) {
+    const { settingsConfig, setSettingsConfig } = useBoardSettings();
+
+    const createConfigure = async () => {
+        if (webSocketUrl === "") {
+            console.info("CANNOT CONNECT WITH EMPTY URL");
+
             return;
         }
 
-        configure();
+        try {
+            setCheckingError(null);
+            setAreUrlChecking(true);
 
-        setIsConnected(true);
+            const connectionAccess: boolean =
+                await API.getAccessWsConnectionByUrl(webSocketUrl);
+
+            if (!connectionAccess) {
+                console.info("FAIL CONNECTION URL");
+
+                return;
+            }
+
+            configure();
+
+            setIsConnected(true);
+        } catch (error) {
+            console.info("FAIL HTTP REQUEST");
+
+            setCheckingError(error);
+        } finally {
+            setAreUrlChecking(false);
+        }
     };
 
-    const {
-        userStatus,
-        modelsWorkingCommands,
-        setModelsWorkingCommands,
-        modelsActionsStatesList,
-        setModelsActionsStatesList,
-        modelsStatesList,
-        setModelsStatesList
-    } = serverMessageHandlerInfo;
+    if (areUrlChecking) {
+        return <h2>CHECKING URL...</h2>;
+    }
+
+    if (checkingError) {
+        return <h2>Unable to check url {checkingError?.message}</h2>;
+    }
 
     const Render = LayoutsByUserType[userStatus];
 
     return (
-        <ModelsContext.Provider
+        <BoardWorkContext.Provider
             value={{
-                modelsWorkingCommands: modelsWorkingCommands,
-                setModelsWorkingCommands: setModelsWorkingCommands,
+                sendedModelsStatesList: sendedModelsStatesList,
+                boardWorkCommandsConfig: boardWorkCommandsConfig,
                 modelsActionsStatesList: modelsActionsStatesList,
-                setModelsActionsStatesList: setModelsActionsStatesList,
-                modelsStatesList: modelsStatesList,
-                setModelsStatesList: setModelsStatesList,
                 sendCommandFunction: sendMessage,
             }}
         >
-            <Render asideComponent={<ModelWorkingCommandsMenu />}>
-                <Fragment>
-                    <WebSocketConnectByUrl
-                        webSocketUrl={webSocketUrl}
-                        setWebSocketUrl={setWebSocketUrl}
-                        isConnected={isConnected}
-                        connectFunction={createConfigure}
-                    />
-                    <ModelsInfoList />
-                </Fragment>
-            </Render>
-        </ModelsContext.Provider>
+            <BoardSettingsContext.Provider
+                value={{
+                    settingsConfig: settingsConfig,
+                    setSettingsConfig: setSettingsConfig,
+                }}
+            >
+                <Render asideComponent={<BoardControlPanel />}>
+                    <Fragment>
+                        <WebSocketConnectByUrl
+                            webSocketUrl={webSocketUrl}
+                            setWebSocketUrl={setWebSocketUrl}
+                            isConnected={isConnected}
+                            connectFunction={createConfigure}
+                        />
+                        <ModelsInfoList />
+                        <ExcelFileDownloadRequest />
+                    </Fragment>
+                </Render>
+            </BoardSettingsContext.Provider>
+        </BoardWorkContext.Provider>
     );
 };
 

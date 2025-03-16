@@ -1,63 +1,27 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
-import {  IChartData } from "./meta";
-import { TModelCurrentStates } from "@/hooks/useServerMessageHandler/meta";
-import { ModelDataService } from "@/services/ModelDataService";
+import {  ChartColors, ChartLabelsNames, IChartData } from "./meta";
+import { ChartService } from "@/services/ChartService";
+import {  TSendedChartsDataList } from "@/hooks/useServerMessageHandler/meta";
 import "./style.css";
 
 ChartJS.register();
 
-export interface IChartsListProps {
-    modelID: number;
-    data: TModelCurrentStates;
+export const enum ChartDataTypes {
+    LOAD_FACTOR = "loadFactor",
+    QUEUE_LOAD = "queueLoad",
 }
 
-const LineCharts = ( {modelID, data} : IChartsListProps): ReactElement => {    
-    const [loadFactorChartData, setLoadFactorChartData] = useState<IChartData>({
-        labels: [],
-        datasets: [
-            {
-                label: "Model efficiency from time",
-                data: [],
-            },
-        ],
-    });
+export interface IChartsListProps {
+    modelID: number;
+    chartsDataList: TSendedChartsDataList;
+}
 
-    const [queueLoadChartData, setQueueLoadChartData] = useState<IChartData>({
-        labels: [],
-        datasets: [
-            {
-                label: "Queue load in time",
-                data: [],
-            },
-        ],
-    });
+const LineCharts = ( {modelID, chartsDataList} : IChartsListProps): ReactElement => {
 
-    useEffect(() => {
-        setLoadFactorChartData({
-            labels: ModelDataService.getChartLabels(data),
-            datasets: [
-                {
-                    label: "Model load factor in time",
-                    data: ModelDataService.getLoadFactorsList(data),
-                },
-            ],
-        });
-
-        setQueueLoadChartData({
-            labels: ModelDataService.getChartLabels(data),
-            datasets: [
-                {
-                    label: "Queue load in time",
-                    data: ModelDataService.getQueueLoadList(data),
-                    borderColor: "green",
-                    pointBackgroundColor: "green",
-                    pointBorderColor: "green",
-                },
-            ],
-        });
-    }, [data])
+    const loadFactorChartData: IChartData =  ChartService.getChartData(ChartLabelsNames.LOAD_FACTOR_FROM_TIME, chartsDataList, ChartDataTypes.LOAD_FACTOR, ChartColors.BLUE);
+    const queueLoadChartData: IChartData = ChartService.getChartData(ChartLabelsNames.QUEUE_LOAD_FROM_TIME, chartsDataList, ChartDataTypes.QUEUE_LOAD, ChartColors.GREEN);
 
     return (
         <div className="charts-container">

@@ -1,67 +1,91 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { UserStatuses } from "@/components/Application/meta";
-import { TModelWorkingCommands, TModelsActionsStatesList, TModelsCurrentStates, TModelsLastStates, TServerMessageType, TClientAction, ServerMessageTypes, TUserStatus } from "./meta";
+import { TModelsActionsStatesList, TServerMessageType, TClientAction, ServerMessageTypes, TSendedModelsStatesList, ISendedModelsStateList } from "./meta";
+import { TBoardWorkCommandsConfig } from "@/components/BoardWorkContext/meta";
 import { WebsocketMessageParser } from "@/services/ModelWebSocketService";
+import { TUserStatus } from "@/components/Application/meta";
 
-export interface IUseServerMessageHandlerInfo {
-    modelsWorkingCommands: TModelWorkingCommands;
-    setModelsWorkingCommands: Dispatch<SetStateAction<TModelWorkingCommands>>;
-    modelsActionsStatesList: TModelsActionsStatesList;
-    setModelsActionsStatesList: Dispatch<SetStateAction<TModelsActionsStatesList>>;
-    modelsStatesList: TModelsCurrentStates;
-    setModelsStatesList: Dispatch<SetStateAction<TModelsCurrentStates>>;
-    userStatus: TUserStatus;
-    handleMessageFromServer: (data: string) => void;
-}
-
-const useServerMessageHandler = () => {
-    const [modelsWorkingCommands, setModelsWorkingCommands] =
-        useState<TModelWorkingCommands>([]);
+const useServerMessageHandler = (setUserStatus: Dispatch<SetStateAction<TUserStatus>>) => {
+    const [boardWorkCommandsConfig, setBoardWorkCommandsConfig] =
+        useState<TBoardWorkCommandsConfig>([]);
     const [modelsActionsStatesList, setModelsActionsStatesList] =
         useState<TModelsActionsStatesList>([false, false]);
-    const [modelsStatesList, setModelsStatesList] =
-        useState<TModelsCurrentStates>([]);
-
-    const [userStatus, setUserStatus] = useState<TUserStatus>(UserStatuses.USER);
+    const [sendedModelsStatesList, setSendedModelsStatesList] =
+        useState<TSendedModelsStatesList>([]);
 
     const defaultMessageHandler = (messageData: any) => {
         console.info(messageData);
     };
 
-    const updateModelWorkingCommands = (
-        messageData: TModelWorkingCommands
+    const updateBoardWorkCommandsConfig = (
+        messageData: TBoardWorkCommandsConfig
     ): void => {
-        setModelsWorkingCommands(messageData);
+        setBoardWorkCommandsConfig(messageData);
 
         setUserStatus(UserStatuses.HOST);
     };
 
-    const updateModelsStatesList = (
-        modelsLastStates: TModelsLastStates
+    // const updateSendedModelsStatesList = (
+    //     lastSendedModelsInfoList: ISendedModelsInfoList
+    // ): void => {
+
+    //     setSendedModelsStatesList((prevList) => {
+    //         let newSendedModelsStatesList: TSendedModelsStatesList = prevList.map(
+    //             (sendedModelsInfoList) => ({ ...sendedModelsInfoList })
+    //         );
+
+    //         if (!newSendedModelsStatesList.length) {
+    //             newSendedModelsStatesList = [{...lastSendedModelsInfoList}]; 
+
+    //             return newSendedModelsStatesList;
+    //         }
+
+    //         newSendedModelsStatesList.forEach((sendedModelsInfoList) => {
+    //             sendedModelsInfoList.sendedChartsDataList.push(...lastSendedModelsInfoList.sendedChartsDataList);
+    //             sendedModelsInfoList.sendedModelsAdditionalInfoList.push(...lastSendedModelsInfoList.sendedModelsAdditionalInfoList);
+    //         });
+
+    //         return newSendedModelsStatesList;
+    //     });
+    // };
+
+    const updateSendedModelsStatesList = (
+        sendedLastModelsStateList: ISendedModelsStateList
     ): void => {
-        setModelsStatesList((prevList) => {
-            let newModelsStatesList: TModelsCurrentStates = prevList.map(
-                (modelStatesList) => [...modelStatesList]
+        setSendedModelsStatesList((prevList) => {
+            let newSendedModelsStatesList: TSendedModelsStatesList = prevList.map(
+                (sendedModelsStateList) => ({
+                    sendedChartsDataList: [...sendedModelsStateList.sendedChartsDataList],
+                    sendedModelsAdditionalInfoList: [...sendedModelsStateList.sendedModelsAdditionalInfoList],
+                })
             );
 
-            if (!newModelsStatesList.length) {
-                newModelsStatesList = modelsLastStates.map((modelLastState) => [
-                    modelLastState,
-                ]);
+            if (!newSendedModelsStatesList.length) {
+                newSendedModelsStatesList = sendedLastModelsStateList.sendedChartsDataList.map((chartsData, index) => {
+                    return {
+                        sendedChartsDataList: [chartsData],
+                        sendedModelsAdditionalInfoList: [sendedLastModelsStateList.sendedModelsAdditionalInfoList[index]],
+                    };
+                })
 
-                return newModelsStatesList;
+                return newSendedModelsStatesList;
             }
 
-            newModelsStatesList.forEach((modelStatesList, index) => {
-                modelStatesList.push(modelsLastStates[index]);
+            sendedLastModelsStateList.sendedChartsDataList.forEach((chartsData, index) => {
+                newSendedModelsStatesList[index].sendedChartsDataList.push(chartsData);
             });
 
-            return newModelsStatesList;
+            sendedLastModelsStateList.sendedModelsAdditionalInfoList.forEach((additionalInfo, index) => {
+                newSendedModelsStatesList[index].sendedModelsAdditionalInfoList.push(additionalInfo);
+            })
+
+            return newSendedModelsStatesList;
         });
     };
 
-    const clearModelsStatesList = (clearMessage: string): void => {
-        setModelsStatesList([]);
+
+    const clearChartsDataLists = (clearMessage: string): void => {
+        setSendedModelsStatesList([]);
     };
 
     const updateModelsActionsStates = (
@@ -73,9 +97,9 @@ const useServerMessageHandler = () => {
     const ActionsInfoList: Record<TServerMessageType, TClientAction> = {
         [ServerMessageTypes.MESSAGE]: defaultMessageHandler,
         [ServerMessageTypes.MODELS_WORKING_COMMANDS]:
-            updateModelWorkingCommands,
-        [ServerMessageTypes.MODELS_CURRENT_STATE]: updateModelsStatesList,
-        [ServerMessageTypes.CLEAR_CHARTS]: clearModelsStatesList,
+            updateBoardWorkCommandsConfig,
+        [ServerMessageTypes.MODELS_STATES]: updateSendedModelsStatesList,
+        [ServerMessageTypes.CLEAR_CHARTS]: clearChartsDataLists,
         [ServerMessageTypes.MODELS_ACTIONS_STATES]: updateModelsActionsStates,
     };
 
@@ -91,13 +115,9 @@ const useServerMessageHandler = () => {
     };
 
     return {
-        modelsWorkingCommands: modelsWorkingCommands,
-        setModelsWorkingCommands: setModelsWorkingCommands,
+        boardWorkCommandsConfig: boardWorkCommandsConfig,
         modelsActionsStatesList: modelsActionsStatesList,
-        setModelsActionsStatesList: setModelsActionsStatesList,
-        modelsStatesList: modelsStatesList,
-        setModelsStatesList: setModelsStatesList,
-        userStatus: userStatus,
+        sendedModelsStatesList: sendedModelsStatesList,
         handleMessageFromServer: handleMessageFromServer
     }
 }

@@ -1,26 +1,26 @@
 import { ReactElement, useContext } from "react";
 import LineCharts from "../LineCharts";
-import ModelsContext from "../ModelsContext";
+import ModelsContext from "../BoardWorkContext";
 import ModelInfo from "../ModelInfo";
 import "./style.css";
 
-const ChartsList = (): ReactElement => {
-    const { modelsStatesList } = useContext(ModelsContext);
+const ModelsInfoList = (): ReactElement => {
+    const { sendedModelsStatesList } = useContext(ModelsContext);
 
     return (
         <div className="models-info-list main-info-container">
-            {modelsStatesList.map((modelStatesList, index) => {
-                const modelLastState =
-                    modelStatesList[modelStatesList.length - 1];
+            {sendedModelsStatesList.map((sendedModelsInfoList, index) => {
+                const currentModelAdditionalInfoList = sendedModelsStatesList[index].sendedModelsAdditionalInfoList;
+                const lastModelAdditionalInfo = currentModelAdditionalInfoList[currentModelAdditionalInfoList.length - 1];
 
                 return (
                     <div key={index} className="model-info info-container">
                         <LineCharts
                             modelID={index}
-                            data={modelStatesList}
+                            chartsDataList={sendedModelsInfoList.sendedChartsDataList}
                         />
                         <ModelInfo
-                            modelLastState={modelLastState}
+                            info={lastModelAdditionalInfo}
                         />
                     </div>
                 );
@@ -29,4 +29,4 @@ const ChartsList = (): ReactElement => {
     );
 };
 
-export default ChartsList;
+export default ModelsInfoList;

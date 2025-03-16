@@ -1,32 +1,38 @@
-import { ReactElement, useContext, useState } from "react";
-import { TSendCommand } from "../ModelsContext/meta";
+import { ReactElement } from "react";
+import { IBoardWorkCommandData, TSendCommand } from "../BoardWorkContext/meta";
+import { IClientMessage } from "@/hooks/useWebSocket/meta";
 import "./style.css";
 
 export interface IModelWorkingCommandButtonProps {
     actionState: boolean;
-    modelWorkingCommand: string;
+    commandData: IBoardWorkCommandData;
     onClickAction: TSendCommand;
 }
 
+export const enum WorkingCommandButtonClasses {
+    ACTIVE = "active",
+    INACTIVE = "inactive",
+};
+
 const ModelWorkingCommandButton = ({
     actionState,
-    modelWorkingCommand,
+    commandData,
     onClickAction,
 }: IModelWorkingCommandButtonProps): ReactElement => {
-    const buttonClass = actionState ? "model-working-command-button-inactive" : "model-working-command-button-active";
+    const buttonClass = actionState ? WorkingCommandButtonClasses.INACTIVE : WorkingCommandButtonClasses.ACTIVE;
     
     const handleClick = (): void => {
         if (actionState || !onClickAction) {
             return;
         }
 
-        onClickAction(modelWorkingCommand);
+        onClickAction(commandData.commandKey, commandData.isSendSettingsConfig);
     }
 
     return (
-        <div className={buttonClass} onClick={handleClick}>
-            {modelWorkingCommand}
-        </div>
+        <button className={`common ${buttonClass}`} onClick={handleClick}>
+            {commandData.commandKey}
+        </button>
     );
 };
 

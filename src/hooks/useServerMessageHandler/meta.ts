@@ -1,43 +1,19 @@
-import { ReactElement, ReactNode } from "react";
-import DefaultLayout from "@/layouts/Default";
-import HostLayout from "@/layouts/Host";
-
-export interface IStatisticField {
-    fieldName: string;
-    fieldValue: string;
-}
-
-export type TStatisticFields = IStatisticField[];
-
-export interface INetworElementState {
-    id: string;
-    type: string;
-    statisticFields: TStatisticFields;
-}
-
-export interface IModelCurrentState {
-    time: string;
-    networkElementsStatesList: INetworElementState[];
-}
-
-export type TModelCurrentStates = IModelCurrentState[];
-export type TModelsLastStates = IModelCurrentState[];
-export type TModelsCurrentStates = TModelCurrentStates[];
+import { ICommandsConfig } from "@/components/BoardWorkContext/meta";
+import { ReactElement } from "react";
 
 export type TMessageType = string;
-export type TModelWorkingCommands = string[];
 export type TMessage = string;
 
 
 export interface IServerMessage {
     messageType: TMessageType;
-    message: TMessage | TModelWorkingCommands | IModelCurrentState;
+    message: TMessage | ICommandsConfig | ISendedModelsStateList;
 }
 
-export enum ServerMessageTypes {
+export const enum ServerMessageTypes {
     MESSAGE = "message",
     MODELS_WORKING_COMMANDS = "models working commands",
-    MODELS_CURRENT_STATE = "models current state",
+    MODELS_STATES = "models states",
     MODELS_ACTIONS_STATES = "models actions states",
     CLEAR_CHARTS = "clear charts",
 }
@@ -47,6 +23,29 @@ export type TClientAction = any;
 
 export type TModelsActionsStatesList = boolean[];
 
-export type TUserStatus = string;
 export type TLayout = ReactElement;
+
+export interface ISendedChartsData {
+    time: string;
+    loadFactor: string;
+    queueLoad: string;
+}
+
+export type TSendedChartsDataList = ISendedChartsData[];
+
+export interface ISendedModelAdditionalInfo {
+    agentsCameInModelCount: string;
+    agentsLeftThroughModelCount: string;
+    agentsInModelCount: string;
+    agentsLostCount: string;
+}
+
+export type TSendedModelsAdditionalInfoList = ISendedModelAdditionalInfo[];
+
+export interface ISendedModelsStateList {
+    sendedChartsDataList: TSendedChartsDataList;
+    sendedModelsAdditionalInfoList: TSendedModelsAdditionalInfoList;
+}
+
+export type TSendedModelsStatesList = ISendedModelsStateList[];
 
