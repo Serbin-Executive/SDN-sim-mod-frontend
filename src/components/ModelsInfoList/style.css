@@ -4,3 +4,7 @@
     gap: 30px;
     flex-wrap: wrap;
 }
+
+.model-info {
+    width: 300px;
+}

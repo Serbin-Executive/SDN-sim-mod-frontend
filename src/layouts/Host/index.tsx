@@ -1,5 +1,5 @@
 import { ReactElement, useState } from "react";
-import AsideHeader from "@/components/AsideHeader";
+import AsideHeader from "@components/AsideHeader";
 import "./style.css";
 
 export interface IHostLayoutProps {

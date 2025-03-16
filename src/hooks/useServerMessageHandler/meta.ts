@@ -1,37 +1,11 @@
-import { ReactElement, ReactNode } from "react";
-
-export interface IStateInfoField {
-    fieldName: string;
-    fieldValue: string;
-}
-
-export type TStateInfo = IStateInfoField[];
-export type TStatesInfo = TStateInfo[];
-export type TObjectsStatesInfo = TStatesInfo[];
-
-export interface INetworElementState {
-    id: string;
-    type: string;
-    statisticFields: TStateInfo;
-}
-
-export interface IModelCurrentState {
-    time: string;
-    networkElementsStatesList: INetworElementState[];
-}
-
-export type TModelCurrentStates = IModelCurrentState[];
-export type TModelsLastStates = IModelCurrentState[];
-export type TModelsCurrentStates = TModelCurrentStates[];
+import { type ReactElement } from "react";
 
 export type TMessageType = string;
-export type TModelWorkingCommands = string[];
 export type TMessage = string;
-
 
 export interface IServerMessage {
     messageType: TMessageType;
-    message: TMessage | TModelWorkingCommands | IModelCurrentState;
+    message: TMessage | ISendedModelsStateList | ISendedModelsStateList;
 }
 
 export const enum ServerMessageTypes {
@@ -49,3 +23,26 @@ export type TModelsActionsStatesList = boolean[];
 
 export type TLayout = ReactElement;
 
+export interface ISendedChartsData {
+    time: string;
+    loadFactor: string;
+    queueLoad: string;
+}
+
+export type TSendedChartsDataList = ISendedChartsData[];
+
+export interface ISendedModelAdditionalInfo {
+    agentsCameInModelCount: string;
+    agentsLeftThroughModelCount: string;
+    agentsInModelCount: string;
+    agentsLostCount: string;
+}
+
+export type TSendedModelsAdditionalInfoList = ISendedModelAdditionalInfo[];
+
+export interface ISendedModelsStateList {
+    sendedChartsDataList: TSendedChartsDataList;
+    sendedModelsAdditionalInfoList: TSendedModelsAdditionalInfoList;
+}
+
+export type TSendedModelsStatesList = ISendedModelsStateList[];

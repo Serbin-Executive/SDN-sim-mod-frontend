@@ -1,4 +1,4 @@
-import { IServerMessage, ServerMessageTypes } from "@/hooks/useServerMessageHandler/meta";
+import { IServerMessage, ServerMessageTypes } from "@hooks/useServerMessageHandler/meta";
 
 export class WebsocketMessageParser {
     public static parseMessage(data: any) {

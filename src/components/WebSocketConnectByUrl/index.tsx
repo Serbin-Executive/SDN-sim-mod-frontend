@@ -1,9 +1,9 @@
 import {
-    Dispatch,
-    ReactElement,
-    SetStateAction,
+    type Dispatch,
+    type ReactElement,
+    type SetStateAction,
+    type ChangeEvent,
     useState,
-    ChangeEvent,
 } from "react";
 import "./style.css";
 
@@ -12,7 +12,7 @@ export const WEB_SOCKET_CONNECT_INPUT_NAME: string = "Url";
 export const enum InputNameClasses {
     ACTIVE = "active",
     INACTIVE = "inactive",
-};
+}
 
 export const BUTTON_TEXT: string = "connect";
 
@@ -30,7 +30,9 @@ const WebSocketConnectByUrl = ({
     connectFunction,
 }: IWebSocketConnectByUrl): ReactElement => {
     const [query, setQuery] = useState<string>(webSocketUrl);
-    const [inputNameClass, setInputNameClass] = useState<string>(InputNameClasses.INACTIVE);
+    const [inputNameClass, setInputNameClass] = useState<string>(
+        InputNameClasses.INACTIVE
+    );
 
     const buttonClass = isConnected
         ? "web-socket-connect-button-inactive"
@@ -43,11 +45,11 @@ const WebSocketConnectByUrl = ({
 
     const handleInputFocus = () => {
         setInputNameClass(InputNameClasses.ACTIVE);
-    }
+    };
 
     const handleInputBlur = () => {
         setInputNameClass(InputNameClasses.INACTIVE);
-    }
+    };
 
     const handleClick = () => {
         if (isConnected) {
@@ -55,7 +57,7 @@ const WebSocketConnectByUrl = ({
         }
 
         connectFunction();
-    }
+    };
 
     return (
         <div className="web-socket-model-interact main-container">

@@ -1,23 +1,40 @@
-import { ReactElement } from "react";
-import { Line } from "react-chartjs-2";
+import { TSendedChartsDataList } from "@hooks/useServerMessageHandler/meta";
+import { ChartColors, ChartLabelsNames, IChartData } from "./meta";
+import { ChartService } from "@services/ChartService";
 import { Chart as ChartJS } from "chart.js/auto";
-import {  ChartColors, ChartLabelsNames, IChartData } from "./meta";
-import { StatisticService } from "@/services/StatisticService";
-import { ChartService } from "@/services/ChartService";
+import { type ReactElement } from "react";
+import { Line } from "react-chartjs-2";
 import "./style.css";
-import { TModelCurrentStates } from "@/hooks/useServerMessageHandler/meta";
 
 ChartJS.register();
 
-export interface IChartsListProps {
-    modelID: number;
-    modelStatesList: TModelCurrentStates;
+export const enum ChartDataTypes {
+    LOAD_FACTOR = "loadFactor",
+    QUEUE_LOAD = "queueLoad",
 }
 
-const LineCharts = ( {modelID, modelStatesList} : IChartsListProps): ReactElement => {
+export interface IChartsListProps {
+    modelID: number;
+    chartsDataList: TSendedChartsDataList;
+}
 
-    const loadFactorChartData: IChartData =  ChartService.getChartData(ChartLabelsNames.LOAD_FACTOR_FROM_TIME, modelStatesList, StatisticService.getLoadFactorsList(modelStatesList), ChartColors.BLUE);
-    const queueLoadChartData: IChartData = ChartService.getChartData(ChartLabelsNames.QUEUE_LOAD_FROM_TIME, modelStatesList, StatisticService.getQueueLoadList(modelStatesList), ChartColors.GREEN);
+const LineCharts = ({
+    modelID,
+    chartsDataList,
+}: IChartsListProps): ReactElement => {
+    const loadFactorChartData: IChartData = ChartService.getChartData(
+        ChartLabelsNames.LOAD_FACTOR_FROM_TIME,
+        chartsDataList,
+        ChartDataTypes.LOAD_FACTOR,
+        ChartColors.BLUE
+    );
+    
+    const queueLoadChartData: IChartData = ChartService.getChartData(
+        ChartLabelsNames.QUEUE_LOAD_FROM_TIME,
+        chartsDataList,
+        ChartDataTypes.QUEUE_LOAD,
+        ChartColors.GREEN
+    );
 
     return (
         <div className="charts-container">

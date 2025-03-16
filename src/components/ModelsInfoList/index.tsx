@@ -1,26 +1,26 @@
-import { ReactElement, useContext } from "react";
-import LineCharts from "../LineCharts";
-import ModelsContext from "../ModelsContext";
 import ModelInfo from "../ModelInfo";
+import LineCharts from "../LineCharts";
+import ModelsContext from "../BoardWorkContext";
+import { type ReactElement, useContext } from "react";
 import "./style.css";
 
 const ModelsInfoList = (): ReactElement => {
-    const { modelsStatesList } = useContext(ModelsContext);
+    const { sendedModelsStatesList } = useContext(ModelsContext);
 
     return (
         <div className="models-info-list main-info-container">
-            {modelsStatesList.map((modelStatesList, index) => {
-                const modelLastState =
-                    modelStatesList[modelStatesList.length - 1];
+            {sendedModelsStatesList.map((sendedModelsInfoList, index) => {
+                const currentModelAdditionalInfoList = sendedModelsStatesList[index].sendedModelsAdditionalInfoList;
+                const lastModelAdditionalInfo = currentModelAdditionalInfoList[currentModelAdditionalInfoList.length - 1];
 
                 return (
                     <div key={index} className="model-info info-container">
                         <LineCharts
                             modelID={index}
-                            modelStatesList={modelStatesList}
+                            chartsDataList={sendedModelsInfoList.sendedChartsDataList}
                         />
                         <ModelInfo
-                            modelLastState={modelLastState}
+                            info={lastModelAdditionalInfo}
                         />
                     </div>
                 );

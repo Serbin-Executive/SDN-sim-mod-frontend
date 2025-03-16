@@ -1,34 +1,72 @@
-import ModelsContext from "../ModelsContext";
-import ModelWorkingCommandsMenu from "../ModelWorkingCommandsMenu";
-import ModelsInfoList from "../ModelsInfoList";
-import useWebSocket from "@/hooks/useWebSocket";
-import WebSocketConnectByUrl from "../WebSocketConnectByUrl";
+import API from "@api/index";
+import useWebSocket from "@hooks/useWebSocket";
+import ChartContext from "@components/ChartsContext";
+import useBoardSettings from "@hooks/useBoardSettings";
+import useChartsContext from "@hooks/useChartsContext";
+import ModelsInfoList from "@components/ModelsInfoList";
+import BoardWorkContext from "@components/BoardWorkContext";
+import BoardControlPanel from "@components/BoardControlPanel";
+import BoardSettingsContext from "@components/BoardSettingsContext";
+import useServerMessageHandler from "@hooks/useServerMessageHandler";
+import WebSocketConnectByUrl from "@components/WebSocketConnectByUrl";
+import ExcelFileDownloadRequest from "@components/ExcelFileDownloadRequest";
 import { LayoutsByUserType, UserStatuses } from "./meta";
-import { Fragment, ReactElement, useState } from "react";
-import { API } from "@/api";
-import useServerMessageHandler from "@/hooks/useServerMessageHandler";
-import { TUserStatus } from "./meta";
+import { type TUserStatus } from "./meta";
+import { Fragment, ReactElement, useEffect, useState } from "react";
 import "./style.css";
 
 const Application = (): ReactElement => {
-    const [userStatus, setUserStatus] = useState<TUserStatus>(UserStatuses.USER);
+    const [userStatus, setUserStatus] = useState<TUserStatus>(
+        UserStatuses.USER
+    );
     const [webSocketUrl, setWebSocketUrl] = useState<string>("");
     const [isConnected, setIsConnected] = useState<boolean>(false);
 
     const [areUrlChecking, setAreUrlChecking] = useState<boolean>(false);
     const [checkingError, setCheckingError] = useState<any>(null);
 
-    const {
-        modelWorkingCommands,
-        modelsActionsStatesList,
-        modelsStatesList,
-        handleMessageFromServer,
-    } = useServerMessageHandler(setUserStatus);
+    const [statLength, setStatLength] = useState<number>(0);
 
+    const {
+        isChartsCurrentDotsViewType,
+        chartsDotsCount,
+        setIsChartsCurrentDotsViewType,
+        setChartsDotsCount,
+    } = useChartsContext();
+    const {
+        boardWorkCommandsConfig,
+        setBoardWorkCommandsConfig,
+        modelsActionsStatesList,
+        setModelsActionsStatesList,
+        sendedModelsStatesList,
+        setSendedModelsStatesList,
+        handleMessageFromServer,
+        deleteFirstModelsStates,
+    } = useServerMessageHandler(setUserStatus, setStatLength);
     const { configure, sendMessage } = useWebSocket(
         webSocketUrl,
-        handleMessageFromServer,
+        handleMessageFromServer
     );
+
+    useEffect(() => {
+        if (!statLength) {
+            return;
+        }
+
+        if (!isChartsCurrentDotsViewType) {
+            return;
+        }
+
+        if (statLength <= chartsDotsCount) {
+            return;
+        }
+
+        deleteFirstModelsStates();
+
+        setStatLength(statLength - 1);
+    }, [sendedModelsStatesList]);
+
+    const { settingsConfig, setSettingsConfig } = useBoardSettings();
 
     const createConfigure = async () => {
         if (webSocketUrl === "") {
@@ -73,26 +111,48 @@ const Application = (): ReactElement => {
     const Render = LayoutsByUserType[userStatus];
 
     return (
-        <ModelsContext.Provider
+        <BoardWorkContext.Provider
             value={{
-                modelsStatesList: modelsStatesList,
-                modelWorkingCommandsList: modelWorkingCommands,
+                sendedModelsStatesList: sendedModelsStatesList,
+                setSendedModelsStatesList: setSendedModelsStatesList,
+                boardWorkCommandsConfig: boardWorkCommandsConfig,
+                setBoardWorkCommandsConfig: setBoardWorkCommandsConfig,
                 modelsActionsStatesList: modelsActionsStatesList,
+                setModelsActionsStatesList: setModelsActionsStatesList,
                 sendCommandFunction: sendMessage,
             }}
         >
-            <Render asideComponent={<ModelWorkingCommandsMenu />}>
-                <Fragment>
-                    <WebSocketConnectByUrl
-                        webSocketUrl={webSocketUrl}
-                        setWebSocketUrl={setWebSocketUrl}
-                        isConnected={isConnected}
-                        connectFunction={createConfigure}
-                    />
-                    <ModelsInfoList />
-                </Fragment>
-            </Render>
-        </ModelsContext.Provider>
+            <BoardSettingsContext.Provider
+                value={{
+                    settingsConfig: settingsConfig,
+                    setSettingsConfig: setSettingsConfig,
+                }}
+            >
+                <ChartContext.Provider
+                    value={{
+                        isChartsCurrentDotsViewType:
+                            isChartsCurrentDotsViewType,
+                        chartsDotsCount: chartsDotsCount,
+                        setIsChartsCurrentDotsViewType:
+                            setIsChartsCurrentDotsViewType,
+                        setChartsDotsCount: setChartsDotsCount,
+                    }}
+                >
+                    <Render asideComponent={<BoardControlPanel />}>
+                        <Fragment>
+                            <WebSocketConnectByUrl
+                                webSocketUrl={webSocketUrl}
+                                setWebSocketUrl={setWebSocketUrl}
+                                isConnected={isConnected}
+                                connectFunction={createConfigure}
+                            />
+                            <ModelsInfoList />
+                            <ExcelFileDownloadRequest />
+                        </Fragment>
+                    </Render>
+                </ChartContext.Provider>
+            </BoardSettingsContext.Provider>
+        </BoardWorkContext.Provider>
     );
 };
 
