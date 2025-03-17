@@ -24,3 +24,8 @@ export const enum ChartColors {
     BLUE = "blue",
     GREEN = "green",
 }
+
+export const TIME_AXIS_TITLE: string = "Time per second";
+export const LOAD_FACTOR_AXIS_TITLE: string = "Load factor";
+export const QUEUE_LOAD_AXIS_TITLE: string = "Queue load";
+

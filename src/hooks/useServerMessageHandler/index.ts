@@ -11,10 +11,13 @@ import {
 import { TBoardWorkCommandsConfig } from "@components/BoardWorkContext/meta";
 import { WebsocketMessageParser } from "@services/ModelWebSocketService";
 import { TUserStatus } from "@components/Application/meta";
+import { ISendSettingsConfig, TBoardSettingsConfigRanges } from "@components/BoardSettingsContext/meta";
 
 const useServerMessageHandler = (
     setUserStatus: Dispatch<SetStateAction<TUserStatus>>,
-    setStatLength: Dispatch<SetStateAction<number>>
+    setStatLength: Dispatch<SetStateAction<number>>,
+    updateBoardSettingsConfig: (newConfig: ISendSettingsConfig) => void,
+    updateBoardSettingsConfigRanges: (newConfig: TBoardSettingsConfigRanges) => void
 ) => {
     const [boardWorkCommandsConfig, setBoardWorkCommandsConfig] =
         useState<TBoardWorkCommandsConfig>([]);
@@ -22,6 +25,7 @@ const useServerMessageHandler = (
         useState<TModelsActionsStatesList>([false, false]);
     const [sendedModelsStatesList, setSendedModelsStatesList] =
         useState<TSendedModelsStatesList>([]);
+    const [queueCapacitiesList, setQueueCapacitiesList] = useState<number[]>([]);
 
     const deleteFirstModelsStates = (): void => {
         setSendedModelsStatesList((prevList) => {
@@ -120,13 +124,20 @@ const useServerMessageHandler = (
         setModelsActionsStatesList(statesList);
     };
 
+    const updateQueueCapacities = (sendedCapacitiesList: number[]): void => {
+        setQueueCapacitiesList(sendedCapacitiesList);
+    }
+
     const ActionsInfoList: Record<TServerMessageType, TClientAction> = {
         [ServerMessageTypes.MESSAGE]: defaultMessageHandler,
-        [ServerMessageTypes.MODELS_WORKING_COMMANDS]:
+        [ServerMessageTypes.BOARD_WORKING_COMMANDS]:
             updateBoardWorkCommandsConfig,
         [ServerMessageTypes.MODELS_STATES]: updateSendedModelsStatesList,
         [ServerMessageTypes.CLEAR_CHARTS]: clearChartsDataLists,
-        [ServerMessageTypes.MODELS_ACTIONS_STATES]: updateModelsActionsStates,
+        [ServerMessageTypes.BOARD_ACTIONS_STATES]: updateModelsActionsStates,
+        [ServerMessageTypes.MODELS_QUEUE_CAPACITIES]: updateQueueCapacities,
+        [ServerMessageTypes.BOARD_SETTINGS_CONFIG]: updateBoardSettingsConfig,
+        [ServerMessageTypes.BOARD_SETTINGS_CONFIG_RANGES]: updateBoardSettingsConfigRanges,
     };
 
     const handleMessageFromServer = (data: string): void => {
@@ -149,6 +160,7 @@ const useServerMessageHandler = (
         setSendedModelsStatesList: setSendedModelsStatesList,
         handleMessageFromServer: handleMessageFromServer,
         deleteFirstModelsStates: deleteFirstModelsStates,
+        queueCapacitiesList: queueCapacitiesList,
     };
 };
 

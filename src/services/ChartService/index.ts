@@ -1,14 +1,9 @@
 import { IChartData, TChartLabels } from "@components/LineCharts/meta";
 import { ISendedChartsData, TSendedChartsDataList } from "@hooks/useServerMessageHandler/meta";
-import { CHART_VISIBLE_DOTS_COUNT } from "./meta";
+
+export const MILLISECONDS_TO_SECONDS_MULTIPLIER: number = 1000;
 
 export class ChartService {
-    public static getVisibleData(data: any[]): any[] {
-        const firstIndex: number = Math.max(0, data.length - CHART_VISIBLE_DOTS_COUNT);
-
-        return data.slice(firstIndex, data.length);
-    }
-
     public static getChartLabels(chartsDataList: TSendedChartsDataList): TChartLabels {
         const chartLabels = chartsDataList.map((chartsData) => Number(chartsData.time));
 

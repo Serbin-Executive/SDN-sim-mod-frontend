@@ -1,77 +1,34 @@
 import { Dispatch, SetStateAction } from "react";
 
-export interface IServerBoardSettingsConfig {
-    modelsCountValue: number;
-    minSpawnAgentsValue: number;
-    maxSpawnAgentsValue: number;
-    workIntervalValue: number;
-    statisticIntervalValue: number;
-    modelSourceElementsCountValue: number;
-    minQueueCapacity: number;
-    maxQueueCapacity: number;
-    minDelayCapacity: number;
-    maxDelayCapacity: number;
-    delayValue: number;
-    loadFactorDangerValue: number;
-    packetLostDangerValue: number;
-    pingDangerValue: number;
-    jitterDangerValue: number;
-    isPartialInitialBoot: boolean;
-    isQualityOfServiceActive: boolean;
+export interface ISendableSettingsConfigField {
+    label: string;
+    value: number;
 }
 
-export interface IBoardSettingsConfig {
-    numberSettingsList: {
-        modelsCountValue: number;
-        minSpawnAgentsValue: number;
-        maxSpawnAgentsValue: number;
-        workIntervalValue: number;
-        statisticIntervalValue: number;
-        modelSourceElementsCountValue: number;
-        minQueueCapacity: number;
-        maxQueueCapacity: number;
-        minDelayCapacity: number;
-        maxDelayCapacity: number;
-        delayValue: number;
-        loadFactorDangerValue: number;
-        packetLostDangerValue: number;
-        pingDangerValue: number;
-        jitterDangerValue: number;
-    };
-    booleanSettingsList: {
-        isPartialInitialBoot: boolean;
-        isQualityOfServiceActive: boolean;
-    };
+export interface ISendableBoardSettingsConfigBlock {
+    isActive?: boolean;
+    activeChangerLabel?: string;
+    fields: { [key: string]: ISendableSettingsConfigField };
 }
 
-export interface INumberSettingsList {
-    modelsCountValue: number;
-    minSpawnAgentsValue: number;
-    maxSpawnAgentsValue: number;
-    workIntervalValue: number;
-    statisticIntervalValue: number;
-    modelSourceElementsCountValue: number;
-    minQueueCapacity: number;
-    maxQueueCapacity: number;
-    minDelayCapacity: number;
-    maxDelayCapacity: number;
-    delayValue: number;
-    loadFactorDangerValue: number;
-    packetLostDangerValue: number;
-    pingDangerValue: number;
-    jitterDangerValue: number;
+export interface ISendableBoardSettingsConfig {
+    modelsSettings: ISendableBoardSettingsConfigBlock;
+    qualityOfServiceSettings: ISendableBoardSettingsConfigBlock;
 }
 
-export interface IBooleanSettingsList {
-    isPartialInitialBoot: boolean;
-    isQualityOfServiceActive: boolean;
-}
+export interface IRangeSettingData {
+    minValue: number;
+    maxValue: number;
+    step: number;
+    initialValue: number;
+};
 
-export type TSetBoardSettingConfig = Dispatch<
-    SetStateAction<IBoardSettingsConfig>
->;
+export type TBoardSettingsConfigRanges = Record<string, IRangeSettingData> | null;
 
 export interface IBoardSettingsContext {
-    settingsConfig: IBoardSettingsConfig;
-    setSettingsConfig: TSetBoardSettingConfig;
+    settingsConfigRanges: TBoardSettingsConfigRanges;
+    setSettingsConfigRanges: Dispatch<SetStateAction<TBoardSettingsConfigRanges | null>>;
+    settingsConfig: ISendableBoardSettingsConfig | null;
+    setSettingsConfig: Dispatch<
+    SetStateAction<ISendableBoardSettingsConfig | null>>;
 }
