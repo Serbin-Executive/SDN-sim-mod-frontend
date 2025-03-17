@@ -1,49 +1,70 @@
 import BoardSettingsContext from "@components/BoardSettingsContext";
-import ControlRangeSlider from "@components/ControlRangeSlider";
-import ControlToggleSlider from "@components/ControlToggleSlider";
+import BoardSettingsBlock from "@components/BoardSettingsBlock";
 import { type ReactElement, useContext } from "react";
 import {
-    type IBooleanSettingsList,
-    type INumberSettingsList,
+    IRangeSettingData,
+    ISendableBoardSettingsConfig,
+    ISendableBoardSettingsConfigBlock,
 } from "@components/BoardSettingsContext/meta";
-import {
-    rangeSlidersLabels,
-    rangeSettingsConfig,
-    toggleSlidersLabels,
-} from "@utils/constants";
 import "./style.css";
 
 const BoardSettings = (): ReactElement => {
-    const { settingsConfig, setSettingsConfig } =
+    const { settingsConfig, setSettingsConfig, settingsConfigRanges } =
         useContext(BoardSettingsContext);
 
-    const numberSettingsKeysList = Object.keys(
-        settingsConfig.numberSettingsList
-    );
-    const booleanSettingsKeysList = Object.keys(
-        settingsConfig.booleanSettingsList
-    );
-    const settingsRangeList = Object.values(rangeSettingsConfig);
+    if (!settingsConfig || !settingsConfigRanges) {
+        return <></>;
+    }
 
-    const updateSettingsConfig = (
-        valueKey: string,
-        value: number | boolean
-    ): void => {
-        const currentConfig = { ...settingsConfig };
+    const settingsConfigKeysList: string[] = Object.keys(settingsConfig);
+    const settingsConfigValuesList: ISendableBoardSettingsConfigBlock[] =
+        Object.values(settingsConfig);
 
-        if (typeof value === "number") {
-            currentConfig.numberSettingsList[
-                valueKey as keyof INumberSettingsList
-            ] = value;
+    const settingsConfigRangesKeysList: string[] =
+        Object.keys(settingsConfigRanges);
+    const settingsConfigRangesValuesList: IRangeSettingData[] =
+        Object.values(settingsConfigRanges);
 
-            setSettingsConfig(currentConfig);
-
-            return;
+    const getRangeData = (fieldId: string): IRangeSettingData => {
+        for (
+            let index = 0;
+            index < settingsConfigRangesKeysList.length;
+            index++
+        ) {
+            if (settingsConfigRangesKeysList[index] === fieldId) {
+                return settingsConfigRangesValuesList[index];
+            }
         }
 
-        currentConfig.booleanSettingsList[
-            valueKey as keyof IBooleanSettingsList
-        ] = value;
+        throw new Error("Cannot get range data, field id is not found");
+    };
+
+    const updateSettingsConfigActiveStatus = (
+        blockId: string,
+        value: boolean
+    ): void => {
+        const currentConfig: ISendableBoardSettingsConfig = {
+            ...settingsConfig,
+        };
+
+        currentConfig[blockId as keyof ISendableBoardSettingsConfig].isActive =
+            value;
+
+        setSettingsConfig(currentConfig);
+    };
+
+    const updateSettingsConfig = (
+        blockId: string,
+        fieldId: string,
+        value: number
+    ): void => {
+        const currentConfig: ISendableBoardSettingsConfig = {
+            ...settingsConfig,
+        };
+
+        currentConfig[blockId as keyof ISendableBoardSettingsConfig].fields[
+            fieldId as keyof ISendableBoardSettingsConfigBlock
+        ].value = value;
 
         setSettingsConfig(currentConfig);
     };
@@ -51,37 +72,16 @@ const BoardSettings = (): ReactElement => {
     return (
         <div className="board-settings">
             <h3>Board Settings</h3>
-            <div className="range-sliders-list">
-                {numberSettingsKeysList.map((key, index) => (
-                    <ControlRangeSlider
-                        key={key}
-                        initialValue={settingsRangeList[index].initialValue}
-                        valueKey={key}
-                        label={
-                            rangeSlidersLabels[key as keyof INumberSettingsList]
-                        }
-                        minValue={settingsRangeList[index].minValue}
-                        maxValue={settingsRangeList[index].maxValue}
-                        step={settingsRangeList[index].step}
-                        onChange={updateSettingsConfig}
-                    />
-                ))}
-            </div>
-            <div className="toggle-sliders-list">
-                {booleanSettingsKeysList.map((key) => (
-                    <ControlToggleSlider
-                        key={key}
-                        initialValue={false}
-                        valueKey={key}
-                        label={
-                            toggleSlidersLabels[
-                                key as keyof IBooleanSettingsList
-                            ]
-                        }
-                        onChange={updateSettingsConfig}
-                    />
-                ))}
-            </div>
+            {settingsConfigValuesList.map((blockData, index) => (
+                <BoardSettingsBlock
+                    key={settingsConfigKeysList[index]}
+                    id={settingsConfigKeysList[index]}
+                    data={blockData}
+                    getRangeData={getRangeData}
+                    updateField={updateSettingsConfig}
+                    updateActiveStatus={updateSettingsConfigActiveStatus}
+                />
+            ))}
         </div>
     );
 };

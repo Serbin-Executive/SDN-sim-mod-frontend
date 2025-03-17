@@ -1,13 +1,25 @@
 import { useState } from "react";
-import { IBoardSettingsConfig } from "@components/BoardSettingsContext/meta";
-import { defaultBoardSettingsConfig } from "@utils/constants";
+import { ISendableBoardSettingsConfig, TBoardSettingsConfigRanges } from "@components/BoardSettingsContext/meta";
 
 const useBoardSettings = () => {
-    const [settingsConfig, setSettingsConfig] = useState<IBoardSettingsConfig>(defaultBoardSettingsConfig);
+    const [settingsConfigRanges, setSettingsConfigRanges] = useState<TBoardSettingsConfigRanges | null>(null);
+    const [settingsConfig, setSettingsConfig] = useState<ISendableBoardSettingsConfig | null>(null);
+
+    const updateBoardSettingsConfig = (newConfig: ISendableBoardSettingsConfig): void => {
+        setSettingsConfig(newConfig);
+    }
+
+    const updateBoardSettingsConfigRanges = (newConfig: TBoardSettingsConfigRanges): void => {
+        setSettingsConfigRanges(newConfig);
+    }
 
     return {
+        settingsConfigRanges: settingsConfigRanges,
+        setSettingsConfigRanges: setSettingsConfigRanges,
         settingsConfig: settingsConfig,
         setSettingsConfig: setSettingsConfig,
+        updateBoardSettingsConfig: updateBoardSettingsConfig,
+        updateBoardSettingsConfigRanges: updateBoardSettingsConfigRanges,
     }
 }
 

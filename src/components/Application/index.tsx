@@ -34,6 +34,15 @@ const Application = (): ReactElement => {
         setChartsDotsCount,
     } = useChartsContext();
     const {
+        settingsConfigRanges,
+        setSettingsConfigRanges,
+        settingsConfig,
+        setSettingsConfig,
+        updateBoardSettingsConfig,
+        updateBoardSettingsConfigRanges,
+    } = useBoardSettings();
+
+    const {
         boardWorkCommandsConfig,
         setBoardWorkCommandsConfig,
         modelsActionsStatesList,
@@ -43,7 +52,12 @@ const Application = (): ReactElement => {
         handleMessageFromServer,
         deleteFirstModelsStates,
         queueCapacitiesList,
-    } = useServerMessageHandler(setUserStatus, setStatLength);
+    } = useServerMessageHandler(
+        setUserStatus,
+        setStatLength,
+        updateBoardSettingsConfig,
+        updateBoardSettingsConfigRanges,
+    );
     const { configure, sendMessage } = useWebSocket(
         webSocketUrl,
         handleMessageFromServer
@@ -66,8 +80,6 @@ const Application = (): ReactElement => {
 
         setStatLength(statLength - 1);
     }, [sendedModelsStatesList]);
-
-    const { settingsConfig, setSettingsConfig } = useBoardSettings();
 
     const createConfigure = async () => {
         if (webSocketUrl === "") {
@@ -126,6 +138,8 @@ const Application = (): ReactElement => {
         >
             <BoardSettingsContext.Provider
                 value={{
+                    settingsConfigRanges: settingsConfigRanges,
+                    setSettingsConfigRanges: setSettingsConfigRanges,
                     settingsConfig: settingsConfig,
                     setSettingsConfig: setSettingsConfig,
                 }}

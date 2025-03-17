@@ -11,10 +11,13 @@ import {
 import { TBoardWorkCommandsConfig } from "@components/BoardWorkContext/meta";
 import { WebsocketMessageParser } from "@services/ModelWebSocketService";
 import { TUserStatus } from "@components/Application/meta";
+import { ISendSettingsConfig, TBoardSettingsConfigRanges } from "@components/BoardSettingsContext/meta";
 
 const useServerMessageHandler = (
     setUserStatus: Dispatch<SetStateAction<TUserStatus>>,
-    setStatLength: Dispatch<SetStateAction<number>>
+    setStatLength: Dispatch<SetStateAction<number>>,
+    updateBoardSettingsConfig: (newConfig: ISendSettingsConfig) => void,
+    updateBoardSettingsConfigRanges: (newConfig: TBoardSettingsConfigRanges) => void
 ) => {
     const [boardWorkCommandsConfig, setBoardWorkCommandsConfig] =
         useState<TBoardWorkCommandsConfig>([]);
@@ -127,12 +130,14 @@ const useServerMessageHandler = (
 
     const ActionsInfoList: Record<TServerMessageType, TClientAction> = {
         [ServerMessageTypes.MESSAGE]: defaultMessageHandler,
-        [ServerMessageTypes.MODELS_WORKING_COMMANDS]:
+        [ServerMessageTypes.BOARD_WORKING_COMMANDS]:
             updateBoardWorkCommandsConfig,
         [ServerMessageTypes.MODELS_STATES]: updateSendedModelsStatesList,
         [ServerMessageTypes.CLEAR_CHARTS]: clearChartsDataLists,
-        [ServerMessageTypes.MODELS_ACTIONS_STATES]: updateModelsActionsStates,
-        [ServerMessageTypes.QUEUE_CAPACITIES]: updateQueueCapacities,
+        [ServerMessageTypes.BOARD_ACTIONS_STATES]: updateModelsActionsStates,
+        [ServerMessageTypes.MODELS_QUEUE_CAPACITIES]: updateQueueCapacities,
+        [ServerMessageTypes.BOARD_SETTINGS_CONFIG]: updateBoardSettingsConfig,
+        [ServerMessageTypes.BOARD_SETTINGS_CONFIG_RANGES]: updateBoardSettingsConfigRanges,
     };
 
     const handleMessageFromServer = (data: string): void => {

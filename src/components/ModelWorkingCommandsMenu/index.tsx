@@ -3,7 +3,6 @@ import BoardWorkContext from "../BoardWorkContext";
 import BoardSettingsContext from "../BoardSettingsContext";
 import { IClientMessage } from "@hooks/useWebSocket/meta";
 import { ReactElement, useContext } from "react";
-import { getServerSettingsConfigByClientConfig } from "./meta";
 import "./style.css";
 
 const ModelWorkingCommandsMenu = (): ReactElement => {
@@ -21,7 +20,7 @@ const ModelWorkingCommandsMenu = (): ReactElement => {
     ): void => {
         sendCommandFunction({
             commandID: commandKey,
-            commandInfo: isSendBoardSettingsConfig ? getServerSettingsConfigByClientConfig(settingsConfig) : "",
+            commandInfo: isSendBoardSettingsConfig ? settingsConfig : "",
         } as IClientMessage);
     };
 

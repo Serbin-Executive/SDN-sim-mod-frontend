@@ -10,11 +10,13 @@ export interface IServerMessage {
 
 export const enum ServerMessageTypes {
     MESSAGE = "message",
-    MODELS_WORKING_COMMANDS = "models working commands",
+    BOARD_WORKING_COMMANDS = "board working commands",
     MODELS_STATES = "models states",
-    MODELS_ACTIONS_STATES = "models actions states",
+    BOARD_ACTIONS_STATES = "board actions states",
     CLEAR_CHARTS = "clear charts",
-    QUEUE_CAPACITIES = "queue capacities",
+    MODELS_QUEUE_CAPACITIES = "models queue capacities",
+    BOARD_SETTINGS_CONFIG = "board settings config",
+    BOARD_SETTINGS_CONFIG_RANGES = "board settings config ranges",
 }
 
 export type TServerMessageType = string;
