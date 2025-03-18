@@ -5,10 +5,10 @@
     --aside-minified-width: calc(var(--aside-padding) - var(--aside-width));
 }
 
-.host-layout {
-    /* width: 100%;
-    height: 100%; */
-}
+/* .host-layout {
+    width: 100%;
+    height: 100%;
+} */
 
 .host-layout aside {
     /* height: 100%; */

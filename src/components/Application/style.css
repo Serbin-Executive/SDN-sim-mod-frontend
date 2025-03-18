@@ -5,10 +5,10 @@
     --accent-button-color: #3a40e1;
     --hover-button-color: #6b67eb;
     --inactive-button-color: #9c9ade;
-    --notifications-info-background-color: #a3aad9;
-    --notifications-error-background-color: #f6928b;
-    --notifications-success-background-color: #8aac8b;
-    --notifications-warning-background-color: #efe695;
+    --notifications-info-background-color: rgba(163, 170, 217, 0.5);
+    --notifications-error-background-color: rgba(246, 146, 139, 0.5);
+    --notifications-success-background-color: rgba(138, 172, 139, 0.5);
+    --notifications-warning-background-color: rgba(239, 230, 149, 0.5);
 }
 
 * {

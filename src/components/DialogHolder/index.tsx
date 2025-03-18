@@ -1,26 +1,16 @@
-import Dialog from "@components/Dialog";
-import IDialogData from "@domains/Dialog";
 import ModalWindow, { ModalTypes } from "@components/ModalWindow";
-import { type TRootState } from "@store/index";
-import { type ReactNode } from "react";
-import { useSelector } from "react-redux";
+import { ReactElement, type ReactNode } from "react";
 
-const DialogHolder = (): ReactNode => {
-    const dialogs: IDialogData[] = useSelector(
-        (state: TRootState) => state.notifications.dialogs
-    );
+export interface IConnectDialogProps {
+    children: ReactElement;
+}
 
-    if (!dialogs?.length) {
-        return null;
-    }
-
-    const currentDialog: IDialogData = dialogs[0];
-
+const ConnectDialog = ({children}: IConnectDialogProps): ReactNode => {
     return (
         <ModalWindow type={ModalTypes.SCREEN_LOCKER}>
-            <Dialog dialogData={currentDialog} />
+            {children}
         </ModalWindow>
     );
 };
 
-export default DialogHolder;
+export default ConnectDialog;

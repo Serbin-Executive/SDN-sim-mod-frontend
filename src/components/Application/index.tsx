@@ -30,7 +30,7 @@ const Application = (): ReactElement => {
 
     const [statLength, setStatLength] = useState<number>(0);
 
-    const {createAlert, createDialog} = useNotifications();
+    const { createAlert, createDialog } = useNotifications();
     const {
         isChartsCurrentDotsViewType,
         chartsDotsCount,
@@ -55,22 +55,19 @@ const Application = (): ReactElement => {
         setSendedModelsStatesList,
         handleMessageFromServer,
         deleteFirstModelsStates,
-        queueCapacitiesList,
+        boardCapacitiesList,
+        setBoardCapacitiesList,
     } = useServerMessageHandler(
         setUserStatus,
         setStatLength,
         updateBoardSettingsConfig,
         updateBoardSettingsConfigRanges,
-        createAlert,
+        createAlert
     );
     const { configure, sendMessage } = useWebSocket(
         webSocketUrl,
         handleMessageFromServer
     );
-
-    useEffect(() => {
-
-    }, [])
 
     useEffect(() => {
         if (!statLength) {
@@ -142,7 +139,8 @@ const Application = (): ReactElement => {
                 modelsActionsStatesList: modelsActionsStatesList,
                 setModelsActionsStatesList: setModelsActionsStatesList,
                 sendCommandFunction: sendMessage,
-                queueCapacitiesList: queueCapacitiesList,
+                boardCapacitiesList: boardCapacitiesList,
+                setBoardCapacitiesList: setBoardCapacitiesList,
             }}
         >
             <BoardSettingsContext.Provider
@@ -165,16 +163,25 @@ const Application = (): ReactElement => {
                 >
                     <Render asideComponent={<BoardControlPanel />}>
                         <Fragment>
-                            <WebSocketConnectByUrl
-                                webSocketUrl={webSocketUrl}
-                                setWebSocketUrl={setWebSocketUrl}
-                                isConnected={isConnected}
-                                connectFunction={createConfigure}
-                            />
-                            <ModelsInfoList />
-                            <ExcelFileDownloadRequest />
+                            {isConnected && (
+                                <Fragment>
+                                    <ModelsInfoList />
+                                    {statLength !== 0 && (
+                                        <ExcelFileDownloadRequest />
+                                    )}
+                                </Fragment>
+                            )}
+                            {!isConnected && (
+                                <DialogHolder>
+                                    <WebSocketConnectByUrl
+                                        webSocketUrl={webSocketUrl}
+                                        setWebSocketUrl={setWebSocketUrl}
+                                        isConnected={isConnected}
+                                        connectFunction={createConfigure}
+                                    />
+                                </DialogHolder>
+                            )}
                             <AlertsHolder />
-                            <DialogHolder />
                         </Fragment>
                     </Render>
                 </ChartContext.Provider>

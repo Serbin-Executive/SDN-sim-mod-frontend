@@ -1,3 +1,9 @@
+.parameters-excel-request {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
 button.common {
     border-radius: 8px;
     background-color: #443DF6;

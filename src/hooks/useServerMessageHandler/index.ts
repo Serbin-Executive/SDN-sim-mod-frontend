@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { UserStatuses } from "@components/Application/meta";
 import {
     TModelsActionsStatesList,
@@ -7,6 +7,7 @@ import {
     ServerMessageTypes,
     TSendedModelsStatesList,
     ISendedModelsStateList,
+    TBoardCapacities,
 } from "./meta";
 import { WebsocketMessageParser } from "@services/ModelWebSocketService";
 import { TUserStatus } from "@components/Application/meta";
@@ -27,7 +28,7 @@ const useServerMessageHandler = (
         useState<TModelsActionsStatesList>([false, false]);
     const [sendedModelsStatesList, setSendedModelsStatesList] =
         useState<TSendedModelsStatesList>([]);
-    const [queueCapacitiesList, setQueueCapacitiesList] = useState<number[]>([]);
+    const [boardCapacitiesList, setBoardCapacitiesList] = useState<TBoardCapacities>([]);
 
     const deleteFirstModelsStates = (): void => {
         setSendedModelsStatesList((prevList) => {
@@ -132,9 +133,13 @@ const useServerMessageHandler = (
         setModelsActionsStatesList(statesList);
     };
 
-    const updateQueueCapacities = (sendedCapacitiesList: number[]): void => {
-        setQueueCapacitiesList(sendedCapacitiesList);
+    const updateBoardCapacitiesList = (sendedBoardCapacitiesList: TBoardCapacities): void => {
+        setBoardCapacitiesList(sendedBoardCapacitiesList);
     }
+
+    useEffect(() => {
+        console.log(boardCapacitiesList);
+    }, [boardCapacitiesList])
 
     const ActionsInfoList: Record<TServerMessageType, TClientAction> = {
         [ServerMessageTypes.MESSAGE]: defaultMessageHandler,
@@ -143,7 +148,7 @@ const useServerMessageHandler = (
         [ServerMessageTypes.MODELS_STATES]: updateSendedModelsStatesList,
         [ServerMessageTypes.CLEAR_CHARTS]: clearChartsDataLists,
         [ServerMessageTypes.BOARD_ACTIONS_STATES]: updateModelsActionsStates,
-        [ServerMessageTypes.MODELS_QUEUE_CAPACITIES]: updateQueueCapacities,
+        [ServerMessageTypes.BOARD_CAPACITIES_LIST]: updateBoardCapacitiesList,
         [ServerMessageTypes.BOARD_SETTINGS_CONFIG]: updateBoardSettingsConfig,
         [ServerMessageTypes.BOARD_SETTINGS_CONFIG_RANGES]: updateBoardSettingsConfigRanges,
     };
@@ -168,7 +173,8 @@ const useServerMessageHandler = (
         setSendedModelsStatesList: setSendedModelsStatesList,
         handleMessageFromServer: handleMessageFromServer,
         deleteFirstModelsStates: deleteFirstModelsStates,
-        queueCapacitiesList: queueCapacitiesList,
+        boardCapacitiesList: boardCapacitiesList,
+        setBoardCapacitiesList: setBoardCapacitiesList,
     };
 };
 
