@@ -10,7 +10,7 @@ button.common {
     user-select: none;
 }
 
-button.common:hover {
+/* button.common:hover {
     background-color: #6c67f8;
     cursor: pointer;
 };
@@ -22,4 +22,4 @@ button.common.active {
 button.common.download.inactive {
     background-color: #8c8ade;
     pointer-events: none;
-}
+} */

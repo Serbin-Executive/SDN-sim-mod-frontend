@@ -8,16 +8,18 @@ import {
     TSendedModelsStatesList,
     ISendedModelsStateList,
 } from "./meta";
-import { TBoardWorkCommandsConfig } from "@components/BoardWorkContext/meta";
 import { WebsocketMessageParser } from "@services/ModelWebSocketService";
 import { TUserStatus } from "@components/Application/meta";
-import { ISendSettingsConfig, TBoardSettingsConfigRanges } from "@components/BoardSettingsContext/meta";
+import { ISendableBoardSettingsConfig, TBoardSettingsConfigRanges } from "@context/BoardSettingsContext/meta";
+import { TBoardWorkCommandsConfig } from "@context/BoardWorkContext/meta";
+import { AlertTypes } from "@domains/Alert";
 
 const useServerMessageHandler = (
     setUserStatus: Dispatch<SetStateAction<TUserStatus>>,
     setStatLength: Dispatch<SetStateAction<number>>,
-    updateBoardSettingsConfig: (newConfig: ISendSettingsConfig) => void,
-    updateBoardSettingsConfigRanges: (newConfig: TBoardSettingsConfigRanges) => void
+    updateBoardSettingsConfig: (newConfig: ISendableBoardSettingsConfig) => void,
+    updateBoardSettingsConfigRanges: (newConfig: TBoardSettingsConfigRanges) => void,
+    createAlert: any,
 ) => {
     const [boardWorkCommandsConfig, setBoardWorkCommandsConfig] =
         useState<TBoardWorkCommandsConfig>([]);
@@ -50,6 +52,12 @@ const useServerMessageHandler = (
 
     const defaultMessageHandler = (messageData: any) => {
         console.info(messageData);
+
+        createAlert({
+            title: "Server info message",
+            message: messageData,
+            type: AlertTypes.INFO,
+        })
     };
 
     const updateBoardWorkCommandsConfig = (

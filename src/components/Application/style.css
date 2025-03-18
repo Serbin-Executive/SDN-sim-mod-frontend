@@ -1,7 +1,14 @@
 :root {
     --default-transition-time: .35s;
     --main-font-color: #353535;
-    --accent-color: #3a40e1;
+    --button-font-color: #FFFFFF;
+    --accent-button-color: #3a40e1;
+    --hover-button-color: #6b67eb;
+    --inactive-button-color: #9c9ade;
+    --notifications-info-background-color: #a3aad9;
+    --notifications-error-background-color: #f6928b;
+    --notifications-success-background-color: #8aac8b;
+    --notifications-warning-background-color: #efe695;
 }
 
 * {

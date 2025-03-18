@@ -6,6 +6,7 @@ import {
     useState,
 } from "react";
 import "./style.css";
+import ControlButton from "@components/ControlButton";
 
 export const WEB_SOCKET_CONNECT_INPUT_NAME: string = "Url";
 
@@ -33,10 +34,6 @@ const WebSocketConnectByUrl = ({
     const [inputNameClass, setInputNameClass] = useState<string>(
         InputNameClasses.INACTIVE
     );
-
-    const buttonClass = isConnected
-        ? "web-socket-connect-button-inactive"
-        : "web-socket-connect-button-active";
 
     const handleUrlChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setQuery(event.target.value);
@@ -78,9 +75,17 @@ const WebSocketConnectByUrl = ({
                     required
                 />
             </div>
-            <button className={`${buttonClass} common`} onClick={handleClick}>
+            <ControlButton
+                onClick={handleClick}
+                title={BUTTON_TEXT}
+                isActive={!isConnected}
+            />
+            {/* <button
+                className={`common${buttonActiveClass}`}
+                onClick={handleClick}
+            >
                 {BUTTON_TEXT}
-            </button>
+            </button> */}
         </div>
     );
 };

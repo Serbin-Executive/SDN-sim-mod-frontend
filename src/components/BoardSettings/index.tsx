@@ -1,11 +1,11 @@
-import BoardSettingsContext from "@components/BoardSettingsContext";
 import BoardSettingsBlock from "@components/BoardSettingsBlock";
 import { type ReactElement, useContext } from "react";
+import BoardSettingsContext from "@context/BoardSettingsContext";
 import {
     IRangeSettingData,
     ISendableBoardSettingsConfig,
     ISendableBoardSettingsConfigBlock,
-} from "@components/BoardSettingsContext/meta";
+} from "@context/BoardSettingsContext/meta";
 import "./style.css";
 
 const BoardSettings = (): ReactElement => {

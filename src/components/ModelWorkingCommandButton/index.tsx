@@ -4,6 +4,7 @@ import {
     type TSendCommand,
 } from "@components/BoardWorkContext/meta";
 import "./style.css";
+import ControlButton from "@components/ControlButton";
 
 export interface IModelWorkingCommandButtonProps {
     actionState: boolean;
@@ -21,9 +22,9 @@ const ModelWorkingCommandButton = ({
     commandData,
     onClickAction,
 }: IModelWorkingCommandButtonProps): ReactElement => {
-    const buttonClass = actionState
-        ? WorkingCommandButtonClasses.INACTIVE
-        : WorkingCommandButtonClasses.ACTIVE;
+    // const buttonClass = actionState
+    //     ? WorkingCommandButtonClasses.INACTIVE
+    //     : WorkingCommandButtonClasses.ACTIVE;
 
     const handleClick = (): void => {
         if (actionState || !onClickAction) {
@@ -34,9 +35,14 @@ const ModelWorkingCommandButton = ({
     };
 
     return (
-        <button className={`common ${buttonClass}`} onClick={handleClick}>
-            {commandData.commandKey}
-        </button>
+        <ControlButton
+            onClick={handleClick}
+            title={commandData.commandKey}
+            isActive={!actionState}
+        />
+        // <button className={`common ${buttonClass}`} onClick={handleClick}>
+        //     {commandData.commandKey}
+        // </button>
     );
 };
 

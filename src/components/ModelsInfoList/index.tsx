@@ -1,6 +1,6 @@
 import ModelInfo from "../ModelInfo";
 import LineCharts from "../LineCharts";
-import BoardWorkContext from "@components/BoardWorkContext";
+import BoardWorkContext from "@context/BoardWorkContext";
 import { type ReactElement, useContext } from "react";
 import "./style.css";
 
