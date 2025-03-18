@@ -1,3 +1,9 @@
+.parameters-excel-request {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
 button.common {
     border-radius: 8px;
     background-color: #443DF6;
@@ -10,7 +16,7 @@ button.common {
     user-select: none;
 }
 
-button.common:hover {
+/* button.common:hover {
     background-color: #6c67f8;
     cursor: pointer;
 };
@@ -22,4 +28,4 @@ button.common.active {
 button.common.download.inactive {
     background-color: #8c8ade;
     pointer-events: none;
-}
+} */

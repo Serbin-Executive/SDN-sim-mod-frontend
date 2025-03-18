@@ -1,3 +1,10 @@
+.web-socket-model-interact {
+    background-color: #FFFFFF;
+    padding: 50px;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
 .url-input-name.inactive {
     display: none;
 }
@@ -9,9 +16,9 @@
     color: #443DF6;
     font-size: 12px;
     line-height: 16px;
-};
+}
 
-button.common {
+/* button.common {
     border-radius: 8px;
     background-color: #443DF6;
     color: #FFFFFF;
@@ -21,9 +28,14 @@ button.common {
     padding: 10px 20px;
     border: none;
     user-select: none;
-};
+}
 
 button.common:hover {
     background-color: #6c67f8;
     cursor: pointer;
-};
+}
+
+button.common.inactive {
+    background-color: #8c8ade;
+    pointer-events: none;
+} */

@@ -1,6 +1,6 @@
 import ToggleSlider from "../ToggleSlider";
 import RangeSlider from "../RangeSlider";
-import ChartsContext from "../ChartsContext";
+import ChartsContext from "@context/ChartsContext";
 import { ReactElement, useContext } from "react";
 import {
     DEFAULT_CHARTS_DOTS_COUNT,

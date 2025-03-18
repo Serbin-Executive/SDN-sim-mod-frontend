@@ -5,6 +5,10 @@
     flex-wrap: wrap;
 }
 
-.model-info {
-    width: 300px;
+.main-info-container .model-info{
+    width: 400px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

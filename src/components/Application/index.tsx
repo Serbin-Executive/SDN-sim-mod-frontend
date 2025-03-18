@@ -1,12 +1,12 @@
 import API from "@api/index";
 import useWebSocket from "@hooks/useWebSocket";
-import ChartContext from "@components/ChartsContext";
+import ChartContext from "@context/ChartsContext";
 import useBoardSettings from "@hooks/useBoardSettings";
 import useChartsContext from "@hooks/useChartsContext";
 import ModelsInfoList from "@components/ModelsInfoList";
-import BoardWorkContext from "@components/BoardWorkContext";
+import BoardWorkContext from "@context/BoardWorkContext";
 import BoardControlPanel from "@components/BoardControlPanel";
-import BoardSettingsContext from "@components/BoardSettingsContext";
+import BoardSettingsContext from "@context/BoardSettingsContext";
 import useServerMessageHandler from "@hooks/useServerMessageHandler";
 import WebSocketConnectByUrl from "@components/WebSocketConnectByUrl";
 import ExcelFileDownloadRequest from "@components/ExcelFileDownloadRequest";
@@ -14,6 +14,9 @@ import { LayoutsByUserType, UserStatuses } from "./meta";
 import { type TUserStatus } from "./meta";
 import { Fragment, ReactElement, useEffect, useState } from "react";
 import "./style.css";
+import AlertsHolder from "@components/AlertsHolder";
+import DialogHolder from "@components/DialogHolder";
+import useNotifications from "@hooks/useNotifications";
 
 const Application = (): ReactElement => {
     const [userStatus, setUserStatus] = useState<TUserStatus>(
@@ -27,6 +30,7 @@ const Application = (): ReactElement => {
 
     const [statLength, setStatLength] = useState<number>(0);
 
+    const { createAlert, createDialog } = useNotifications();
     const {
         isChartsCurrentDotsViewType,
         chartsDotsCount,
@@ -51,12 +55,14 @@ const Application = (): ReactElement => {
         setSendedModelsStatesList,
         handleMessageFromServer,
         deleteFirstModelsStates,
-        queueCapacitiesList,
+        boardCapacitiesList,
+        setBoardCapacitiesList,
     } = useServerMessageHandler(
         setUserStatus,
         setStatLength,
         updateBoardSettingsConfig,
         updateBoardSettingsConfigRanges,
+        createAlert
     );
     const { configure, sendMessage } = useWebSocket(
         webSocketUrl,
@@ -133,7 +139,8 @@ const Application = (): ReactElement => {
                 modelsActionsStatesList: modelsActionsStatesList,
                 setModelsActionsStatesList: setModelsActionsStatesList,
                 sendCommandFunction: sendMessage,
-                queueCapacitiesList: queueCapacitiesList,
+                boardCapacitiesList: boardCapacitiesList,
+                setBoardCapacitiesList: setBoardCapacitiesList,
             }}
         >
             <BoardSettingsContext.Provider
@@ -156,14 +163,25 @@ const Application = (): ReactElement => {
                 >
                     <Render asideComponent={<BoardControlPanel />}>
                         <Fragment>
-                            <WebSocketConnectByUrl
-                                webSocketUrl={webSocketUrl}
-                                setWebSocketUrl={setWebSocketUrl}
-                                isConnected={isConnected}
-                                connectFunction={createConfigure}
-                            />
-                            <ModelsInfoList />
-                            <ExcelFileDownloadRequest />
+                            {isConnected && (
+                                <Fragment>
+                                    <ModelsInfoList />
+                                    {statLength !== 0 && (
+                                        <ExcelFileDownloadRequest />
+                                    )}
+                                </Fragment>
+                            )}
+                            {!isConnected && (
+                                <DialogHolder>
+                                    <WebSocketConnectByUrl
+                                        webSocketUrl={webSocketUrl}
+                                        setWebSocketUrl={setWebSocketUrl}
+                                        isConnected={isConnected}
+                                        connectFunction={createConfigure}
+                                    />
+                                </DialogHolder>
+                            )}
+                            <AlertsHolder />
                         </Fragment>
                     </Render>
                 </ChartContext.Provider>

@@ -85,7 +85,7 @@ const LineCharts = ({
                                 text: QUEUE_LOAD_AXIS_TITLE,
                             },
                             beginAtZero: true,
-                            max: queueCapacity
+                            max: queueCapacity,
                         },
                     },
                 }}

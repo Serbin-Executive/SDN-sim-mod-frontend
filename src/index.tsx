@@ -1,5 +1,7 @@
 import ReactDOM, { Root } from "react-dom/client";
 import Application from "@components/Application";
+import store from "./store";
+import { Provider } from "react-redux";
 
 const RootHTMLElement: HTMLElement | null = document.getElementById("root");
 
@@ -9,4 +11,8 @@ if (!RootHTMLElement) {
 
 const ReactRoot: Root = ReactDOM.createRoot(RootHTMLElement);
 
-ReactRoot.render(<Application />);
+ReactRoot.render(
+    <Provider store={store}>
+        <Application />
+    </Provider>
+);
