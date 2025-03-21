@@ -9,7 +9,7 @@ const AsideHeader = ({ onToggle }: AsideHeaderProps): ReactElement => {
     return (
         <div className="aside-header">
             <div className="aside-header-title">
-                <h3>Aside</h3>
+                <h3>Configuration</h3>
             </div>
             <div className="aside-header-toggle">
                 <img

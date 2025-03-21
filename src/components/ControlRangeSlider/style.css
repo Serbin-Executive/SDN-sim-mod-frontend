@@ -1,6 +1,17 @@
 .control-range-slider-container {
+
+}
+
+.range-input-container{
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 20px;
+}
+
+.input-container {
+    flex: auto;
+    padding: 10px;
+}
+
+.input-container input{
+    width: 100%;
 }

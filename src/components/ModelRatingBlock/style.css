@@ -1,10 +1,12 @@
 .model-rating-block {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    border: 1px solid black;
-    border-radius: 10px;
+    --rating-width: 70px;
+    width: var(--rating-width);
+    border: 1px solid #3a40e1;
+    background: #3a40e1;
+    color: white;
+    border-radius: 0 10px 10px 0;
     padding: 10px;
+    position: absolute;
+    top: 0;
+    right: calc(var(--rating-width) * (-1));
 }

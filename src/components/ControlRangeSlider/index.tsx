@@ -29,16 +29,22 @@ const ControlRangeSlider = ({
 
     return (
         <div className="control-range-slider-container">
-            {`${label} - ${value}`}
-            <input
-                className="range-slider"
-                type={"range"}
-                min={minValue}
-                max={maxValue}
-                step={step}
-                value={value}
-                onChange={handleChange}
-            />
+            <div className="range-input-header">{label} - {value}</div>
+            <div className="range-input-container">
+                <div className="input-bounds min-value">{minValue}</div>
+                <div className="input-container">
+                    <input
+                        className="range-slider"
+                        type={"range"}
+                        min={minValue}
+                        max={maxValue}
+                        step={step}
+                        value={value}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="input-bounds max-value">{maxValue}</div>
+            </div>
         </div>
     );
 };

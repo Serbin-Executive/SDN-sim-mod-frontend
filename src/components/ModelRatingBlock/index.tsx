@@ -1,4 +1,4 @@
-import { type ReactElement } from "react";
+import { memo, type ReactElement } from "react";
 import "./style.css";
 
 export interface IModelRatingBlockProps {
@@ -8,7 +8,7 @@ export interface IModelRatingBlockProps {
     maxDelayCapacity: number;
 }
 
-const ModelRatingBlock = ({
+const ModelRatingBlock = memo(({
     queueCapacity,
     delayCapacity,
     maxQueueCapacity,
@@ -16,20 +16,19 @@ const ModelRatingBlock = ({
 }: IModelRatingBlockProps): ReactElement => {
     return (
         <div className="model-rating-block">
-            Rating
-            <div className="queue">
+            <div className="rating-line queue">
                 {`${queueCapacity}/${maxQueueCapacity}`}
             </div>
-            <div className="delay">
+            <div className="rating-line delay">
                 {`${delayCapacity}/${maxDelayCapacity}`}
             </div>
-            <div className="total-rating">
+            <div className="rating-line total-rating">
                 {`${queueCapacity + delayCapacity}/${
                     maxQueueCapacity + maxDelayCapacity
                 }`}
             </div>
         </div>
     );
-};
+});
 
 export default ModelRatingBlock;

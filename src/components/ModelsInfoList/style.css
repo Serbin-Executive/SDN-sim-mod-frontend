@@ -7,8 +7,9 @@
 
 .main-info-container .model-info{
     width: 400px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 15px;
+    border: 1px solid #3a40e1;
+    position: relative;
+    margin-right: 50px;
+    border-radius: 10px 0 10px 10px;
 }

@@ -31,9 +31,12 @@
 }
 
 .host-layout aside .aside-content-container {
-    flex: auto;
     padding: var(--aside-padding);
     padding-top: 0;
+}
+
+.aside-content-container h3 {
+    margin-bottom: 20px;
 }
 
 .host-layout .main-content-container {

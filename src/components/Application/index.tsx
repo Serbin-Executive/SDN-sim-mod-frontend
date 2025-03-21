@@ -10,13 +10,13 @@ import BoardSettingsContext from "@context/BoardSettingsContext";
 import useServerMessageHandler from "@hooks/useServerMessageHandler";
 import WebSocketConnectByUrl from "@components/WebSocketConnectByUrl";
 import ExcelFileDownloadRequest from "@components/ExcelFileDownloadRequest";
+import AlertsHolder from "@components/AlertsHolder";
+import DialogHolder from "@components/DialogHolder";
+import useNotifications from "@hooks/useNotifications";
 import { LayoutsByUserType, UserStatuses } from "./meta";
 import { type TUserStatus } from "./meta";
 import { Fragment, ReactElement, useEffect, useState } from "react";
 import "./style.css";
-import AlertsHolder from "@components/AlertsHolder";
-import DialogHolder from "@components/DialogHolder";
-import useNotifications from "@hooks/useNotifications";
 
 const Application = (): ReactElement => {
     const [userStatus, setUserStatus] = useState<TUserStatus>(
@@ -30,13 +30,15 @@ const Application = (): ReactElement => {
 
     const [statLength, setStatLength] = useState<number>(0);
 
-    const { createAlert, createDialog } = useNotifications();
+    const { createAlert } = useNotifications();
+
     const {
         isChartsCurrentDotsViewType,
         chartsDotsCount,
         setIsChartsCurrentDotsViewType,
         setChartsDotsCount,
     } = useChartsContext();
+
     const {
         settingsConfigRanges,
         setSettingsConfigRanges,
@@ -64,6 +66,7 @@ const Application = (): ReactElement => {
         updateBoardSettingsConfigRanges,
         createAlert
     );
+    
     const { configure, sendMessage } = useWebSocket(
         webSocketUrl,
         handleMessageFromServer
