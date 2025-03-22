@@ -10,18 +10,30 @@ const ModelWorkingCommandsMenu = (): ReactElement => {
         boardWorkCommandsConfig,
         modelsActionsStatesList,
         sendCommandFunction,
+        setIsBoardControlPanelOpen,
     } = useContext(BoardWorkContext);
 
     const { settingsConfig } = useContext(BoardSettingsContext);
 
-    const sendCommandToServer = (
+    const closeBoardControlPanel = (): void => {
+        setIsBoardControlPanelOpen(false);
+    };
+
+    const handleSendCommandToServer = (
         commandKey: string,
-        isSendBoardSettingsConfig: boolean
+        isSendBoardSettingsConfig: boolean,
+        isCloseBoardControlPanel: boolean
     ): void => {
         sendCommandFunction({
             commandID: commandKey,
             commandInfo: isSendBoardSettingsConfig ? settingsConfig : "",
         } as IClientMessage);
+
+        if (!isCloseBoardControlPanel) {
+            return;
+        }
+
+        closeBoardControlPanel();
     };
 
     return (
@@ -31,7 +43,7 @@ const ModelWorkingCommandsMenu = (): ReactElement => {
                     key={boardWorkCommandData.commandKey}
                     actionState={modelsActionsStatesList[index]}
                     commandData={boardWorkCommandData}
-                    onClickAction={sendCommandToServer}
+                    onClickAction={handleSendCommandToServer}
                 />
             ))}
         </div>

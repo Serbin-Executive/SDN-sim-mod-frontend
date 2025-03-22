@@ -2,7 +2,7 @@ import { type ReactElement } from "react";
 import {
     type IBoardWorkCommandData,
     type TSendCommand,
-} from "@components/BoardWorkContext/meta";
+} from "@context/BoardWorkContext/meta";
 import "./style.css";
 import ControlButton from "@components/ControlButton";
 
@@ -31,7 +31,13 @@ const ModelWorkingCommandButton = ({
             return;
         }
 
-        onClickAction(commandData.commandKey, commandData.isSendSettingsConfig);
+        onClickAction(commandData.commandKey, commandData.isSendSettingsConfig, commandData.isCloseBoardControlPanel);
+
+        if (!commandData.isCloseBoardControlPanel) {
+            return;
+        }
+
+
     };
 
     return (
