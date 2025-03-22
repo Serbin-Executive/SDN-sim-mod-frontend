@@ -14,3 +14,7 @@
     height: 100%; */
     padding: var(--main-padding);
 }
+
+.layout {
+    height: 100%;
+}

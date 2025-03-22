@@ -31,9 +31,9 @@ const ControlRangeSlider = ({
     return (
         <div className="control-range-slider-container">
             <div className="range-input-header">
-                {label} - {value}
+                <span>{label}: <strong>{value}</strong></span>
                 <div className="info">
-                    <TooltipBlock info={info} />
+                    <TooltipBlock info={info} flow="left"/>
                 </div>
             </div>
             <div className="range-input-container">

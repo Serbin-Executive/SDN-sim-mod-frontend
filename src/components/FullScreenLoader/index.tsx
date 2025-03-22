@@ -5,7 +5,7 @@ import "./style.css";
 
 ChartJS.register();
 
-const LOADER_CHART_WIDTH: string = "600px";
+const LOADER_CHART_WIDTH: string = "400px";
 
 const FullScreenLoader = (): ReactElement => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);

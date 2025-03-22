@@ -31,7 +31,7 @@ const HostLayout = ({
     };
 
     return (
-        <div className="host-layout">
+        <div className="host-layout layout">
             <aside className={asideClassNames}>
                 <AsideHeader onToggle={toggleAside} />
                 <div className="aside-content-container">{asideComponent}</div>
