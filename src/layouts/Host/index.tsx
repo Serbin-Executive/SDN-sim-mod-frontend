@@ -1,5 +1,6 @@
 import AsideHeader from "@components/AsideHeader";
-import { type ReactElement, useState } from "react";
+import BoardWorkContext from "@context/BoardWorkContext";
+import { type ReactElement, useContext } from "react";
 import "./style.css";
 
 export interface IHostLayoutProps {
@@ -11,17 +12,22 @@ const HostLayout = ({
     asideComponent,
     children,
 }: IHostLayoutProps): ReactElement => {
-    const [isAsideOpen, setIsAsideOpen] = useState<boolean>(false);
+    const { isBoardControlPanelOpen, setIsBoardControlPanelOpen } =
+        useContext(BoardWorkContext);
 
-    const asideClassNames: string = !isAsideOpen ? "default" : "in-focus";
-    const mainClassNames: string = !isAsideOpen ? "default" : "out-of-focus";
+    const asideClassNames: string = !isBoardControlPanelOpen
+        ? "default"
+        : "in-focus";
+    const mainClassNames: string = !isBoardControlPanelOpen
+        ? "default"
+        : "out-of-focus";
 
     const closeAside = () => {
-        setIsAsideOpen(false);
+        setIsBoardControlPanelOpen(false);
     };
 
     const toggleAside = () => {
-        setIsAsideOpen(!isAsideOpen);
+        setIsBoardControlPanelOpen(!isBoardControlPanelOpen);
     };
 
     return (

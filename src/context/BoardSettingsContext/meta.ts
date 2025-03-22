@@ -32,4 +32,6 @@ export interface IBoardSettingsContext {
     settingsConfig: ISendableBoardSettingsConfig | null;
     setSettingsConfig: Dispatch<
     SetStateAction<ISendableBoardSettingsConfig | null>>;
+    isAccessGetResults: boolean;
+    setIsAccessGetResults: Dispatch<SetStateAction<boolean>>;
 }

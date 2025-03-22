@@ -22,7 +22,8 @@
     display: flex;
     flex-direction: column;
 
-    background-color: aliceblue;
+    /* background-image: linear-gradient(#bbbbc9, #8f91cc); */
+    background-color: white;
 }
 
 .host-layout aside.in-focus {
