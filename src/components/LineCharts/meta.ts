@@ -6,6 +6,8 @@ export interface IDataset {
     borderColor?: string;
     pointBackgroundColor?: string;
     pointBorderColor?: string;
+    borderWidth?: number;
+    pointBorderWidth?: number;
 }
 
 export type TDatasets = IDataset[];

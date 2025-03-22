@@ -27,7 +27,16 @@ const ModelWorkingCommandButton = ({
             return;
         }
 
-        onClickAction(commandData.commandKey, commandData.isSendSettingsConfig);
+        onClickAction(
+            commandData.commandKey,
+            commandData.isSendSettingsConfig,
+            commandData.isCloseBoardControlPanel,
+            commandData.isAccessGetResults
+        );
+
+        if (!commandData.isCloseBoardControlPanel) {
+            return;
+        }
     };
 
     return (

@@ -54,7 +54,7 @@ const useWebSocket = (webSocketUrl: string, handler: (data: any) => void, create
 
         createAlert({
             title: "Websocket status",
-            message: "Websocket closed",
+            message: "Websocket closed. Reload page to reconnect",
             type: AlertTypes.WARNING,
         })
     };

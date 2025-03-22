@@ -1,9 +1,9 @@
-import { type ReactElement } from "react";
+import { ReactNode, type ReactElement } from "react";
 import "./style.css";
 
 export interface IControlButtonProps {
     onClick: any;
-    title: string;
+    title: ReactNode;
     isActive: boolean;
 }
 

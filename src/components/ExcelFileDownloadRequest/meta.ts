@@ -31,7 +31,7 @@ export const ExcelFileTitles = [
     "Jitter",
 ];
 
-export const DOWNLOAD_BUTTON_TEXT: string = "Download Excel File";
+export const DOWNLOAD_BUTTON_TEXT: string = "download";
 
 export const getWorkbook = (rowsList: TRowsList[]) => {
     const workbook = XLSX.utils.book_new();
