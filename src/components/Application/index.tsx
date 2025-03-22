@@ -9,7 +9,6 @@ import BoardControlPanel from "@components/BoardControlPanel";
 import BoardSettingsContext from "@context/BoardSettingsContext";
 import useServerMessageHandler from "@hooks/useServerMessageHandler";
 import WebSocketConnectByUrl from "@components/WebSocketConnectByUrl";
-import ExcelFileDownloadRequest from "@components/ExcelFileDownloadRequest";
 import AlertsHolder from "@components/AlertsHolder";
 import DialogHolder from "@components/DialogHolder";
 import useNotifications from "@hooks/useNotifications";
@@ -196,14 +195,7 @@ const Application = (): ReactElement => {
                     >
                         <Render asideComponent={<BoardControlPanel />}>
                             <Fragment>
-                                {isConnected && (
-                                    <Fragment>
-                                        <ModelsInfoList />
-                                        {isAccessGetResults && (
-                                            <ExcelFileDownloadRequest />
-                                        )}
-                                    </Fragment>
-                                )}
+                                {isConnected && <ModelsInfoList />}
                                 {!isConnected && (
                                     <DialogHolder>
                                         <WebSocketConnectByUrl
