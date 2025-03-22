@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { IClientMessage, WS_PROTOCOL } from "./meta";
+import { type IClientMessage, WS_PROTOCOL } from "./meta";
+import { setIsLoading } from "@store/slices/application";
+import { useDispatch } from "react-redux";
+import { AlertTypes } from "@domains/Alert";
 
-const useWebSocket = (webSocketUrl: string, handler: (data: any) => void) => {
+const useWebSocket = (webSocketUrl: string, handler: (data: any) => void, createAlert: any) => {
+    const dispatch = useDispatch();
+
     const [webSocket, setWebSocket] = useState<WebSocket>();
 
     const sendMessage = (messageData: IClientMessage) => {
@@ -11,24 +16,47 @@ const useWebSocket = (webSocketUrl: string, handler: (data: any) => void) => {
             return;
         }
 
-        // webSocket.send(messageData);
         webSocket.send(JSON.stringify(messageData));
+
+        dispatch(setIsLoading(true));
     };
 
     const onOpen = (event: Event) => {
         console.info("WEBSOCKET CREATED");
+
+        createAlert({
+            title: "Websocket status",
+            message: "Websocket connection opened",
+            type: AlertTypes.SUCCESS,
+        })
     };
 
     const onMessage = (event: MessageEvent) => {
         handler(event.data);
+
+        dispatch(setIsLoading(false));
     };
 
     const onError = (event: Event) => {
         console.info("ERROR ON WEBSOCKET", event);
+
+        createAlert({
+            title: "Websocket status",
+            message: "Error on Websocket",
+            type: AlertTypes.ERROR,
+        })
+
+        dispatch(setIsLoading(false));
     };
 
     const onClose = (event: CloseEvent) => {
         console.info("WEBSOCKET CLOSED");
+
+        createAlert({
+            title: "Websocket status",
+            message: "Websocket closed",
+            type: AlertTypes.WARNING,
+        })
     };
 
     const configure = () => {

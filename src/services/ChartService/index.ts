@@ -1,7 +1,10 @@
 import { IChartData, TChartLabels } from "@components/LineCharts/meta";
 import { ISendedChartsData, TSendedChartsDataList } from "@hooks/useServerMessageHandler/meta";
+import { Chart as ChartJS } from "chart.js/auto";
 
 export const MILLISECONDS_TO_SECONDS_MULTIPLIER: number = 1000;
+
+const loaderChartDotsList: number[] = [1, 4, 2, 8];
 
 export class ChartService {
     public static getChartLabels(chartsDataList: TSendedChartsDataList): TChartLabels {
@@ -42,5 +45,64 @@ export class ChartService {
                 },
             ],
         };
+    }
+
+    public static getChartOptions(isAnimation: boolean, isXAxisDisplay: boolean, XAxisText: string, isYAxisDisplay: boolean, YAxisText: string, isYAxisStartZero?: boolean, maxYAxisValue?: number): any {
+        return {
+            animation: isAnimation,
+            scales: {
+                x: {
+                    display: isXAxisDisplay,
+                    text: XAxisText,
+                },
+                y: {
+                    display: isYAxisDisplay,
+                    text: YAxisText,
+                    beginAtZero: isYAxisStartZero,
+                    max: maxYAxisValue,
+                },
+            }
+        }
+    }
+
+    public static getLoaderChartData(ctx: CanvasRenderingContext2D): ChartJS {
+        const chartJs = new ChartJS(ctx, {
+            type: "line",
+            data: {
+                labels: loaderChartDotsList,
+                datasets: [
+                    {
+                        label: "Loading",
+                        fill: false,
+                        borderColor: "rgb(47, 137, 234)",
+                        borderWidth: 12,
+                        tension: 0.4,
+                        data: loaderChartDotsList,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                animations: {
+                    tension: {
+                        duration: 1000,
+                        easing: "easeInOutElastic",
+                        from: 0,
+                        to: 1,
+                        loop: true,
+                    },
+                },
+                scales: {
+                    x: { display: false },
+                    y: { display: false },
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false },
+                },
+            },
+        })
+
+        return chartJs;
     }
 }

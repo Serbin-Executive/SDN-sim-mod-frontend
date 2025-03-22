@@ -45,51 +45,29 @@ const LineCharts = ({
         ChartColors.GREEN
     );
 
+    const loadFactorChartOptions = ChartService.getChartOptions(
+        false,
+        true,
+        TIME_AXIS_TITLE,
+        true,
+        LOAD_FACTOR_AXIS_TITLE,
+        true
+    );
+    const queueLoadChartOptions = ChartService.getChartOptions(
+        false,
+        true,
+        TIME_AXIS_TITLE,
+        true,
+        QUEUE_LOAD_AXIS_TITLE,
+        true,
+        queueCapacity
+    );
+
     return (
         <div className="charts-container">
             <div className="model-id">Model {modelID + 1}</div>
-            <Line
-                data={loadFactorChartData}
-                options={{
-                    animation: false,
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: TIME_AXIS_TITLE,
-                            },
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: LOAD_FACTOR_AXIS_TITLE,
-                            },
-                        },
-                    },
-                }}
-            />
-            <Line
-                data={queueLoadChartData}
-                options={{
-                    animation: false,
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: TIME_AXIS_TITLE,
-                            },
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: QUEUE_LOAD_AXIS_TITLE,
-                            },
-                            beginAtZero: true,
-                            max: queueCapacity,
-                        },
-                    },
-                }}
-            />
+            <Line data={loadFactorChartData} options={loadFactorChartOptions} />
+            <Line data={queueLoadChartData} options={queueLoadChartOptions} />
         </div>
     );
 };

@@ -1,8 +1,8 @@
 import ModelWorkingCommandButton from "../ModelWorkingCommandButton";
-import { IClientMessage } from "@hooks/useWebSocket/meta";
-import { ReactElement, useContext } from "react";
 import BoardWorkContext from "@context/BoardWorkContext";
 import BoardSettingsContext from "@context/BoardSettingsContext";
+import { type IClientMessage } from "@hooks/useWebSocket/meta";
+import { type ReactElement, useContext } from "react";
 import "./style.css";
 
 const ModelWorkingCommandsMenu = (): ReactElement => {
