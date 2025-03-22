@@ -1,10 +1,10 @@
+import ControlButton from "@components/ControlButton";
 import { type ReactElement } from "react";
 import {
     type IBoardWorkCommandData,
     type TSendCommand,
 } from "@context/BoardWorkContext/meta";
 import "./style.css";
-import ControlButton from "@components/ControlButton";
 
 export interface IModelWorkingCommandButtonProps {
     actionState: boolean;
@@ -22,10 +22,6 @@ const ModelWorkingCommandButton = ({
     commandData,
     onClickAction,
 }: IModelWorkingCommandButtonProps): ReactElement => {
-    // const buttonClass = actionState
-    //     ? WorkingCommandButtonClasses.INACTIVE
-    //     : WorkingCommandButtonClasses.ACTIVE;
-
     const handleClick = (): void => {
         if (actionState || !onClickAction) {
             return;
@@ -46,9 +42,6 @@ const ModelWorkingCommandButton = ({
             title={commandData.commandKey}
             isActive={!actionState}
         />
-        // <button className={`common ${buttonClass}`} onClick={handleClick}>
-        //     {commandData.commandKey}
-        // </button>
     );
 };
 

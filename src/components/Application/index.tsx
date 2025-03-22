@@ -13,13 +13,19 @@ import ExcelFileDownloadRequest from "@components/ExcelFileDownloadRequest";
 import AlertsHolder from "@components/AlertsHolder";
 import DialogHolder from "@components/DialogHolder";
 import useNotifications from "@hooks/useNotifications";
-import WebSocketContext from "@context/WebSocketContext";
+import FullScreenLoader from "@components/FullScreenLoader";
 import { LayoutsByUserType, UserStatuses } from "./meta";
 import { type TUserStatus } from "./meta";
+import { useDispatch, useSelector } from "react-redux";
 import { Fragment, ReactElement, useEffect, useState } from "react";
+import { type TRootState } from "@store/index";
+import { setIsLoading } from "@store/slices/application";
+import { AlertTypes } from "@domains/Alert";
 import "./style.css";
 
 const Application = (): ReactElement => {
+    const dispatch = useDispatch();
+
     const [userStatus, setUserStatus] = useState<TUserStatus>(
         UserStatuses.USER
     );
@@ -71,8 +77,11 @@ const Application = (): ReactElement => {
 
     const { configure, sendMessage } = useWebSocket(
         webSocketUrl,
-        handleMessageFromServer
+        handleMessageFromServer,
+        createAlert
     );
+
+    const { isLoading } = useSelector((state: TRootState) => state.application);
 
     useEffect(() => {
         if (!statLength) {
@@ -94,20 +103,28 @@ const Application = (): ReactElement => {
 
     const createConfigure = async () => {
         if (webSocketUrl === "") {
-            console.info("CANNOT CONNECT WITH EMPTY URL");
+            createAlert({
+                message: "Cannot connect to server with empty url",
+                type: AlertTypes.ERROR,
+            });
 
             return;
         }
 
         try {
-            setCheckingError(null);
-            setAreUrlChecking(true);
+            dispatch(setIsLoading(true));
 
             const connectionAccess: boolean =
                 await API.getAccessWsConnectionByUrl(webSocketUrl);
 
             if (!connectionAccess) {
                 console.info("FAIL CONNECTION URL");
+
+                createAlert({
+                    title: "Connection status",
+                    message: "Url is not success",
+                    type: AlertTypes.WARNING,
+                });
 
                 return;
             }
@@ -116,95 +133,81 @@ const Application = (): ReactElement => {
 
             setIsConnected(true);
         } catch (error) {
-            console.info("FAIL HTTP REQUEST");
-
-            setCheckingError(error);
+            createAlert({
+                title: "Connection status",
+                message: "Connect to server is not success",
+                type: AlertTypes.ERROR,
+            });
         } finally {
-            setAreUrlChecking(false);
+            dispatch(setIsLoading(false));
         }
     };
-
-    if (areUrlChecking) {
-        return <h2>CHECKING URL...</h2>;
-    }
-
-    if (checkingError) {
-        return <h2>Unable to check url {checkingError?.message}</h2>;
-    }
 
     const Render = LayoutsByUserType[userStatus];
 
     return (
-        <WebSocketContext.Provider
+        <BoardWorkContext.Provider
             value={{
-                isConnected: isConnected,
-                userStatus: userStatus,
-                webSocketUrl: webSocketUrl,
+                sendedBoardChartsDataList: sendedBoardChartsDataList,
+                setSendedBoardChartsDataList: setSendedBoardChartsDataList,
+                modelsAdditionalInfoList: modelsAdditionalInfoList,
+                setModelsAdditionalInfoList: setModelsAdditionalInfoList,
+                boardWorkCommandsConfig: boardWorkCommandsConfig,
+                setBoardWorkCommandsConfig: setBoardWorkCommandsConfig,
+                modelsActionsStatesList: modelsActionsStatesList,
+                setModelsActionsStatesList: setModelsActionsStatesList,
+                sendCommandFunction: sendMessage,
+                modelsRatings: modelsRatings,
+                isBoardControlPanelOpen: isBoardControlPanelOpen,
+                setIsBoardControlPanelOpen: setIsBoardControlPanelOpen,
+                setModelsRatings: setModelsRatings,
             }}
         >
-            <BoardWorkContext.Provider
+            <BoardSettingsContext.Provider
                 value={{
-                    sendedBoardChartsDataList: sendedBoardChartsDataList,
-                    setSendedBoardChartsDataList: setSendedBoardChartsDataList,
-                    modelsAdditionalInfoList: modelsAdditionalInfoList,
-                    setModelsAdditionalInfoList: setModelsAdditionalInfoList,
-                    boardWorkCommandsConfig: boardWorkCommandsConfig,
-                    setBoardWorkCommandsConfig: setBoardWorkCommandsConfig,
-                    modelsActionsStatesList: modelsActionsStatesList,
-                    setModelsActionsStatesList: setModelsActionsStatesList,
-                    sendCommandFunction: sendMessage,
-                    modelsRatings: modelsRatings,
-                    isBoardControlPanelOpen: isBoardControlPanelOpen,
-                    setIsBoardControlPanelOpen: setIsBoardControlPanelOpen,
-                    setModelsRatings: setModelsRatings,
+                    settingsConfigRanges: settingsConfigRanges,
+                    setSettingsConfigRanges: setSettingsConfigRanges,
+                    settingsConfig: settingsConfig,
+                    setSettingsConfig: setSettingsConfig,
                 }}
             >
-                <BoardSettingsContext.Provider
+                <ChartContext.Provider
                     value={{
-                        settingsConfigRanges: settingsConfigRanges,
-                        setSettingsConfigRanges: setSettingsConfigRanges,
-                        settingsConfig: settingsConfig,
-                        setSettingsConfig: setSettingsConfig,
+                        isChartsCurrentDotsViewType:
+                            isChartsCurrentDotsViewType,
+                        chartsDotsCount: chartsDotsCount,
+                        setIsChartsCurrentDotsViewType:
+                            setIsChartsCurrentDotsViewType,
+                        setChartsDotsCount: setChartsDotsCount,
                     }}
                 >
-                    <ChartContext.Provider
-                        value={{
-                            isChartsCurrentDotsViewType:
-                                isChartsCurrentDotsViewType,
-                            chartsDotsCount: chartsDotsCount,
-                            setIsChartsCurrentDotsViewType:
-                                setIsChartsCurrentDotsViewType,
-                            setChartsDotsCount: setChartsDotsCount,
-                        }}
-                    >
-                        <Render asideComponent={<BoardControlPanel />}>
-                            <Fragment>
-                                {isConnected && (
-                                    <Fragment>
-                                        <ModelsInfoList />
-                                        {statLength !== 0 && (
-                                            <ExcelFileDownloadRequest />
-                                        )}
-                                    </Fragment>
-                                )}
-                                {!isConnected && (
-                                    <DialogHolder>
-                                        <WebSocketConnectByUrl
-                                            webSocketUrl={webSocketUrl}
-                                            setWebSocketUrl={setWebSocketUrl}
-                                            isConnected={isConnected}
-                                            connectFunction={createConfigure}
-                                        />
-                                    </DialogHolder>
-                                )}
-                            </Fragment>
-                        </Render>
-                        <AlertsHolder />
-                        {isLoading && <FullScreenLoader />}
-                    </ChartContext.Provider>
-                </BoardSettingsContext.Provider>
-            </BoardWorkContext.Provider>
-        </WebSocketContext.Provider>
+                    <Render asideComponent={<BoardControlPanel />}>
+                        <Fragment>
+                            {isConnected && (
+                                <Fragment>
+                                    <ModelsInfoList />
+                                    {statLength !== 0 && (
+                                        <ExcelFileDownloadRequest />
+                                    )}
+                                </Fragment>
+                            )}
+                            {!isConnected && (
+                                <DialogHolder>
+                                    <WebSocketConnectByUrl
+                                        webSocketUrl={webSocketUrl}
+                                        setWebSocketUrl={setWebSocketUrl}
+                                        isConnected={isConnected}
+                                        connectFunction={createConfigure}
+                                    />
+                                </DialogHolder>
+                            )}
+                        </Fragment>
+                    </Render>
+                    <AlertsHolder />
+                    {isLoading && <FullScreenLoader />}
+                </ChartContext.Provider>
+            </BoardSettingsContext.Provider>
+        </BoardWorkContext.Provider>
     );
 };
 
