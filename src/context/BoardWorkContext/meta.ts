@@ -5,6 +5,7 @@ export interface IBoardWorkCommandData {
     commandKey: string;
     isSendSettingsConfig: boolean;
     isCloseBoardControlPanel: boolean;
+    isAccessGetResults: boolean;
 }
 
 export type TBoardWorkCommandsConfig = IBoardWorkCommandData[];

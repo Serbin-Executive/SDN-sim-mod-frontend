@@ -35,6 +35,8 @@ const Application = (): ReactElement => {
 
     const [isBoardControlPanelOpen, setIsBoardControlPanelOpen] =
         useState<boolean>(true);
+    const [isAccessGetResults, setIsAccessGetResults] =
+        useState<boolean>(false);
 
     const [statLength, setStatLength] = useState<number>(0);
 
@@ -178,6 +180,8 @@ const Application = (): ReactElement => {
                         setSettingsConfigRanges: setSettingsConfigRanges,
                         settingsConfig: settingsConfig,
                         setSettingsConfig: setSettingsConfig,
+                        isAccessGetResults: isAccessGetResults,
+                        setIsAccessGetResults: setIsAccessGetResults,
                     }}
                 >
                     <ChartContext.Provider
@@ -195,7 +199,7 @@ const Application = (): ReactElement => {
                                 {isConnected && (
                                     <Fragment>
                                         <ModelsInfoList />
-                                        {statLength !== 0 && (
+                                        {isAccessGetResults && (
                                             <ExcelFileDownloadRequest />
                                         )}
                                     </Fragment>
