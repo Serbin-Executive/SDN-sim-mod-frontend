@@ -1,20 +1,23 @@
 import { type ReactNode, type ReactElement } from "react";
 import "./style.css";
 
-export const TOOLTIP_DIRECTION: string = "right";
-export const TOOLTIP_LABEL_TEXT: string = "i";
+export type TTooltipDirection = string;
+
+export const TOOLTIP_DIRECTION: string = "top";
+export const TOOLTIP_LABEL_TEXT: string = "ⓘ";
 
 export interface ITooltipBlockProps {
     children?: ReactNode;
+    flow?: TTooltipDirection;
     info: string;
 }
 
-const TooltipBlock = ({ children, info }: ITooltipBlockProps): ReactElement => (
+const TooltipBlock = ({ children, info, flow = TOOLTIP_DIRECTION }: ITooltipBlockProps): ReactElement => (
     <div className="tooltip-block">
         <div className="title">{children}</div>
         <div
             data-tooltip={info}
-            data-flow={TOOLTIP_DIRECTION}
+            data-flow={flow}
             className="label"
         >
             {TOOLTIP_LABEL_TEXT}

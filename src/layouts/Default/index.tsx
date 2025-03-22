@@ -6,7 +6,7 @@ export interface IDefaultLayoutProps {
 }
 
 const DefaultLayout = ({ children }: IDefaultLayoutProps): ReactElement => (
-    <div className="default-layout">
+    <div className="default-layout layout">
         <div className="main-content-container">{children}</div>
     </div>
 );

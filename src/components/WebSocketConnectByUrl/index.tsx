@@ -7,8 +7,12 @@ import {
 } from "react";
 import "./style.css";
 import ControlButton from "@components/ControlButton";
+import TooltipBlock from "@components/TooltipBlock";
 
-export const WEB_SOCKET_CONNECT_INPUT_NAME: string = "Url";
+export const WEB_SOCKET_CONNECT_INPUT_NAME: string = "URL";
+export const WEB_SOCKET_CONNECT_INPUT_INFO: string = "Type current backend URL";
+
+export const DEFAULT_URL: string = "localhost:3001";
 
 export const enum InputNameClasses {
     ACTIVE = "active",
@@ -48,12 +52,17 @@ const WebSocketConnectByUrl = ({
         setInputNameClass(InputNameClasses.INACTIVE);
     };
 
-    const handleClick = () => {
+    const connect = () => {
         if (isConnected) {
             return;
         }
 
         connectFunction();
+    };
+
+    const useDefaultInputValue = () => {
+        setQuery(DEFAULT_URL);
+        setWebSocketUrl(DEFAULT_URL);
     };
 
     return (
@@ -62,7 +71,6 @@ const WebSocketConnectByUrl = ({
                 <div className={`url-input-name ${inputNameClass}`}>
                     {WEB_SOCKET_CONNECT_INPUT_NAME}
                 </div>
-
                 <input
                     className="url-input-field"
                     type="text"
@@ -71,12 +79,23 @@ const WebSocketConnectByUrl = ({
                     onChange={handleUrlChange}
                     onFocus={handleInputFocus}
                     onBlur={handleInputBlur}
-                    placeholder={"Input url"}
+                    placeholder={"URL"}
                     required
                 />
+                <div
+                    data-flow={"top"}
+                    data-tooltip={"Use default value"}
+                    className="default-input-value"
+                    onClick={useDefaultInputValue}
+                >
+                    A
+                </div>
+                <div className="tooltip-container">
+                    <TooltipBlock info={WEB_SOCKET_CONNECT_INPUT_INFO} />
+                </div>
             </div>
             <ControlButton
-                onClick={handleClick}
+                onClick={connect}
                 title={BUTTON_TEXT}
                 isActive={!isConnected}
             />

@@ -15,7 +15,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Arial', sans-serif;
 }
 
 html,
@@ -23,10 +23,6 @@ body,
 #root {
     width: 100%;
     height: 100%;
-}
-
-.web-socket-model-interact {
-    margin-top: 20px;
 }
 
 .main-container {
