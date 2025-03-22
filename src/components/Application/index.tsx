@@ -13,20 +13,24 @@ import ExcelFileDownloadRequest from "@components/ExcelFileDownloadRequest";
 import AlertsHolder from "@components/AlertsHolder";
 import DialogHolder from "@components/DialogHolder";
 import useNotifications from "@hooks/useNotifications";
+import FullScreenLoader from "@components/FullScreenLoader";
 import { LayoutsByUserType, UserStatuses } from "./meta";
 import { type TUserStatus } from "./meta";
+import { useDispatch, useSelector } from "react-redux";
 import { Fragment, ReactElement, useEffect, useState } from "react";
+import { type TRootState } from "@store/index";
+import { setIsLoading } from "@store/slices/application";
+import { AlertTypes } from "@domains/Alert";
 import "./style.css";
 
 const Application = (): ReactElement => {
+    const dispatch = useDispatch();
+
     const [userStatus, setUserStatus] = useState<TUserStatus>(
         UserStatuses.USER
     );
     const [webSocketUrl, setWebSocketUrl] = useState<string>("");
     const [isConnected, setIsConnected] = useState<boolean>(false);
-
-    const [areUrlChecking, setAreUrlChecking] = useState<boolean>(false);
-    const [checkingError, setCheckingError] = useState<any>(null);
 
     const [statLength, setStatLength] = useState<number>(0);
 
@@ -71,8 +75,11 @@ const Application = (): ReactElement => {
 
     const { configure, sendMessage } = useWebSocket(
         webSocketUrl,
-        handleMessageFromServer
+        handleMessageFromServer,
+        createAlert
     );
+
+    const { isLoading } = useSelector((state: TRootState) => state.application);
 
     useEffect(() => {
         if (!statLength) {
@@ -94,20 +101,28 @@ const Application = (): ReactElement => {
 
     const createConfigure = async () => {
         if (webSocketUrl === "") {
-            console.info("CANNOT CONNECT WITH EMPTY URL");
+            createAlert({
+                message: "Cannot connect to server with empty url",
+                type: AlertTypes.ERROR,
+            });
 
             return;
         }
 
         try {
-            setCheckingError(null);
-            setAreUrlChecking(true);
+            dispatch(setIsLoading(true));
 
             const connectionAccess: boolean =
                 await API.getAccessWsConnectionByUrl(webSocketUrl);
 
             if (!connectionAccess) {
                 console.info("FAIL CONNECTION URL");
+
+                createAlert({
+                    title: "Connection status",
+                    message: "Url is not success",
+                    type: AlertTypes.WARNING,
+                });
 
                 return;
             }
@@ -116,21 +131,15 @@ const Application = (): ReactElement => {
 
             setIsConnected(true);
         } catch (error) {
-            console.info("FAIL HTTP REQUEST");
-
-            setCheckingError(error);
+            createAlert({
+                title: "Connection status",
+                message: "Connect to server is not success",
+                type: AlertTypes.ERROR,
+            });
         } finally {
-            setAreUrlChecking(false);
+            dispatch(setIsLoading(false));
         }
     };
-
-    if (areUrlChecking) {
-        return <h2>CHECKING URL...</h2>;
-    }
-
-    if (checkingError) {
-        return <h2>Unable to check url {checkingError?.message}</h2>;
-    }
 
     const Render = LayoutsByUserType[userStatus];
 
@@ -191,6 +200,7 @@ const Application = (): ReactElement => {
                         </Fragment>
                     </Render>
                     <AlertsHolder />
+                    {isLoading && <FullScreenLoader />}
                 </ChartContext.Provider>
             </BoardSettingsContext.Provider>
         </BoardWorkContext.Provider>

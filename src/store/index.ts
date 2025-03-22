@@ -1,8 +1,10 @@
+import applicationReducer from "@store/slices/application";
 import notificationsReducer from "@store/slices/notifications";
 import { configureStore } from "@reduxjs/toolkit";
 
 const store = configureStore({
     reducer: {
+        application: applicationReducer,
         notifications: notificationsReducer,
     },
     middleware: (getDefaultMiddleware) =>
