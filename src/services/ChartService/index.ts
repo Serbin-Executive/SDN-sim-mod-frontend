@@ -4,6 +4,9 @@ import { Chart as ChartJS } from "chart.js/auto";
 
 export const MILLISECONDS_TO_SECONDS_MULTIPLIER: number = 1000;
 
+const CHART_LINE_WIDTH: number = 1;
+const CHART_DOT_WIDTH: number = 0.1;
+
 const loaderChartDotsList: number[] = [1, 4, 2, 8];
 
 export class ChartService {
@@ -42,6 +45,8 @@ export class ChartService {
                     borderColor: color,
                     pointBackgroundColor: color,
                     pointBorderColor: color,
+                    borderWidth: CHART_LINE_WIDTH,
+                    pointBorderWidth: CHART_DOT_WIDTH,
                 },
             ],
         };
@@ -52,12 +57,16 @@ export class ChartService {
             animation: isAnimation,
             scales: {
                 x: {
-                    display: isXAxisDisplay,
-                    text: XAxisText,
+                    title: {
+                        display: isXAxisDisplay,
+                        text: XAxisText,
+                    },
                 },
                 y: {
-                    display: isYAxisDisplay,
-                    text: YAxisText,
+                    title: {
+                        display: isYAxisDisplay,
+                        text: YAxisText,
+                    },
                     beginAtZero: isYAxisStartZero,
                     max: maxYAxisValue,
                 },
