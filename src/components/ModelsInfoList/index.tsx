@@ -7,21 +7,18 @@ import { type IModelRatingInfo } from "@hooks/useServerMessageHandler/meta";
 import "./style.css";
 
 const ModelsInfoList = (): ReactElement => {
-    const { sendedModelsStatesList, modelsRatings } =
-        useContext(BoardWorkContext);
+    const {
+        sendedBoardChartsDataList,
+        modelsAdditionalInfoList,
+        modelsRatings,
+    } = useContext(BoardWorkContext);
 
     return (
         <div className="models-info-list main-info-container">
-            {sendedModelsStatesList.map((sendedModelsInfoList, index) => {
-                const currentModelAdditionalInfoList =
-                    sendedModelsStatesList[index]
-                        .sendedModelsAdditionalInfoList;
-                const lastModelAdditionalInfo =
-                    currentModelAdditionalInfoList[
-                        currentModelAdditionalInfoList.length - 1
-                    ];
-                const modelRating: IModelRatingInfo =
-                    modelsRatings[index];
+            {sendedBoardChartsDataList.map((modelChartsData, index) => {
+                const currentModelAdditionalInfo =
+                    modelsAdditionalInfoList[index];
+                const modelRating: IModelRatingInfo = modelsRatings[index];
 
                 return (
                     <div key={index} className="model-info info-container">
@@ -29,16 +26,14 @@ const ModelsInfoList = (): ReactElement => {
                             <LineCharts
                                 modelID={index}
                                 queueCapacity={modelRating.queue.currentValue}
-                                chartsDataList={
-                                    sendedModelsInfoList.sendedChartsDataList
-                                }
+                                chartsDataList={modelChartsData}
                             />
-                            <ModelInfo info={lastModelAdditionalInfo} />
+                            {currentModelAdditionalInfo && (
+                                <ModelInfo info={currentModelAdditionalInfo} />
+                            )}
                         </div>
                         <div className="rating">
-                            <ModelRatingBlock
-                                ratingInfo={modelRating}
-                            />
+                            <ModelRatingBlock ratingInfo={modelRating} />
                         </div>
                     </div>
                 );

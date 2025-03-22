@@ -53,8 +53,10 @@ const Application = (): ReactElement => {
         setBoardWorkCommandsConfig,
         modelsActionsStatesList,
         setModelsActionsStatesList,
-        sendedModelsStatesList,
-        setSendedModelsStatesList,
+        sendedBoardChartsDataList,
+        setSendedBoardChartsDataList,
+        modelsAdditionalInfoList,
+        setModelsAdditionalInfoList,
         handleMessageFromServer,
         deleteFirstModelsStates,
         modelsRatings,
@@ -88,7 +90,7 @@ const Application = (): ReactElement => {
         deleteFirstModelsStates();
 
         setStatLength(statLength - 1);
-    }, [sendedModelsStatesList]);
+    }, [sendedBoardChartsDataList]);
 
     const createConfigure = async () => {
         if (webSocketUrl === "") {
@@ -135,8 +137,10 @@ const Application = (): ReactElement => {
     return (
         <BoardWorkContext.Provider
             value={{
-                sendedModelsStatesList: sendedModelsStatesList,
-                setSendedModelsStatesList: setSendedModelsStatesList,
+                sendedBoardChartsDataList: sendedBoardChartsDataList,
+                setSendedBoardChartsDataList: setSendedBoardChartsDataList,
+                modelsAdditionalInfoList: modelsAdditionalInfoList,
+                setModelsAdditionalInfoList: setModelsAdditionalInfoList,
                 boardWorkCommandsConfig: boardWorkCommandsConfig,
                 setBoardWorkCommandsConfig: setBoardWorkCommandsConfig,
                 modelsActionsStatesList: modelsActionsStatesList,

@@ -5,9 +5,10 @@ import {
     TServerMessageType,
     TClientAction,
     ServerMessageTypes,
-    TSendedModelsStatesList,
-    ISendedModelsStateList,
     TModelsRatings,
+    TSendedBoardChartsDataList,
+    TSendedModelsAdditionalInfoList,
+    TSendedChartsDataList,
 } from "./meta";
 import { WebsocketMessageParser } from "@services/ModelWebSocketService";
 import { type TUserStatus } from "@components/Application/meta";
@@ -26,28 +27,24 @@ const useServerMessageHandler = (
         useState<TBoardWorkCommandsConfig>([]);
     const [modelsActionsStatesList, setModelsActionsStatesList] =
         useState<TModelsActionsStatesList>([false, false]);
-    const [sendedModelsStatesList, setSendedModelsStatesList] =
-        useState<TSendedModelsStatesList>([]);
+    const [sendedBoardChartsDataList, setSendedBoardChartsDataList] =
+        useState<TSendedBoardChartsDataList>([]);
+    const [modelsAdditionalInfoList, setModelsAdditionalInfoList] = useState<TSendedModelsAdditionalInfoList>([]);
     const [modelsRatings, setModelsRatings] = useState<TModelsRatings>([]);
 
     const deleteFirstModelsStates = (): void => {
-        setSendedModelsStatesList((prevList) => {
-            let newSendedModelsStatesList: TSendedModelsStatesList =
-                prevList.map((sendedModelStatesList) => ({
-                    sendedChartsDataList: [
-                        ...sendedModelStatesList.sendedChartsDataList,
-                    ],
-                    sendedModelsAdditionalInfoList: [
-                        ...sendedModelStatesList.sendedModelsAdditionalInfoList,
-                    ],
-                }));
+        setSendedBoardChartsDataList((prevList) => {
+            let newSendedBoardChartsDataList: TSendedBoardChartsDataList =
+                prevList.map((sendedModelChartsDataList) => [
+                    ...sendedModelChartsDataList,
+                ],
+                );
 
-            newSendedModelsStatesList.forEach((sendedModelStatesList) => {
-                sendedModelStatesList.sendedChartsDataList.shift();
-                sendedModelStatesList.sendedModelsAdditionalInfoList.shift();
+            newSendedBoardChartsDataList.forEach((sendedModelChartsDataList) => {
+                sendedModelChartsDataList.shift();
             });
 
-            return newSendedModelsStatesList;
+            return newSendedBoardChartsDataList;
         });
     };
 
@@ -69,61 +66,41 @@ const useServerMessageHandler = (
         setUserStatus(UserStatuses.HOST);
     };
 
-    const updateSendedModelsStatesList = (
-        sendedLastModelsStateList: ISendedModelsStateList
+    const updateSendedBoardChartsDataList = (
+        sendedChartsDataList: TSendedChartsDataList
     ): void => {
-        setSendedModelsStatesList((prevList) => {
-            let newSendedModelsStatesList: TSendedModelsStatesList =
-                prevList.map((sendedModelsStateList) => ({
-                    sendedChartsDataList: [
-                        ...sendedModelsStateList.sendedChartsDataList,
-                    ],
-                    sendedModelsAdditionalInfoList: [
-                        ...sendedModelsStateList.sendedModelsAdditionalInfoList,
-                    ],
-                }));
+        setSendedBoardChartsDataList((prevList) => {
+            let newSendedBoardChartsDataList: TSendedBoardChartsDataList =
+                prevList.map((sendedModelChartsDataList) => [...sendedModelChartsDataList]);
 
-            if (!newSendedModelsStatesList.length) {
-                newSendedModelsStatesList =
-                    sendedLastModelsStateList.sendedChartsDataList.map(
-                        (chartsData, index) => {
-                            return {
-                                sendedChartsDataList: [chartsData],
-                                sendedModelsAdditionalInfoList: [
-                                    sendedLastModelsStateList
-                                        .sendedModelsAdditionalInfoList[index],
-                                ],
-                            };
-                        }
-                    );
+            if (!newSendedBoardChartsDataList.length) {
+                newSendedBoardChartsDataList =
+                    sendedChartsDataList.map((chartsData) => [chartsData]);
 
-                return newSendedModelsStatesList;
+                return newSendedBoardChartsDataList;
             }
 
-            sendedLastModelsStateList.sendedChartsDataList.forEach(
+            sendedChartsDataList.forEach(
                 (chartsData, index) => {
-                    newSendedModelsStatesList[index].sendedChartsDataList.push(
+                    newSendedBoardChartsDataList[index].push(
                         chartsData
                     );
                 }
             );
 
-            sendedLastModelsStateList.sendedModelsAdditionalInfoList.forEach(
-                (additionalInfo, index) => {
-                    newSendedModelsStatesList[
-                        index
-                    ].sendedModelsAdditionalInfoList.push(additionalInfo);
-                }
-            );
-
-            return newSendedModelsStatesList;
+            return newSendedBoardChartsDataList;
         });
 
         setStatLength((statLength) => statLength + 1);
     };
 
+    const updateModelsAdditionalInfoList = (sendedModelsAdditionalInfoList: TSendedModelsAdditionalInfoList): void => {
+        setModelsAdditionalInfoList(sendedModelsAdditionalInfoList);
+    }
+
     const clearChartsDataLists = (clearMessage: string): void => {
-        setSendedModelsStatesList([]);
+        setSendedBoardChartsDataList([]);
+        setModelsAdditionalInfoList([]);
         setStatLength(0);
     };
 
@@ -141,12 +118,13 @@ const useServerMessageHandler = (
         [ServerMessageTypes.MESSAGE]: defaultMessageHandler,
         [ServerMessageTypes.BOARD_WORKING_COMMANDS]:
             updateBoardWorkCommandsConfig,
-        [ServerMessageTypes.MODELS_STATES]: updateSendedModelsStatesList,
+        [ServerMessageTypes.MODELS_STATES]: updateSendedBoardChartsDataList,
         [ServerMessageTypes.CLEAR_CHARTS]: clearChartsDataLists,
         [ServerMessageTypes.BOARD_ACTIONS_STATES]: updateModelsActionsStates,
         [ServerMessageTypes.BOARD_CAPACITIES_LIST]: updateModelsRatings,
         [ServerMessageTypes.BOARD_SETTINGS_CONFIG]: updateBoardSettingsConfig,
         [ServerMessageTypes.BOARD_SETTINGS_CONFIG_RANGES]: updateBoardSettingsConfigRanges,
+        [ServerMessageTypes.MODELS_ADDITIONAL_INFO]: updateModelsAdditionalInfoList,
     };
 
     const handleMessageFromServer = (data: string): void => {
@@ -165,8 +143,10 @@ const useServerMessageHandler = (
         setBoardWorkCommandsConfig: setBoardWorkCommandsConfig,
         modelsActionsStatesList: modelsActionsStatesList,
         setModelsActionsStatesList: setModelsActionsStatesList,
-        sendedModelsStatesList: sendedModelsStatesList,
-        setSendedModelsStatesList: setSendedModelsStatesList,
+        sendedBoardChartsDataList: sendedBoardChartsDataList,
+        setSendedBoardChartsDataList: setSendedBoardChartsDataList,
+        modelsAdditionalInfoList: modelsAdditionalInfoList,
+        setModelsAdditionalInfoList: setModelsAdditionalInfoList,
         handleMessageFromServer: handleMessageFromServer,
         deleteFirstModelsStates: deleteFirstModelsStates,
         modelsRatings: modelsRatings,
