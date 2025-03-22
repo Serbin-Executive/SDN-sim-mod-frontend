@@ -21,13 +21,11 @@ export const enum ChartDataTypes {
 }
 
 export interface IChartsListProps {
-    modelID: number;
     chartsDataList: TSendedChartsDataList;
     queueCapacity: number;
 }
 
 const LineCharts = ({
-    modelID,
     chartsDataList,
     queueCapacity,
 }: IChartsListProps): ReactElement => {
@@ -65,7 +63,6 @@ const LineCharts = ({
 
     return (
         <div className="charts-container">
-            <div className="model-id">Model {modelID + 1}</div>
             <Line data={loadFactorChartData} options={loadFactorChartOptions} />
             <Line data={queueLoadChartData} options={queueLoadChartOptions} />
         </div>

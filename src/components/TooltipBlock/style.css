@@ -10,18 +10,24 @@
   width: 25px;
   height: 25px;
   border-radius: 10px;
-  font-size: 15px;
   line-height: 15px;
-  background-color: var(--accent-button-color, #6b67eb);
-  color: var(--button-font-color, #FFFFFF);
-
+  background-color: #a6cadd;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.tooltip-block .label path {
+  fill: #353535;
+}
+
+.tooltip-block .label:hover path {
+  fill: white;
+}
+
 .tooltip-block .label:hover {
   background-color: var(--hover-button-color, #6b67eb);
+  color: white;
   cursor: pointer;
 }
 
@@ -48,7 +54,7 @@
 [data-tooltip]::after {
   content: attr(data-tooltip);
   /* text-align: center; */
-  min-width: 170px;
+  min-width: 140px;
   max-width: 400px;
   /* white-space: nowrap;
     overflow: hidden;

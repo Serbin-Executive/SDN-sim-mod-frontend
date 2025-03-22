@@ -19,25 +19,53 @@ const ModelInfo = ({ info }: IModelInfoProps): ReactElement => {
     return (
         <div className="model-info-container">
             <div className="came-in-model model-info-field">
-                {`${ModelInfoFieldsNames.AGENTS_CAME_IN_MODEL_COUNT} = ${agentsCameInModelCount.value}`}
+                <div className="agents-info">
+                    <div className="agents-info-value-title">
+                        {ModelInfoFieldsNames.AGENTS_CAME_IN_MODEL_COUNT}
+                    </div>
+                    <div className="agents-info-value">
+                        {agentsCameInModelCount.value}
+                    </div>
+                </div>
                 <div className="info">
                     <TooltipBlock info={agentsCameInModelCount.info} />
                 </div>
             </div>
-            <div className="left-through-model model-info-field">
-                {`${ModelInfoFieldsNames.AGENTS_LEFT_THROUGH_MODEL_COUNT} = ${agentsLeftThroughModelCount.value}`}
-                <div className="info">
-                    <TooltipBlock info={agentsLeftThroughModelCount.info} />
-                </div>
-            </div>
             <div className="in-model model-info-field">
-                {`${ModelInfoFieldsNames.AGENTS_IN_MODEL_COUNT} = ${agentsInModelCount.value}`}
+                <div className="agents-info">
+                    <div className="agents-info-value-title">
+                        {ModelInfoFieldsNames.AGENTS_IN_MODEL_COUNT}
+                    </div>
+                    <div className="agents-info-value">
+                        {agentsInModelCount.value}
+                    </div>
+                </div>
                 <div className="info">
                     <TooltipBlock info={agentsInModelCount.info} />
                 </div>
             </div>
+            <div className="left-through-model model-info-field">
+                <div className="agents-info">
+                    <div className="agents-info-value-title">
+                        {ModelInfoFieldsNames.AGENTS_LEFT_THROUGH_MODEL_COUNT}
+                    </div>
+                    <div className="agents-info-value">
+                        {agentsLeftThroughModelCount.value}
+                    </div>
+                </div>
+                <div className="info">
+                    <TooltipBlock info={agentsLeftThroughModelCount.info} />
+                </div>
+            </div>
             <div className="lost model-info-field">
-                {`${ModelInfoFieldsNames.AGENTS_LOST_COUNT} = ${agentsLostCount.value}`}
+                <div className="agents-info">
+                    <div className="agents-info-value-title">
+                        {ModelInfoFieldsNames.AGENTS_LOST_COUNT}
+                    </div>
+                    <div className="agents-info-value">
+                        {agentsLostCount.value}
+                    </div>
+                </div>
                 <div className="info">
                     <TooltipBlock info={agentsLostCount.info} />
                 </div>

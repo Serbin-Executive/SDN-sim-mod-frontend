@@ -22,18 +22,18 @@ const ModelsInfoList = (): ReactElement => {
 
                 return (
                     <div key={index} className="model-info info-container">
-                        <div className="statistic">
+                        <div className="info-container-header">
+                            <div className="model-id">Model {index + 1}</div>
+                            <ModelRatingBlock ratingInfo={modelRating} />
+                        </div>
+                        <div className="statistics">
                             <LineCharts
-                                modelID={index}
-                                queueCapacity={modelRating.queue.currentValue}
                                 chartsDataList={modelChartsData}
+                                queueCapacity={modelRating.queue.currentValue}
                             />
                             {currentModelAdditionalInfo && (
                                 <ModelInfo info={currentModelAdditionalInfo} />
                             )}
-                        </div>
-                        <div className="rating">
-                            <ModelRatingBlock ratingInfo={modelRating} />
                         </div>
                     </div>
                 );

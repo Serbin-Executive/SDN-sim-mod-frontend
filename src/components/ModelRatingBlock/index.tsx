@@ -12,21 +12,27 @@ const ModelRatingBlock = memo(
         return (
             <div className="model-rating-block">
                 <div className="rating-line queue">
-                    {`${ratingInfo.queue.currentValue}/${ratingInfo.queue.maximumValue}`}
+                    <div className="rating-value">
+                        {`${ratingInfo.queue.currentValue}/${ratingInfo.queue.maximumValue}`}
+                    </div>
                     <div className="info">
-                        <TooltipBlock info={ratingInfo.queue.info} />
+                        <TooltipBlock info={ratingInfo.queue.info} flow="bottom"/>
                     </div>
                 </div>
                 <div className="rating-line delay">
-                    {`${ratingInfo.delay.currentValue}/${ratingInfo.delay.maximumValue}`}
+                    <div className="rating-value">
+                        {`${ratingInfo.delay.currentValue}/${ratingInfo.delay.maximumValue}`}
+                    </div>
                     <div className="info">
-                        <TooltipBlock info={ratingInfo.delay.info} />
+                        <TooltipBlock info={ratingInfo.delay.info} flow="bottom"/>
                     </div>
                 </div>
                 <div className="rating-line total-rating">
-                    {`${ratingInfo.general.currentValue}/${ratingInfo.general.maximumValue}`}
+                    <div className="rating-value">
+                        {`${ratingInfo.general.currentValue}/${ratingInfo.general.maximumValue}`}
+                    </div>
                     <div className="info">
-                        <TooltipBlock info={ratingInfo.general.info} />
+                        <TooltipBlock info={ratingInfo.general.info} flow="bottom"/>
                     </div>
                 </div>
             </div>
