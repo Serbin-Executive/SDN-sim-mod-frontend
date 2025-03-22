@@ -5,13 +5,14 @@ export type TMessage = string;
 
 export interface IServerMessage {
     messageType: TMessageType;
-    message: TMessage | ISendedModelsStateList | ISendedModelsStateList;
+    message: any;
 }
 
 export const enum ServerMessageTypes {
     MESSAGE = "message",
     BOARD_WORKING_COMMANDS = "board working commands",
     MODELS_STATES = "models states",
+    MODELS_ADDITIONAL_INFO = "models additional info",
     BOARD_ACTIONS_STATES = "board actions states",
     CLEAR_CHARTS = "clear charts",
     BOARD_CAPACITIES_LIST = "board capacities list",
@@ -34,21 +35,21 @@ export interface ISendedChartsData {
 
 export type TSendedChartsDataList = ISendedChartsData[];
 
+export interface IModelAdditionalInfo {
+    value: string;
+    info: string;
+}
+
 export interface ISendedModelAdditionalInfo {
-    agentsCameInModelCount: string;
-    agentsLeftThroughModelCount: string;
-    agentsInModelCount: string;
-    agentsLostCount: string;
+    agentsCameInModelCount: IModelAdditionalInfo;
+    agentsLeftThroughModelCount: IModelAdditionalInfo;
+    agentsInModelCount: IModelAdditionalInfo;
+    agentsLostCount: IModelAdditionalInfo;
 }
 
-export type TSendedModelsAdditionalInfoList = ISendedModelAdditionalInfo[];
+export type TSendedModelsAdditionalInfoList = ISendedModelAdditionalInfo[]
 
-export interface ISendedModelsStateList {
-    sendedChartsDataList: TSendedChartsDataList;
-    sendedModelsAdditionalInfoList: TSendedModelsAdditionalInfoList;
-}
-
-export type TSendedModelsStatesList = ISendedModelsStateList[];
+export type TSendedBoardChartsDataList = TSendedChartsDataList[];
 
 export interface IModelRating {
     currentValue: number;
