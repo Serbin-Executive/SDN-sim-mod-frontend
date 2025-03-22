@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ISendableBoardSettingsConfig, TBoardSettingsConfigRanges } from "@components/BoardSettingsContext/meta";
+import { ISendableBoardSettingsConfig, TBoardSettingsConfigRanges } from "@context/BoardSettingsContext/meta";
 
 const useBoardSettings = () => {
     const [settingsConfigRanges, setSettingsConfigRanges] = useState<TBoardSettingsConfigRanges | null>(null);

@@ -1,5 +1,5 @@
 .model-rating-block {
-    --rating-width: 70px;
+    --rating-width: 100px;
     width: var(--rating-width);
     border: 1px solid #3a40e1;
     background: #3a40e1;
@@ -9,4 +9,10 @@
     position: absolute;
     top: 0;
     right: calc(var(--rating-width) * (-1));
+}
+
+.model-rating-block .rating-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

@@ -1,10 +1,11 @@
+import TooltipBlock from "@components/TooltipBlock";
 import { type ChangeEvent, type ReactElement, useState } from "react";
 import "./style.css";
 
 export interface IControlRangeSliderProps {
     initialValue: number;
-    valueKey: string;
     label: string;
+    info: string;
     minValue: number;
     maxValue: number;
     step: number;
@@ -13,8 +14,8 @@ export interface IControlRangeSliderProps {
 
 const ControlRangeSlider = ({
     initialValue,
-    valueKey,
     label,
+    info,
     minValue,
     maxValue,
     step,
@@ -23,13 +24,18 @@ const ControlRangeSlider = ({
     const [value, setValue] = useState<string>(String(initialValue));
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        onChange(valueKey, Number(event.target.value));
+        onChange(Number(event.target.value));
         setValue(event.target.value);
     };
 
     return (
         <div className="control-range-slider-container">
-            <div className="range-input-header">{label} - {value}</div>
+            <div className="range-input-header">
+                {label} - {value}
+                <div className="info">
+                    <TooltipBlock info={info} />
+                </div>
+            </div>
             <div className="range-input-container">
                 <div className="input-bounds min-value">{minValue}</div>
                 <div className="input-container">

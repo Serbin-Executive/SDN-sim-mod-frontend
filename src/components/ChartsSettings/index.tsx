@@ -1,6 +1,6 @@
-import ToggleSlider from "../ToggleSlider";
-import RangeSlider from "../RangeSlider";
 import ChartsContext from "@context/ChartsContext";
+import ControlToggleSlider from "@components/ControlToggleSlider";
+import ControlRangeSlider from "@components/ControlRangeSlider";
 import { ReactElement, useContext } from "react";
 import {
     DEFAULT_CHARTS_DOTS_COUNT,
@@ -11,11 +11,8 @@ import "./style.css";
 const MIN_CHARTS_DOTS_COUNT: number = 5;
 const MAX_CHARTS_DOTS_COUNT: number = 50;
 const DOTS_COUNT_SLIDER_STEP: number = 5;
-
-export const enum DotsCountSliderTypes {
-    SHOW = "show",
-    HIDDEN = "hidden",
-}
+const DOTS_COUNT_SLIDER_INFO: string =
+    "This slider set dots count, which visible on charts in working area. This dots count data saved, other data clear.";
 
 const ChartsSettings = (): ReactElement => {
     const {
@@ -24,31 +21,27 @@ const ChartsSettings = (): ReactElement => {
         setIsChartsCurrentDotsViewType,
     } = useContext(ChartsContext);
 
-    const currentsDotsCountSliderClass = !isChartsCurrentDotsViewType
-        ? DotsCountSliderTypes.HIDDEN
-        : DotsCountSliderTypes.SHOW;
-
     return (
         <div className="charts-settings">
-            <h3>Charts Settings</h3>
-            <ToggleSlider
-                initialValue={DEFAULT_IS_CHARTS_CURRENT_DOTS_VIEW_TYPE}
-                label="Charts view type"
-                onChange={setIsChartsCurrentDotsViewType}
-            />
+            <div className="header">
+                <h3>Chart Settings</h3>
+                <ControlToggleSlider
+                    initialValue={DEFAULT_IS_CHARTS_CURRENT_DOTS_VIEW_TYPE}
+                    onChange={setIsChartsCurrentDotsViewType}
+                />
+            </div>
 
-            <div
-                className={`dots-count-slider-container ${currentsDotsCountSliderClass}`}
-            >
-                <RangeSlider
+            {isChartsCurrentDotsViewType && (
+                <ControlRangeSlider
                     initialValue={DEFAULT_CHARTS_DOTS_COUNT}
                     label="Dots count in chart"
                     minValue={MIN_CHARTS_DOTS_COUNT}
                     maxValue={MAX_CHARTS_DOTS_COUNT}
-                    step={DOTS_COUNT_SLIDER_STEP}
                     onChange={setChartsDotsCount}
+                    step={DOTS_COUNT_SLIDER_STEP}
+                    info={DOTS_COUNT_SLIDER_INFO}
                 />
-            </div>
+            )}
         </div>
     );
 };

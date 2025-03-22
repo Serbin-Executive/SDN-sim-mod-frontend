@@ -3,11 +3,12 @@ import { Dispatch, SetStateAction } from "react";
 export interface ISendableSettingsConfigField {
     label: string;
     value: number;
+    info: string;
 }
 
 export interface ISendableBoardSettingsConfigBlock {
+    title: string;
     isActive?: boolean;
-    activeChangerLabel?: string;
     fields: { [key: string]: ISendableSettingsConfigField };
 }
 

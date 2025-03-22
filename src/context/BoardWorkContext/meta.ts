@@ -1,4 +1,4 @@
-import { TBoardCapacities, TSendedModelsStatesList } from "@hooks/useServerMessageHandler/meta";
+import { TModelsRatings, TSendedModelsStatesList } from "@hooks/useServerMessageHandler/meta";
 import { type Dispatch, type SetStateAction } from "react";
 
 export interface IBoardWorkCommandData {
@@ -18,8 +18,8 @@ export interface IBoardWorkContext {
     setBoardWorkCommandsConfig: Dispatch<SetStateAction<TBoardWorkCommandsConfig>>;
     modelsActionsStatesList: TModelsActionsStatesList;
     setModelsActionsStatesList: Dispatch<SetStateAction<TModelsActionsStatesList>>;
-    boardCapacitiesList: TBoardCapacities;
-    setBoardCapacitiesList: Dispatch<SetStateAction<TBoardCapacities>>;
+    modelsRatings: TModelsRatings;
+    setModelsRatings: Dispatch<SetStateAction<TModelsRatings>>;
     sendCommandFunction: TSendCommand;
 };
 

@@ -1,15 +1,10 @@
-.charts-settings {
-    margin-top: 30px;
+.charts-settings .header {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: space-between;
+
+    margin-bottom: 50px;
 }
 
-.dots-count-slider-container.hidden {
-    display: none;
-}
-
-.dots-count-slider-container.show {
-    display: block;
+.charts-settings .header h3 {
+    margin: 0;
 }

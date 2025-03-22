@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { UserStatuses } from "@components/Application/meta";
 import {
     TModelsActionsStatesList,
@@ -7,12 +7,12 @@ import {
     ServerMessageTypes,
     TSendedModelsStatesList,
     ISendedModelsStateList,
-    TBoardCapacities,
+    TModelsRatings,
 } from "./meta";
 import { WebsocketMessageParser } from "@services/ModelWebSocketService";
-import { TUserStatus } from "@components/Application/meta";
-import { ISendableBoardSettingsConfig, TBoardSettingsConfigRanges } from "@context/BoardSettingsContext/meta";
-import { TBoardWorkCommandsConfig } from "@context/BoardWorkContext/meta";
+import { type TUserStatus } from "@components/Application/meta";
+import { type ISendableBoardSettingsConfig, type TBoardSettingsConfigRanges } from "@context/BoardSettingsContext/meta";
+import { type TBoardWorkCommandsConfig } from "@context/BoardWorkContext/meta";
 import { AlertTypes } from "@domains/Alert";
 
 const useServerMessageHandler = (
@@ -28,7 +28,7 @@ const useServerMessageHandler = (
         useState<TModelsActionsStatesList>([false, false]);
     const [sendedModelsStatesList, setSendedModelsStatesList] =
         useState<TSendedModelsStatesList>([]);
-    const [boardCapacitiesList, setBoardCapacitiesList] = useState<TBoardCapacities>([]);
+    const [modelsRatings, setModelsRatings] = useState<TModelsRatings>([]);
 
     const deleteFirstModelsStates = (): void => {
         setSendedModelsStatesList((prevList) => {
@@ -133,13 +133,9 @@ const useServerMessageHandler = (
         setModelsActionsStatesList(statesList);
     };
 
-    const updateBoardCapacitiesList = (sendedBoardCapacitiesList: TBoardCapacities): void => {
-        setBoardCapacitiesList(sendedBoardCapacitiesList);
+    const updateModelsRatings = (sendedModelsRatings: TModelsRatings): void => {
+        setModelsRatings(sendedModelsRatings);
     }
-
-    useEffect(() => {
-        console.log(boardCapacitiesList);
-    }, [boardCapacitiesList])
 
     const ActionsInfoList: Record<TServerMessageType, TClientAction> = {
         [ServerMessageTypes.MESSAGE]: defaultMessageHandler,
@@ -148,7 +144,7 @@ const useServerMessageHandler = (
         [ServerMessageTypes.MODELS_STATES]: updateSendedModelsStatesList,
         [ServerMessageTypes.CLEAR_CHARTS]: clearChartsDataLists,
         [ServerMessageTypes.BOARD_ACTIONS_STATES]: updateModelsActionsStates,
-        [ServerMessageTypes.BOARD_CAPACITIES_LIST]: updateBoardCapacitiesList,
+        [ServerMessageTypes.BOARD_CAPACITIES_LIST]: updateModelsRatings,
         [ServerMessageTypes.BOARD_SETTINGS_CONFIG]: updateBoardSettingsConfig,
         [ServerMessageTypes.BOARD_SETTINGS_CONFIG_RANGES]: updateBoardSettingsConfigRanges,
     };
@@ -173,8 +169,8 @@ const useServerMessageHandler = (
         setSendedModelsStatesList: setSendedModelsStatesList,
         handleMessageFromServer: handleMessageFromServer,
         deleteFirstModelsStates: deleteFirstModelsStates,
-        boardCapacitiesList: boardCapacitiesList,
-        setBoardCapacitiesList: setBoardCapacitiesList,
+        modelsRatings: modelsRatings,
+        setModelsRatings: setModelsRatings,
     };
 };
 

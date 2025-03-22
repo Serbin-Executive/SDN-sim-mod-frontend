@@ -3,13 +3,11 @@ import "./style.css";
 
 export interface IControlToggleSliderProps {
     initialValue: boolean;
-    label: string;
     onChange: any;
 }
 
 const ControlToggleSlider = ({
     initialValue,
-    label,
     onChange,
 }: IControlToggleSliderProps): ReactElement => {
     const [isChecked, setIsChecked] = useState<boolean>(initialValue);
@@ -21,7 +19,6 @@ const ControlToggleSlider = ({
 
     return (
         <div className="control-toggle-slider-container">
-            {label}
             <input
                 className="toggle-slider"
                 type={"checkbox"}

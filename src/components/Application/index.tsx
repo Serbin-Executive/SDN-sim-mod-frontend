@@ -57,8 +57,8 @@ const Application = (): ReactElement => {
         setSendedModelsStatesList,
         handleMessageFromServer,
         deleteFirstModelsStates,
-        boardCapacitiesList,
-        setBoardCapacitiesList,
+        modelsRatings,
+        setModelsRatings,
     } = useServerMessageHandler(
         setUserStatus,
         setStatLength,
@@ -66,7 +66,7 @@ const Application = (): ReactElement => {
         updateBoardSettingsConfigRanges,
         createAlert
     );
-    
+
     const { configure, sendMessage } = useWebSocket(
         webSocketUrl,
         handleMessageFromServer
@@ -142,8 +142,8 @@ const Application = (): ReactElement => {
                 modelsActionsStatesList: modelsActionsStatesList,
                 setModelsActionsStatesList: setModelsActionsStatesList,
                 sendCommandFunction: sendMessage,
-                boardCapacitiesList: boardCapacitiesList,
-                setBoardCapacitiesList: setBoardCapacitiesList,
+                modelsRatings: modelsRatings,
+                setModelsRatings: setModelsRatings,
             }}
         >
             <BoardSettingsContext.Provider
@@ -184,9 +184,9 @@ const Application = (): ReactElement => {
                                     />
                                 </DialogHolder>
                             )}
-                            <AlertsHolder />
                         </Fragment>
                     </Render>
+                    <AlertsHolder />
                 </ChartContext.Provider>
             </BoardSettingsContext.Provider>
         </BoardWorkContext.Provider>

@@ -1,12 +1,12 @@
-import ControlRangeSlider from "@components/ControlRangeSlider";
 import ControlToggleSlider from "@components/ControlToggleSlider";
 import { type ReactElement } from "react";
 import {
     IRangeSettingData,
     ISendableBoardSettingsConfigBlock,
     ISendableSettingsConfigField,
-} from "@components/BoardSettingsContext/meta";
+} from "@context/BoardSettingsContext/meta";
 import "./style.css";
+import BoardSettingsFieldControl from "@components/BoardSettingsFieldControl";
 
 export interface IBoardSettingsBlockProps {
     id: string;
@@ -38,30 +38,30 @@ const BoardSettingsBlock = ({
         updateActiveStatus(id, value);
     };
 
-    const onFieldValueChange = (fieldId: string, value: number): void => {
-        updateField(id, fieldId, value);
-    };
+    // const onFieldValueChange = (fieldId: string, value: number): void => {
+    //     updateField(id, fieldId, value);
+    // };
 
     return (
         <div className="board-settings-block">
-            {isNeedActiveCheckbox && (
-                <ControlToggleSlider
-                    initialValue={data.isActive!}
-                    label={data.activeChangerLabel!}
-                    onChange={onActiveStatusChange}
-                />
-            )}
+            <div className="header">
+                <h3>{data.title}</h3>
+                {isNeedActiveCheckbox && (
+                    <ControlToggleSlider
+                        initialValue={data.isActive!}
+                        onChange={onActiveStatusChange}
+                    />
+                )}
+            </div>
             {isFieldsActive &&
                 fieldsKeysList.map((key, index) => (
-                    <ControlRangeSlider
+                    <BoardSettingsFieldControl
                         key={key}
-                        initialValue={fieldsValuesList[index].value}
-                        valueKey={key}
-                        label={fieldsValuesList[index].label}
-                        minValue={getRangeData(key).minValue}
-                        maxValue={getRangeData(key).maxValue}
-                        step={getRangeData(key).step}
-                        onChange={onFieldValueChange}
+                        fieldData={fieldsValuesList[index]}
+                        rangeData={getRangeData(key)}
+                        onChange={(value: number) => {
+                            updateField(id, key, value);
+                        }}
                     />
                 ))}
         </div>

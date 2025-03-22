@@ -2,6 +2,12 @@
 
 }
 
+.range-input-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .range-input-container{
     display: flex;
     align-items: center;
