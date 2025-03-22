@@ -3,11 +3,11 @@ import LineCharts from "../LineCharts";
 import BoardWorkContext from "@context/BoardWorkContext";
 import ModelRatingBlock from "@components/ModelRatingBlock";
 import { type ReactElement, useContext } from "react";
-import { IModelElementsCapacities } from "@hooks/useServerMessageHandler/meta";
+import { type IModelRatingInfo } from "@hooks/useServerMessageHandler/meta";
 import "./style.css";
 
 const ModelsInfoList = (): ReactElement => {
-    const { sendedModelsStatesList, boardCapacitiesList } =
+    const { sendedModelsStatesList, modelsRatings } =
         useContext(BoardWorkContext);
 
     return (
@@ -20,15 +20,15 @@ const ModelsInfoList = (): ReactElement => {
                     currentModelAdditionalInfoList[
                         currentModelAdditionalInfoList.length - 1
                     ];
-                const capacitiesData: IModelElementsCapacities =
-                    boardCapacitiesList[index];
+                const modelRating: IModelRatingInfo =
+                    modelsRatings[index];
 
                 return (
                     <div key={index} className="model-info info-container">
                         <div className="statistic">
                             <LineCharts
                                 modelID={index}
-                                queueCapacity={capacitiesData.queueCapacity}
+                                queueCapacity={modelRating.queue.currentValue}
                                 chartsDataList={
                                     sendedModelsInfoList.sendedChartsDataList
                                 }
@@ -37,14 +37,7 @@ const ModelsInfoList = (): ReactElement => {
                         </div>
                         <div className="rating">
                             <ModelRatingBlock
-                                queueCapacity={capacitiesData.queueCapacity}
-                                delayCapacity={capacitiesData.delayCapacity}
-                                maxQueueCapacity={
-                                    capacitiesData.maxQueueCapacity
-                                }
-                                maxDelayCapacity={
-                                    capacitiesData.maxDelayCapacity
-                                }
+                                ratingInfo={modelRating}
                             />
                         </div>
                     </div>

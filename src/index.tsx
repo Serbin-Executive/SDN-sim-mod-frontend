@@ -1,6 +1,6 @@
-import ReactDOM, { Root } from "react-dom/client";
 import Application from "@components/Application";
 import store from "./store";
+import ReactDOM, {type Root } from "react-dom/client";
 import { Provider } from "react-redux";
 
 const RootHTMLElement: HTMLElement | null = document.getElementById("root");

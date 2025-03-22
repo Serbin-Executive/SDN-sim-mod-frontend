@@ -71,7 +71,6 @@ const BoardSettings = (): ReactElement => {
 
     return (
         <div className="board-settings">
-            <h3>Board Settings</h3>
             {settingsConfigValuesList.map((blockData, index) => (
                 <BoardSettingsBlock
                     key={settingsConfigKeysList[index]}

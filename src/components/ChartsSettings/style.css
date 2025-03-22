@@ -1,9 +1,20 @@
 .charts-settings {
     margin-top: 30px;
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: flex-start; */
+}
+
+.chart-settings .header {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 50px;
+}
+
+.chart-settings .header h3 {
+    margin: 0;
 }
 
 .dots-count-slider-container.hidden {

@@ -50,11 +50,22 @@ export interface ISendedModelsStateList {
 
 export type TSendedModelsStatesList = ISendedModelsStateList[];
 
-export interface IModelElementsCapacities {
-    queueCapacity: number;
-    delayCapacity: number;
-    maxQueueCapacity: number;
-    maxDelayCapacity: number;
+export interface IModelRating {
+    currentValue: number;
+    maximumValue: number;
+    info: string;
 }
 
-export type TBoardCapacities = IModelElementsCapacities[];
+export interface IModelRatingInfo {
+    queue: IModelRating;
+    delay: IModelRating;
+    general: IModelRating;
+}
+
+export type TModelsRatings = IModelRatingInfo[];
+
+export const enum ModelRatingInfoList {
+    QUEUE = "This model queue efficiency rating relatively to maximum efficiency in this experiment",
+    DELAY = "This model delay efficiency rating relatively to maximum efficiency in this experiment",
+    GENERAL = "This model general efficiency rating relatively to maximum efficiency in this experiment",
+}

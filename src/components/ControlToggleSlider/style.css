@@ -2,5 +2,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 150px;
+}
+
+.control-toggle-slider-container .title {
+    font-size: 20px;
+}
+
+.control-toggle-slider-container .toggle-slider {
+    transform: scale(3);
 }
