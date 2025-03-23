@@ -195,8 +195,7 @@ const Application = (): ReactElement => {
                     >
                         <Render asideComponent={<BoardControlPanel />}>
                             <Fragment>
-                                {isConnected && <ModelsInfoList />}
-                                {!isConnected && (
+                                {!isConnected ? (
                                     <DialogHolder>
                                         <WebSocketConnectByUrl
                                             webSocketUrl={webSocketUrl}
@@ -205,6 +204,8 @@ const Application = (): ReactElement => {
                                             connectFunction={createConfigure}
                                         />
                                     </DialogHolder>
+                                ) : (
+                                    <ModelsInfoList />
                                 )}
                             </Fragment>
                         </Render>

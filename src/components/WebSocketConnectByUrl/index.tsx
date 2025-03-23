@@ -88,7 +88,6 @@ const WebSocketConnectByUrl = ({
                     className="default-input-value"
                     onClick={useDefaultInputValue}
                 >
-                    A
                 </div>
                 <div className="tooltip-container">
                     <TooltipBlock info={WEB_SOCKET_CONNECT_INPUT_INFO} />

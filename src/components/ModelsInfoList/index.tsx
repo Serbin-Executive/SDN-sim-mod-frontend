@@ -1,9 +1,10 @@
-import ModelInfo from "../ModelInfo";
-import LineCharts from "../LineCharts";
+import ModelInfo from "@components/ModelInfo";
+import LineCharts from "@components/LineCharts";
+import BlankPanel from "@components/BlankPanel";
 import BoardWorkContext from "@context/BoardWorkContext";
 import ModelRatingBlock from "@components/ModelRatingBlock";
-import { type ReactElement, useContext } from "react";
 import { type IModelRatingInfo } from "@hooks/useServerMessageHandler/meta";
+import { type ReactElement, useContext } from "react";
 import "./style.css";
 
 const ModelsInfoList = (): ReactElement => {
@@ -12,6 +13,10 @@ const ModelsInfoList = (): ReactElement => {
         modelsAdditionalInfoList,
         modelsRatings,
     } = useContext(BoardWorkContext);
+
+    if (!sendedBoardChartsDataList?.length) {
+        return <BlankPanel />
+    }
 
     return (
         <div className="models-info-list main-info-container">
