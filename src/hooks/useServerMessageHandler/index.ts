@@ -11,10 +11,10 @@ import {
     TSendedChartsDataList,
 } from "./meta";
 import { WebsocketMessageParser } from "@services/ModelWebSocketService";
+import { AlertTypes } from "@domains/Alert";
 import { type TUserStatus } from "@components/Application/meta";
 import { type ISendableBoardSettingsConfig, type TBoardSettingsConfigRanges } from "@context/BoardSettingsContext/meta";
 import { type TBoardWorkCommandsConfig } from "@context/BoardWorkContext/meta";
-import { AlertTypes } from "@domains/Alert";
 
 const useServerMessageHandler = (
     setUserStatus: Dispatch<SetStateAction<TUserStatus>>,
@@ -98,7 +98,7 @@ const useServerMessageHandler = (
         setModelsAdditionalInfoList(sendedModelsAdditionalInfoList);
     }
 
-    const clearChartsDataLists = (clearMessage: string): void => {
+    const clearChartsDataLists = (): void => {
         setSendedBoardChartsDataList([]);
         setModelsAdditionalInfoList([]);
         setStatLength(0);
