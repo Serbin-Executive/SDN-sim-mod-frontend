@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const DEFAULT_IS_CHARTS_CURRENT_DOTS_VIEW_TYPE: boolean = false;
 export const DEFAULT_CHARTS_DOTS_COUNT: number = 20;
