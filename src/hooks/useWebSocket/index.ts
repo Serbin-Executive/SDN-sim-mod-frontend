@@ -21,7 +21,7 @@ const useWebSocket = (webSocketUrl: string, handler: (data: any) => void, create
         dispatch(setIsLoading(true));
     };
 
-    const onOpen = (event: Event) => {
+    const onOpen = () => {
         console.info("WEBSOCKET CREATED");
 
         createAlert({
@@ -49,7 +49,7 @@ const useWebSocket = (webSocketUrl: string, handler: (data: any) => void, create
         dispatch(setIsLoading(false));
     };
 
-    const onClose = (event: CloseEvent) => {
+    const onClose = () => {
         console.info("WEBSOCKET CLOSED");
 
         createAlert({
